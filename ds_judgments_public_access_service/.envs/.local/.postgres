@@ -1,0 +1,7 @@
+# PostgreSQL
+# ------------------------------------------------------------------------------
+POSTGRES_HOST=postgres
+POSTGRES_PORT=5432
+POSTGRES_DB=ds_judgments_public_access_service
+POSTGRES_USER=iiOFWmVonpIJMVAVxIMQsxkkOlFmaQaI
+POSTGRES_PASSWORD=z1RSgEMYe2ZZ7QxEEAzuiWoWgdwnbs7sR2fUIXfcpc0QWst5M3L1RcXhnMRrHRDs
