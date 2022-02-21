@@ -1,0 +1,12 @@
+openapi: '3.0.2'
+info:
+  title: Case Law API
+  version: '0.1'
+servers:
+  - url: https://api.caselaw.nationalarchives.gov.uk/v1
+paths:
+  /test:
+    get:
+      responses:
+        '200':
+          description: OK
