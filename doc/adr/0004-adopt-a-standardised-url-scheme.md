@@ -24,7 +24,7 @@ We want a consistent URI/URL structure for case law that meets a number of requi
 We will use the URI scheme designed by Catherine Tabone et al to define URLs across all case law services. We may need to extend
 it for edit actions, etc, but the scheme should be used as proposed to identify documents. The full specification of the URI
 scheme is not included here for brevity; instead we will use a subset of example URLs from that document. For the full
-specification, refer to the original definition.
+specification, refer to the [original definition](https://nationalarchivesuk.sharepoint.com/:w:/r/sites/LS_project/Data%20Development/Judgments%20Data%20Conversion/URI%20Scheme/Judgments%20URI%20Scheme%2016-02-2022.docx?d=w59ef433f65804907b734ec2657b5316d&csf=1&web=1&e=Ghcz6d).
 
 ### Judgments
 
