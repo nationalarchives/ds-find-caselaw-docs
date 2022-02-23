@@ -32,7 +32,32 @@ We will define an initial [Retention Policy](https://docs.marklogic.com/guide/ap
 
 This sequence diagram is an example of how the various clients may interact with the same document.
 
-![Sequence Diagram](diagrams/0005-sequence-diagram.png)
+```mermaid
+sequenceDiagram
+  participant Transformation
+  participant Enrichment
+  participant AdminUI
+  participant Marklogic
+  participant PublicUI
+  Transformation->>Marklogic: Insert managed document
+  Marklogic-->>Transformation: OK: v1
+  Enrichment->>Marklogic: Check out
+  Marklogic-->>Enrichment: OK: v1
+  Enrichment->>Marklogic: Update
+  Marklogic-->>Enrichment: OK: v2
+  AdminUI->>Marklogic: Atomic checkout/update/checkin
+  Marklogic-->>AdminUI: DENIED
+  PublicUI->>Marklogic: Read
+  Marklogic-->>PublicUI: OK: v2
+  Enrichment->>Marklogic: Update
+  Marklogic-->>Enrichment: OK: v3
+  Enrichment->>Marklogic: Check in
+  Marklogic-->>Enrichment: OK
+  AdminUI->>Marklogic: Atomic checkout/update/checkin
+  Marklogic-->>AdminUI: OK: v4
+  PublicUI->>Marklogic: Read
+  Marklogic-->>PublicUI: OK: v4
+```
 
 The document is inserted by the Transformation Engine, then checked out by the Enrichment Engine. While the Enrichment Engine has the document checked out, the Admin UI cannot check it out for an update, though the Public UI can display it in a read-only fashion. Once the Enrichment Engine checks the document back in, the Admin UI can perform its own update.
 
