@@ -1,12 +1,10 @@
 @startuml Deployment Diagram
-!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+!include include/c4.puml
+!include include/style.puml
 
-!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
-!include FONTAWESOME/docker.puml
-SHOW_PERSON_OUTLINE()
-
-AddElementTag("Marklogic Application", $bgColor="green", $fontColor="white")
-AddRelTag("fallback", $textColor="red", $lineColor="red", $lineStyle = DashedLine())
+Node(internet, "Internet") {
+    !include include/people.puml
+}
 
 Node(te, "Transformation Engine", "AWS") {
     System_Ext(te_sns, "SNS", "Notification queue")
@@ -14,50 +12,53 @@ Node(te, "Transformation Engine", "AWS") {
     Lay_D(te_sns, te_s3)
 }
 
-Person_Ext(joepublic, "Public User")
-Person(editor, "TNA Editorial Team")
-Person_Ext(apiUser, "API User", "e.g. Enrichment Engine")
+Node(ee, "Enrichment Engine", "AWS") {
+    System_Ext(enrichment, "Enrichment Engine")
+}
 
 Node(account, "Case Law System", "AWS"){
     Node(ecs, "Elastic Container Service"){
         Container(publicui, "Public UI", "Django", $sprite="docker")
         Container(editorui, "Editor UI", "Django", $sprite="docker")
     }
-    System(api_lb, "Elastic Load Balancing", "Distributes demand across Marklogic nodes")
+    System(api_lb, "Elastic Load Balancing", "Distributes API demand across Marklogic nodes", $sprite="aws")
     Node(ec2, "EC2"){
         Node(marklogic, "Marklogic Server") {
             SystemDb(db, "Marklogic", "Document and service metadata store")
             Container(api, "REST API", "Javascript", $tags="Marklogic Application")
-            Container(parser, "Parser", "?", "Jim's parser", $tags="Marklogic Application")
             BiRel(api, db, "queries", "XQuery")
-            BiRel(parser, db, "queries", "XQuery")
         }
     }
-    BiRel_D(api_lb, api, "proxies", "HTTPS")
+    BiRel(api_lb, api, "proxies", "HTTPS")
     Node(lambda, "Lambda"){
-        Container(ingester, "Ingester", "Javascript")
+        Container(parser, "Alpha Parser", "AWS Lambda", $sprite="aws")
+        Container(ingester, "Ingester", "Javascript", $sprite="aws")
     }
-    System(cache, "Cloudfront", "Public UI web cache")
-    System(pubsub, "Notification System", "TBD, possibly WebSub")
+    System(cache, "Cloudfront", "Public UI web cache", $sprite="aws")
+    System(pubsub, "SNS", "Change notifications", $sprite="aws")
     Rel(publicui, api_lb, "reads from", "HTTPS")
     Rel(cache, publicui, "reads from", "HTTPS")
     BiRel(editorui, api_lb, "reads/writes", "HTTPS")
     Rel(api, pubsub, "publishes change notification")
 }
 
-BiRel(ingester, te_sns, "subscribes/notifies")
-Rel(ingester, te_s3, "reads from")
-Rel_U(ingester, api_lb, "writes to", "HTTPS")
+BiRel(ingester, te_sns, "subscribes/notifies", "SNS")
+Rel(ingester, te_s3, "reads from", "HTTPS")
+Rel(ingester, api_lb, "writes to", "HTTPS")
 
 Rel(joepublic, cache, "browses", "HTTPS")
 
 Rel(editor, editorui, "uses", "HTTPS")
-Rel(editor, parser, "uses for advanced ingestion", "HTTPS", $tags="fallback")
-Rel(ingester, editor, "emails")
+BiRel(editorui, parser, "advanced ingestion", "HTTPS")
+Rel(ingester, editor, "notifies", "email")
 
+BiRel(enrichment, api_lb, "reads/writes", "HTTPS")
+BiRel(enrichment, pubsub, "subscribes/notifies", "SNS")
 
-BiRel(apiUser, api_lb, "reads/writes", "HTTPS")
-BiRel(apiUser, pubsub, "subscribes/notifies")
+Rel(apiUser, api_lb, "reads", "HTTPS")
 
-SHOW_LEGEND()
+Lay_D(joepublic, editor)
+Lay_D(editor, apiUser)
+
+!include include/display.puml
 @enduml

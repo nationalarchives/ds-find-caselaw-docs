@@ -1,0 +1,6 @@
+@startuml
+
+AddElementTag("Marklogic Application", $bgColor="green", $fontColor="white")
+AddRelTag("fallback", $textColor="red", $lineColor="red", $lineStyle = DashedLine())
+
+@enduml
