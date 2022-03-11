@@ -1,0 +1,4 @@
+@startuml
+SHOW_PERSON_OUTLINE()
+SHOW_LEGEND()
+@enduml

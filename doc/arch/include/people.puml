@@ -1,0 +1,5 @@
+@startuml
+Person_Ext(joepublic, "Public User")
+Person(editor, "TNA Editorial Team")
+Person_Ext(apiUser, "API User")
+@enduml
