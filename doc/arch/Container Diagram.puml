@@ -11,12 +11,11 @@ System_Boundary(access, "Case Law Access") {
   Container(editorUI, "Editor UI", "Django", $sprite="docker")
   Container(ingester, "Ingester", "AWS Lambda", $sprite="aws")
   Container(pubsub, "Change Notifications", "AWS SNS", $sprite="aws")
+  Container(parser, "Alpha Parser", "AWS Lambda", $sprite="aws")
   System_Boundary(markLogicServer, "Marklogic Server") {
     SystemDb(markLogic, "Marklogic", "Document and service metadata store")
     Container(api, "REST API", "Javascript", $tags="Marklogic Application")
-    Container(parser, "Alpha Parser", "Jim's parser application, including multi-document support", $tags="Marklogic Application")
     BiRel(api, markLogic, "queries", "XQuery")
-    BiRel(parser, markLogic, "queries", "XQuery")
   }
 }
 
@@ -28,10 +27,10 @@ BiRel(enrichment, api, "reads/writes", "HTTPS")
 BiRel(enrichment, pubsub, "subscribes/notifies", "HTTPS")
 BiRel(editorUI, api, "reads/writes", "HTTPS")
 Rel(publicUI, api, "reads", "HTTPS")
-Rel_R(apiUser, api, "reads", "HTTPS")
+Rel(apiUser, api, "reads", "HTTPS")
 Rel(joepublic, publicUI, "uses", "HTTPS")
 Rel(editor, editorUI, "uses", "HTTPS")
-Rel(editor, parser, "uses for advanced ingestion", "HTTPS", $tags="fallback")
+BiRel(editorUI, parser, "advanced ingestion", "HTTPS")
 Lay_D(apiUser, enrichment)
 
 !include include/display.puml

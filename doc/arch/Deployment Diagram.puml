@@ -1,7 +1,10 @@
 @startuml Deployment Diagram
 !include include/c4.puml
-!include include/people.puml
 !include include/style.puml
+
+Node(internet, "Internet") {
+    !include include/people.puml
+}
 
 Node(te, "Transformation Engine", "AWS") {
     System_Ext(te_sns, "SNS", "Notification queue")
@@ -23,13 +26,12 @@ Node(account, "Case Law System", "AWS"){
         Node(marklogic, "Marklogic Server") {
             SystemDb(db, "Marklogic", "Document and service metadata store")
             Container(api, "REST API", "Javascript", $tags="Marklogic Application")
-            Container(parser, "Alpha Parser", $tags="Marklogic Application")
             BiRel(api, db, "queries", "XQuery")
-            BiRel(parser, db, "queries", "XQuery")
         }
     }
-    BiRel_D(api_lb, api, "proxies", "HTTPS")
+    BiRel(api_lb, api, "proxies", "HTTPS")
     Node(lambda, "Lambda"){
+        Container(parser, "Alpha Parser", "AWS Lambda", $sprite="aws")
         Container(ingester, "Ingester", "Javascript", $sprite="aws")
     }
     System(cache, "Cloudfront", "Public UI web cache", $sprite="aws")
@@ -42,12 +44,12 @@ Node(account, "Case Law System", "AWS"){
 
 BiRel(ingester, te_sns, "subscribes/notifies", "SNS")
 Rel(ingester, te_s3, "reads from", "HTTPS")
-Rel_U(ingester, api_lb, "writes to", "HTTPS")
+Rel(ingester, api_lb, "writes to", "HTTPS")
 
 Rel(joepublic, cache, "browses", "HTTPS")
 
 Rel(editor, editorui, "uses", "HTTPS")
-Rel(editor, parser, "uses for advanced ingestion", "HTTPS", $tags="fallback")
+BiRel(editorui, parser, "advanced ingestion", "HTTPS")
 Rel(ingester, editor, "notifies", "email")
 
 BiRel(enrichment, api_lb, "reads/writes", "HTTPS")
@@ -55,7 +57,8 @@ BiRel(enrichment, pubsub, "subscribes/notifies", "SNS")
 
 Rel(apiUser, api_lb, "reads", "HTTPS")
 
-Lay_R(pubsub, enrichment)
+Lay_D(joepublic, editor)
+Lay_D(editor, apiUser)
 
 !include include/display.puml
 @enduml

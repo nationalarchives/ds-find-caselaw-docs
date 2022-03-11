@@ -12,12 +12,10 @@ System_Boundary(access, "Case Law Access") {
   System(editorUI, "Editor UI")
   System(ingester, "Ingester")
   System(api, "REST API", $tags="Marklogic Application")
-  System(parser, "Alpha Parser", "Jim's parser application, including multi-document support", $tags="Marklogic Application")
   SystemDb(markLogic, "LegalDocML document store", "MarkLogic")
 }
 
 BiRel(api, markLogic, "queries", "XQuery")
-BiRel(parser, markLogic, "queries", "XQuery")
 
 Rel(tdr, transformationEngine, "sends uploaded documents")
 Rel(transformationEngine, ingester, "sends parsed documents", "S3/SNS")
@@ -28,7 +26,6 @@ Rel(publicUI, api, "reads", "HTTPS")
 Rel_R(apiUser, api, "reads", "HTTPS")
 Rel(joepublic, publicUI, "uses", "HTTPS")
 Rel(editor, editorUI, "uses", "HTTPS")
-Rel(editor, parser, "uses for advanced ingestion", "HTTPS", $tags="fallback")
 Lay_D(apiUser, enrichment)
 
 !include include/display.puml
