@@ -18,6 +18,10 @@ This is the central repository for the Case Law Public Access service. It includ
 
 # Diagrams
 
+## System Landscape
+
+![System Landscape Diagram](doc/arch/images/System%20Landscape.png)
+
 ## Deployment
 
 ![Deployment Diagram](doc/arch/images/Deployment%20Diagram.png)

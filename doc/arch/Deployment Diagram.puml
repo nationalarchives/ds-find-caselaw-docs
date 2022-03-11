@@ -23,7 +23,7 @@ Node(account, "Case Law System", "AWS"){
         Node(marklogic, "Marklogic Server") {
             SystemDb(db, "Marklogic", "Document and service metadata store")
             Container(api, "REST API", "Javascript", $tags="Marklogic Application")
-            Container(parser, "Parser", "?", "Jim's parser", $tags="Marklogic Application")
+            Container(parser, "Alpha Parser", $tags="Marklogic Application")
             BiRel(api, db, "queries", "XQuery")
             BiRel(parser, db, "queries", "XQuery")
         }
