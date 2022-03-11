@@ -1,0 +1,63 @@
+@startuml Deployment Diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+
+!define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
+!include FONTAWESOME/docker.puml
+SHOW_PERSON_OUTLINE()
+
+AddElementTag("Marklogic Application", $bgColor="green", $fontColor="white")
+AddRelTag("fallback", $textColor="red", $lineColor="red", $lineStyle = DashedLine())
+
+Node(te, "Transformation Engine", "AWS") {
+    System_Ext(te_sns, "SNS", "Notification queue")
+    SystemDb_Ext(te_s3, "S3", "File transfer bucket")
+    Lay_D(te_sns, te_s3)
+}
+
+Person_Ext(joepublic, "Public User")
+Person(editor, "TNA Editorial Team")
+Person_Ext(apiUser, "API User", "e.g. Enrichment Engine")
+
+Node(account, "Case Law System", "AWS"){
+    Node(ecs, "Elastic Container Service"){
+        Container(publicui, "Public UI", "Django", $sprite="docker")
+        Container(editorui, "Editor UI", "Django", $sprite="docker")
+    }
+    System(api_lb, "Elastic Load Balancing", "Distributes demand across Marklogic nodes")
+    Node(ec2, "EC2"){
+        Node(marklogic, "Marklogic Server") {
+            SystemDb(db, "Marklogic", "Document and service metadata store")
+            Container(api, "REST API", "Javascript", $tags="Marklogic Application")
+            Container(parser, "Parser", "?", "Jim's parser", $tags="Marklogic Application")
+            BiRel(api, db, "queries", "XQuery")
+            BiRel(parser, db, "queries", "XQuery")
+        }
+    }
+    BiRel_D(api_lb, api, "proxies", "HTTPS")
+    Node(lambda, "Lambda"){
+        Container(ingester, "Ingester", "Javascript")
+    }
+    System(cache, "Cloudfront", "Public UI web cache")
+    System(pubsub, "Notification System", "TBD, possibly WebSub")
+    Rel(publicui, api_lb, "reads from", "HTTPS")
+    Rel(cache, publicui, "reads from", "HTTPS")
+    BiRel(editorui, api_lb, "reads/writes", "HTTPS")
+    Rel(api, pubsub, "publishes change notification")
+}
+
+BiRel(ingester, te_sns, "subscribes/notifies")
+Rel(ingester, te_s3, "reads from")
+Rel_U(ingester, api_lb, "writes to", "HTTPS")
+
+Rel(joepublic, cache, "browses", "HTTPS")
+
+Rel(editor, editorui, "uses", "HTTPS")
+Rel(editor, parser, "uses for advanced ingestion", "HTTPS", $tags="fallback")
+Rel(ingester, editor, "emails")
+
+
+BiRel(apiUser, api_lb, "reads/writes", "HTTPS")
+BiRel(apiUser, pubsub, "subscribes/notifies")
+
+SHOW_LEGEND()
+@enduml
