@@ -14,3 +14,10 @@ This is the central repository for the Court Judgments service. It includes arch
 
 * [Frontend Prototypes](https://github.com/nationalarchives/ds-judgments-frontend)
 * [Marklogic Prototype](https://github.com/mangiafico/tna-judgments-website)
+
+
+# Diagrams
+
+## Deployment
+
+![](doc/arch/images/Deployment%20Diagram.png)
