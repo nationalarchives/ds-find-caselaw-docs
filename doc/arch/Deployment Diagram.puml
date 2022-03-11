@@ -18,7 +18,7 @@ Node(account, "Case Law System", "AWS"){
         Container(publicui, "Public UI", "Django", $sprite="docker")
         Container(editorui, "Editor UI", "Django", $sprite="docker")
     }
-    System(api_lb, "Elastic Load Balancing", "Distributes API demand across Marklogic nodes")
+    System(api_lb, "Elastic Load Balancing", "Distributes API demand across Marklogic nodes", $sprite="aws")
     Node(ec2, "EC2"){
         Node(marklogic, "Marklogic Server") {
             SystemDb(db, "Marklogic", "Document and service metadata store")
@@ -30,10 +30,10 @@ Node(account, "Case Law System", "AWS"){
     }
     BiRel_D(api_lb, api, "proxies", "HTTPS")
     Node(lambda, "Lambda"){
-        Container(ingester, "Ingester", "Javascript")
+        Container(ingester, "Ingester", "Javascript", $sprite="aws")
     }
-    System(cache, "Cloudfront", "Public UI web cache")
-    System(pubsub, "SNS", "Change notifications")
+    System(cache, "Cloudfront", "Public UI web cache", $sprite="aws")
+    System(pubsub, "SNS", "Change notifications", $sprite="aws")
     Rel(publicui, api_lb, "reads from", "HTTPS")
     Rel(cache, publicui, "reads from", "HTTPS")
     BiRel(editorui, api_lb, "reads/writes", "HTTPS")

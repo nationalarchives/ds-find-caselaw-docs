@@ -3,5 +3,6 @@
 
 !define FONTAWESOME https://raw.githubusercontent.com/tupadr3/plantuml-icon-font-sprites/master/font-awesome-5
 !include FONTAWESOME/docker.puml
+!include FONTAWESOME/aws.puml
 
 @enduml

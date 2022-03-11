@@ -15,13 +15,22 @@ This is the central repository for the Case Law Public Access service. It includ
 * [Frontend Prototypes](https://github.com/nationalarchives/ds-caselaw-frontend)
 * [Marklogic Prototype](https://github.com/mangiafico/tna-judgments-website)
 
+## Diagrams
 
-# Diagrams
+<details>
+  <summary>System Landscape Diagram</summary>
 
-## System Landscape
+  ![System Landscape Diagram](doc/arch/images/System%20Landscape.png)
+</details>
 
-![System Landscape Diagram](doc/arch/images/System%20Landscape.png)
+<details>
+  <summary>Container Diagram</summary>
 
-## Deployment
+  ![Container Diagram](doc/arch/images/Container%20Diagram.png)
+</details>
 
-![Deployment Diagram](doc/arch/images/Deployment%20Diagram.png)
+<details>
+  <summary>Deployment Diagram</summary>
+
+  ![Deployment Diagram](doc/arch/images/Deployment%20Diagram.png)
+</details>
