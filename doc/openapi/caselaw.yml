@@ -1,12 +1,28 @@
 openapi: '3.0.2'
 info:
   title: Case Law API
-  version: '0.1'
+  version: '1.0'
 servers:
   - url: https://api.caselaw.nationalarchives.gov.uk/v1
+
+components:
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+
 paths:
-  /test:
+  /status:
     get:
+      summary: Health check
+      description: |
+        A test endpoint that can be used by clients to verify service availability, and to verify valid authentication credentials.
+        Authentication is not required, but if it is provided, it will be checked for validity.
       responses:
         '200':
-          description: OK
+          description: The service is available, and if authentication was provided, the authentication is valid.
+        '401':
+          description: The service is available, but the provided authentication was not valid.
+      security:
+        - {}
+        - { basic: [] }
