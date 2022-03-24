@@ -1,9 +1,20 @@
 openapi: '3.0.2'
+
 info:
   title: Case Law API
   version: '1.0'
+
 servers:
-  - url: https://api.caselaw.nationalarchives.gov.uk/v1
+- url: https://{environment}.caselaw.nationalarchives.gov.uk/v1
+  variables:
+    environment:
+      default: api
+      enum:
+        - api         # Production
+        - api.staging # Staging
+
+security:
+  - { basic: [] }
 
 components:
   securitySchemes:
