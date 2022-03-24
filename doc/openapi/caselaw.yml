@@ -21,6 +21,17 @@ components:
     basic:
       type: http
       scheme: basic
+      description: HTTP Basic Authentication
+  parameters:
+    judgmentUri:
+      name: judgmentUri
+      in: path
+      required: true
+      schema:
+        type: string
+  responses:
+    judgment:
+      description: A single judgment document, in Akoma Ntoso XML
 
 paths:
   /status:
@@ -29,6 +40,8 @@ paths:
       description: |
         A test endpoint that can be used by clients to verify service availability, and to verify valid authentication credentials.
         Authentication is not required, but if it is provided, it will be checked for validity.
+      tags:
+        - Status
       responses:
         '200':
           description: The service is available, and if authentication was provided, the authentication is valid.
@@ -37,3 +50,14 @@ paths:
       security:
         - {}
         - { basic: [] }
+  /{judgmentUri}:
+    get:
+      summary: Read a judgment or decision, given its URI
+      operationId: getDocumentByUri
+      tags:
+        - Reading
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
+      responses:
+        '200':
+          $ref: "#/components/responses/judgment"
