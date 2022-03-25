@@ -29,10 +29,28 @@ components:
       required: true
       schema:
         type: string
+    ifMatch:
+      name: If-Match
+      in: header
+      required: true
+      description: The last known version number of the document
+      schema:
+        type: string
+      example: "1"
   responses:
     judgment:
       description: A single judgment document, in Akoma Ntoso XML
-
+      headers:
+        ETag:
+          description: The version number of the document
+          schema:
+            type: string
+          example: "1"
+        X-Lock-State:
+          description: Included if the client has edit permissions; specifies if the document is currently locked for editing.
+          schema:
+            type: boolean
+          example: true
 paths:
   /status:
     get:
@@ -61,3 +79,61 @@ paths:
       responses:
         '200':
           $ref: "#/components/responses/judgment"
+    put:
+      summary: Update a judgment
+      description: Write a complete new version of the document to the database, and release any client lock.
+      tags:
+        - Editing
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
+        - $ref: "#/components/parameters/ifMatch"
+      responses:
+        '204':
+          description: The document was updated successfully and any client lock released
+          headers:
+            ETag:
+              description: The new version number of the document
+              schema:
+                type: string
+
+        '400':
+          description: The request was malformed, and the document was not modified
+        '412':
+          description: The document was not updated, as it has changed since the version number specified If-Match. To avoid this, the client should lock the document before making any changes to it.
+      security:
+        - { basic: [] }
+
+
+  /{judgmentUri}/lock:
+    get:
+      summary: Query lock status for a document
+      tags:
+        - Editing
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
+      responses:
+        '204':
+          description: Lock state included in header
+          headers:
+            X-Lock-State:
+              description: Included if the client has edit permissions; specifies if the document is currently locked for editing.
+              schema:
+                type: boolean
+    put:
+      summary: Lock access to a document
+      description: Locks edit access for a document for the current client. Returns the latest version of the locked document, alohg with the new lock state.
+      tags:
+        - Editing
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
+      responses:
+        '201':
+          "$ref": "#/components/responses/judgment"
+        '403':
+          description: The document was already locked by another client
+          headers:
+            X-Lock-State:
+              description: Included if the client has edit permissions; specifies if the document is currently locked for editing.
+              schema:
+                type: boolean
+
