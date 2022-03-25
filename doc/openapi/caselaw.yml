@@ -154,4 +154,30 @@ paths:
         - basic:
           - write_documents
 
+  /{judgmentUri}/metadata:
+    get:
+      summary: Gets the document's metadata
+      description: Unless the client has `read_unpublished_documents` permission, then only metadata for published documents are accessible.
+      tags:
+        - Reading
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
+      responses:
+        '200':
+          description: OK
+      security:
+        - basic:
+          - read_documents
+          - read_unpublished_documents
+    patch:
+      summary: Set document properties
+      tags:
+        - Writing
+      responses:
+        '200':
+          description: OK
+      security:
+        - basic:
+          - write_documents
+
 
