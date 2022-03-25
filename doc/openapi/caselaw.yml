@@ -13,9 +13,6 @@ servers:
         - api         # Production
         - api.staging # Staging
 
-security:
-  - { basic: [] }
-
 tags:
   - name: Status
     description: Verify the operational state of the API
@@ -75,10 +72,11 @@ paths:
           description: The service is available, but the provided authentication was not valid.
       security:
         - {}
-        - { basic: [] }
+        - basic: []
   /{judgmentUri}:
     get:
       summary: Read a judgment or decision, given its URI
+      description: Unless the client has `read_unpublished_documents` permission, then only published documents are accessible.
       operationId: getDocumentByUri
       tags:
         - Reading
@@ -87,6 +85,10 @@ paths:
       responses:
         '200':
           $ref: "#/components/responses/judgment"
+      security:
+        - basic:
+          - read_documents
+          - read_unpublished_documents
     put:
       summary: Update a judgment
       description: Write a complete new version of the document to the database, and release any client lock.
@@ -109,8 +111,8 @@ paths:
         '412':
           description: The document was not updated, as it has changed since the version number specified If-Match. To avoid this, the client should lock the document before making any changes to it.
       security:
-        - { basic: [] }
-
+        - basic:
+          - write_documents
 
   /{judgmentUri}/lock:
     get:
@@ -127,6 +129,10 @@ paths:
               description: Included if the client has edit permissions; specifies if the document is currently locked for editing.
               schema:
                 type: boolean
+      security:
+        - basic:
+          - write_documents
+
     put:
       summary: Lock access to a document
       description: Locks edit access for a document for the current client. Returns the latest version of the locked document, alohg with the new lock state.
@@ -144,4 +150,8 @@ paths:
               description: Included if the client has edit permissions; specifies if the document is currently locked for editing.
               schema:
                 type: boolean
+      security:
+        - basic:
+          - write_documents
+
 
