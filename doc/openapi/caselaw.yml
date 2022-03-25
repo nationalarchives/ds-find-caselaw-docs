@@ -52,7 +52,7 @@ components:
             type: string
           example: "1"
         X-Lock-State:
-          description: Included if the client has edit permissions; specifies if the document is currently locked for editing.
+          description: Included if the client has the `write_documents` role; specifies if the document is currently locked for editing.
           schema:
             type: boolean
           example: true
