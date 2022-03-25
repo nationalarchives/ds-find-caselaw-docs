@@ -16,6 +16,14 @@ servers:
 security:
   - { basic: [] }
 
+tags:
+  - name: Status
+    description: Verify the operational state of the API
+  - name: Reading
+    description: Operations for reading document content and metadata
+  - name: Writing
+    description: Operations for writing document content and metadata
+
 components:
   securitySchemes:
     basic:
@@ -83,7 +91,7 @@ paths:
       summary: Update a judgment
       description: Write a complete new version of the document to the database, and release any client lock.
       tags:
-        - Editing
+        - Writing
       parameters:
         - $ref: "#/components/parameters/judgmentUri"
         - $ref: "#/components/parameters/ifMatch"
@@ -108,7 +116,7 @@ paths:
     get:
       summary: Query lock status for a document
       tags:
-        - Editing
+        - Writing
       parameters:
         - $ref: "#/components/parameters/judgmentUri"
       responses:
@@ -123,7 +131,7 @@ paths:
       summary: Lock access to a document
       description: Locks edit access for a document for the current client. Returns the latest version of the locked document, alohg with the new lock state.
       tags:
-        - Editing
+        - Writing
       parameters:
         - $ref: "#/components/parameters/judgmentUri"
       responses:
