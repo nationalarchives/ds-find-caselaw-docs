@@ -1,16 +1,61 @@
 openapi: '3.0.2'
+
 info:
   title: Case Law API
-  version: '1.0'
+  version: '0.1'
+
 servers:
-  - url: https://api.caselaw.nationalarchives.gov.uk/v1
+- url: https://{environment}.caselaw.nationalarchives.gov.uk/v1
+  variables:
+    environment:
+      default: api
+      enum:
+        - api         # Production
+        - api.staging # Staging
+
+tags:
+  - name: Status
+    description: Verify the operational state of the API
+  - name: Reading
+    description: Operations for reading document content and metadata
+  - name: Writing
+    description: Operations for writing document content and metadata
 
 components:
   securitySchemes:
     basic:
       type: http
       scheme: basic
-
+      description: HTTP Basic Authentication
+  parameters:
+    judgmentUri:
+      name: judgmentUri
+      in: path
+      required: true
+      schema:
+        type: string
+    ifMatch:
+      name: If-Match
+      in: header
+      required: true
+      description: The last known version number of the document
+      schema:
+        type: string
+      example: "1"
+  responses:
+    judgment:
+      description: A single judgment document, in Akoma Ntoso XML
+      headers:
+        ETag:
+          description: The version number of the document
+          schema:
+            type: string
+          example: "1"
+        X-Lock-State:
+          description: Included if the client has the `write_documents` role; specifies if the document is currently locked for editing.
+          schema:
+            type: boolean
+          example: true
 paths:
   /status:
     get:
@@ -18,6 +63,8 @@ paths:
       description: |
         A test endpoint that can be used by clients to verify service availability, and to verify valid authentication credentials.
         Authentication is not required, but if it is provided, it will be checked for validity.
+      tags:
+        - Status
       responses:
         '200':
           description: The service is available, and if authentication was provided, the authentication is valid.
@@ -25,4 +72,112 @@ paths:
           description: The service is available, but the provided authentication was not valid.
       security:
         - {}
-        - { basic: [] }
+        - basic: []
+  /{judgmentUri}:
+    get:
+      summary: Read a judgment or decision, given its URI
+      description: Unless the client has `read_unpublished_documents` permission, then only published documents are accessible.
+      operationId: getDocumentByUri
+      tags:
+        - Reading
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
+      responses:
+        '200':
+          $ref: "#/components/responses/judgment"
+      security:
+        - basic:
+          - read_documents
+          - read_unpublished_documents
+    put:
+      summary: Update a judgment
+      description: Write a complete new version of the document to the database, and release any client lock.
+      tags:
+        - Writing
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
+        - $ref: "#/components/parameters/ifMatch"
+      responses:
+        '204':
+          description: The document was updated successfully and any client lock released
+          headers:
+            ETag:
+              description: The new version number of the document
+              schema:
+                type: string
+
+        '400':
+          description: The request was malformed, and the document was not modified
+        '412':
+          description: The document was not updated, as it has changed since the version number specified If-Match. To avoid this, the client should lock the document before making any changes to it.
+      security:
+        - basic:
+          - write_documents
+
+  /{judgmentUri}/lock:
+    get:
+      summary: Query lock status for a document
+      tags:
+        - Writing
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
+      responses:
+        '204':
+          description: Lock state included in header
+          headers:
+            X-Lock-State:
+              description: Included if the client has edit permissions; specifies if the document is currently locked for editing.
+              schema:
+                type: boolean
+      security:
+        - basic:
+          - write_documents
+
+    put:
+      summary: Lock access to a document
+      description: Locks edit access for a document for the current client. Returns the latest version of the locked document, alohg with the new lock state.
+      tags:
+        - Writing
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
+      responses:
+        '201':
+          "$ref": "#/components/responses/judgment"
+        '403':
+          description: The document was already locked by another client
+          headers:
+            X-Lock-State:
+              description: Included if the client has edit permissions; specifies if the document is currently locked for editing.
+              schema:
+                type: boolean
+      security:
+        - basic:
+          - write_documents
+
+  /{judgmentUri}/metadata:
+    get:
+      summary: Gets the document's metadata
+      description: Unless the client has `read_unpublished_documents` permission, then only metadata for published documents are accessible.
+      tags:
+        - Reading
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
+      responses:
+        '200':
+          description: OK
+      security:
+        - basic:
+          - read_documents
+          - read_unpublished_documents
+    patch:
+      summary: Set document properties
+      tags:
+        - Writing
+      responses:
+        '200':
+          description: OK
+      security:
+        - basic:
+          - write_documents
+
+
