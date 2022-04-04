@@ -1,0 +1,21 @@
+{
+  "name": "manage-new-document",
+  "description": "Automatically manage all inserted documents",
+  "event": {
+    "data-event": {
+      "directory-scope": {
+        "uri": "/",
+        "depth": "infinity"
+      },
+      "document-content": {
+        "update-kind": "create"
+      },
+      "when": "pre-commit"
+    }
+  },
+  "module": "judgments/triggers/manage-new-document.xqy",
+  "module-db": "%%MODULES_DATABASE%%",
+  "module-root": "/",
+  "enabled": true,
+  "recursive": false
+}
