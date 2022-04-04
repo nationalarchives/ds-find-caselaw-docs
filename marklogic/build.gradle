@@ -23,3 +23,10 @@ task manageAllDocuments(type: com.marklogic.gradle.task.CorbTask) {
   modulePrefix = "manage-all-documents"
   threadCount = 16
 }
+
+task publishAllDocuments(type: com.marklogic.gradle.task.CorbTask) {
+  xccConnectionUri = contentXccUrl
+  moduleRoot = "/judgments/corb/"
+  modulePrefix = "publish-all-documents"
+  threadCount = 16
+}
