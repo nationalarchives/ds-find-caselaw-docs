@@ -1,0 +1,14 @@
+{
+  "name": "set-retention-policy",
+  "description": "Set the retention policy for documents managed by DLS",
+  "event": {
+    "database-online-event": {
+      "user-name": "admin"
+    }
+  },
+  "module": "judgments/triggers/set-retention-policy.xqy",
+  "module-db": "%%MODULES_DATABASE%%",
+  "module-root": "/",
+  "enabled": true,
+  "recursive": false
+}
