@@ -1,6 +1,7 @@
 {
   "is_token_endpoint_ip_header_trusted": false,
   "name": "production",
+  "description": "Case Law Editorial",
   "app_type": "regular_web",
   "callbacks": [],
   "is_first_party": true,
@@ -27,5 +28,8 @@
     "refresh_token",
     "client_credentials"
   ],
-  "custom_login_page_on": true
+  "custom_login_page_on": true,
+  "web_origins": [
+    "https://editor.caselaw.nationalarchives.gov.uk"
+	]
 }
