@@ -2,6 +2,10 @@
 
 Gradle `brew install gradle`
 
+## Local development
+
+`docker-compose up`
+
 ## Usage
 
 `gradle mlDeploy`
