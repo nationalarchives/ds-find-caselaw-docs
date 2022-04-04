@@ -16,3 +16,10 @@ dependencies {
 ext {
   contentXccUrl = "xcc://${mlUsername}:${mlPassword}@${mlHost}:${mlRestPort}"
 }
+
+task manageAllDocuments(type: com.marklogic.gradle.task.CorbTask) {
+  xccConnectionUri = contentXccUrl
+  moduleRoot = "/judgments/corb/"
+  modulePrefix = "manage-all-documents"
+  threadCount = 16
+}
