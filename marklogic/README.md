@@ -4,7 +4,7 @@ Gradle `brew install gradle`
 
 ## Usage
 
-gradle mlDeploy
+`gradle mlDeploy`
 
 ## References
 
