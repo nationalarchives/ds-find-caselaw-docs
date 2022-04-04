@@ -6,7 +6,8 @@
     },
     "passwordPolicy": "good",
     "strategy_version": 2,
-    "brute_force_protection": true
+    "brute_force_protection": true,
+    "disable_signup": true
   },
   "strategy": "auth0",
   "name": "Username-Password-Authentication",
