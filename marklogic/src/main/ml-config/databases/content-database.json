@@ -1,11 +1,13 @@
 {
   "database-name" : "%%DATABASE%%",
-  "range-element-index" : [ {
-    "scalar-type" : "string",
-    "namespace-uri" : "CHANGEME",
-    "localname" : "CHANGEME",
-    "collation" : "http://marklogic.com/collation/",
+  "path-namespace" : [ {
+    "prefix": "akn",
+    "namespace-uri" : "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
+  } ],
+  "range-path-index" : [ {
+    "scalar-type" : "date",
+    "path-expression" : "akn:FRBRWork/akn:FRBRdate/@date",
     "range-value-positions" : false,
-    "invalid-values" : "reject"
+    "invalid-values": "reject"
   } ]
 }
