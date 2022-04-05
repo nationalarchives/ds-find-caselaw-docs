@@ -1,15 +1,22 @@
-## Requirements
+# Marklogic Database Configuration
 
-Gradle `brew install gradle`
+This folder specifies the configuration of the Marklogic database used by the
+Case Law public access system. It uses the [ml-gradle](https://github.com/marklogic/ml-gradle)
+to manage and maintain a versioned configuration.
 
-## Local development
+For full details of what can be set in the files here, see the
+[ml-gradle documentation](https://github.com/marklogic-community/ml-gradle/wiki).
+The file layout is explaines in the [project layout documentation](https://github.com/marklogic-community/ml-gradle/wiki/Project-layout).
 
-`docker-compose up`
+## Setup
 
-## Usage
+1. Install `gradle`. On MacOS, you can use `brew install gradle`.
 
-`gradle mlDeploy`
+2. Copy `gradle-example.properties` to `gradle-local.properties` and set the credentials
+and hostname for your Marklogic server.
 
-## References
+A `docker-compose.yml` file for running Marklogic locally is included. Run `docker-compose up` to start it.
 
-* https://github.com/marklogic-community/ml-gradle
+## Deployment
+
+To deploy the configuration, run `gradle mlDeploy`. Deployment is idempotent, and will automatically configure databases, roles, triggers and modules.
