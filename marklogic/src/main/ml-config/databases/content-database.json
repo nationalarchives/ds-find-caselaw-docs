@@ -1,0 +1,14 @@
+{
+  "database-name" : "%%DATABASE%%",
+  "triggers-database": "%%TRIGGERS_DATABASE%%",
+  "path-namespace" : [ {
+    "prefix": "akn",
+    "namespace-uri" : "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
+  } ],
+  "range-path-index" : [ {
+    "scalar-type" : "date",
+    "path-expression" : "akn:FRBRWork/akn:FRBRdate/@date",
+    "range-value-positions" : false,
+    "invalid-values": "reject"
+  } ]
+}

@@ -1,0 +1,4 @@
+.gradle
+.docker
+build
+gradle-local.properties
