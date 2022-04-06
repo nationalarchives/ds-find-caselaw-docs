@@ -22,6 +22,15 @@ A `docker-compose.yml` file for running Marklogic locally is included. Run `dock
 To deploy the configuration, run `gradle mlDeploy`. Deployment is idempotent, and will automatically
 configure databases, roles, triggers and modules.
 
+## Bulk import
+
+Place the XML files you want to import in the `import` folder of this repo, then run
+`gradle importDocuments`. The documents will be imported, and the URI will be set as the
+full file path and name within `import`.
+
+You may want to run `gradle publishAllDocuments` (see below) afterwards. All files
+are automatically put under management on import, so there is no need to run the manage task.
+
 ## Document processing
 
 Two gradle tasks are available for bulk management of documents in a database using
