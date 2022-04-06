@@ -4,13 +4,19 @@ plugins {
 }
 
 repositories {
+  mavenCentral()
   jcenter()
   maven {url "https://developer.marklogic.com/maven2/"}
 }
 
-configurations { corb }
+configurations {
+  corb
+  mlcp
+}
+
 dependencies {
   corb "com.marklogic:marklogic-corb:2.4.0"
+  mlcp "com.marklogic:mlcp:10.0.6.2"
 }
 
 ext {
