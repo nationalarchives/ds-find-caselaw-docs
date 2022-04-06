@@ -1,0 +1,13 @@
+{
+  "friendly_name": "Case Law Editorial Team",
+  "enabled_locales": [
+    "en"
+  ],
+  "flags": {
+    "universal_login": true,
+    "revoke_refresh_token_grant": false,
+    "disable_clickjack_protection_headers": false
+  },
+  "idle_session_lifetime": 72,
+  "session_lifetime": 180
+}
