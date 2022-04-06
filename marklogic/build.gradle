@@ -2,3 +2,31 @@ plugins {
   id "net.saliman.properties" version "1.5.1"
   id "com.marklogic.ml-gradle" version "4.3.2"
 }
+
+repositories {
+  jcenter()
+  maven {url "https://developer.marklogic.com/maven2/"}
+}
+
+configurations { corb }
+dependencies {
+  corb "com.marklogic:marklogic-corb:2.4.0"
+}
+
+ext {
+  contentXccUrl = "xcc://${mlUsername}:${mlPassword}@${mlHost}:${mlRestPort}"
+}
+
+task manageAllDocuments(type: com.marklogic.gradle.task.CorbTask) {
+  xccConnectionUri = contentXccUrl
+  moduleRoot = "/judgments/corb/"
+  modulePrefix = "manage-all-documents"
+  threadCount = 16
+}
+
+task publishAllDocuments(type: com.marklogic.gradle.task.CorbTask) {
+  xccConnectionUri = contentXccUrl
+  moduleRoot = "/judgments/corb/"
+  modulePrefix = "publish-all-documents"
+  threadCount = 16
+}

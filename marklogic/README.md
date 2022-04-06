@@ -19,4 +19,15 @@ A `docker-compose.yml` file for running Marklogic locally is included. Run `dock
 
 ## Deployment
 
-To deploy the configuration, run `gradle mlDeploy`. Deployment is idempotent, and will automatically configure databases, roles, triggers and modules.
+To deploy the configuration, run `gradle mlDeploy`. Deployment is idempotent, and will automatically
+configure databases, roles, triggers and modules.
+
+## Document processing
+
+Two gradle tasks are available for bulk management of documents in a database using
+[CoRB](https://github.com/marklogic-community/corb2). In production these should not be
+necessary to use, but are provided in order to automate some development tasks and provide
+examples for future data migrations.
+
+* `gradle manageAllDocuments`: Enables version management for all documents
+* `gradle publishAllDocuments`: Sets the `published` flag for all documents
