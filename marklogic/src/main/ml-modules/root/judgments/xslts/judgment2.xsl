@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+
 <xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
 	xpath-default-namespace="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
 	xmlns:html="http://www.w3.org/1999/xhtml"
@@ -41,7 +43,7 @@
 			<xsl:call-template name="footnotes" />
 		</xsl:for-each>
 	</article>
-	<xsl:apply-templates select="attachments/attachment/doc[@name='attachment']" />
+	<xsl:apply-templates select="attachments/attachment/doc[not(@name='annex')]" />
 </xsl:template>
 
 <xsl:template match="attachments" />
@@ -59,13 +61,13 @@
 </xsl:template>
 
 <xsl:template match="doc[@name='annex']">
-	<section id="annex">
+	<section id="{ @name }{ count(../preceding-sibling::*) + 1 }">
 		<xsl:apply-templates />
 	</section>
 </xsl:template>
 
-<xsl:template match="doc[@name='attachment']">
-	<article id="attachment">
+<xsl:template match="doc[not(@name='annex')]">
+	<article>
 		<xsl:apply-templates />
 		<xsl:call-template name="footnotes" />
 	</article>
@@ -187,13 +189,13 @@
 </xsl:template>
 
 <xsl:template match="p">
-	<xsl:element name="p">
+	<xsl:element name="{ local-name() }">
 		<xsl:apply-templates />
 	</xsl:element>
 </xsl:template>
 
 <xsl:template match="span">
-	<xsl:element name="span">
+	<xsl:element name="{ local-name() }">
 		<xsl:apply-templates select="@style" />
 		<xsl:apply-templates />
 	</xsl:element>
@@ -213,7 +215,7 @@
 </xsl:template>
 
 <xsl:template match="a">
-	<xsl:element name="a">
+	<xsl:element name="{ local-name() }">
 		<xsl:apply-templates select="@*" />
 		<xsl:apply-templates />
 	</xsl:element>
@@ -293,15 +295,8 @@
 	</table>
 </xsl:template>
 
-<xsl:template match="tr">
-	<xsl:element name="tr">
-		<xsl:copy-of select="@*" />
-		<xsl:apply-templates />
-	</xsl:element>
-</xsl:template>
-
-<xsl:template match="td">
-	<xsl:element name="td">
+<xsl:template match="tr | td">
+	<xsl:element name="{ local-name() }">
 		<xsl:copy-of select="@*" />
 		<xsl:apply-templates />
 	</xsl:element>
@@ -395,7 +390,7 @@
 </xsl:template>
 
 <xsl:template match="authorialNote/p[1]">
-	<xsl:element name="p">
+	<xsl:element name="{ local-name() }">
 		<xsl:apply-templates select="@*" />
 		<span class="marker">
 			<xsl:value-of select="../@marker" />
