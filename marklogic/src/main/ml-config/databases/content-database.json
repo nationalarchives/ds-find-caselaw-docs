@@ -10,5 +10,6 @@
     "path-expression" : "akn:FRBRWork/akn:FRBRdate/@date",
     "range-value-positions" : false,
     "invalid-values": "reject"
-  } ]
+  } ],
+  "word-positions": true
 }
