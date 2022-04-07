@@ -1,6 +1,7 @@
 xquery version "1.0-ml";
 
 import module namespace search = "http://marklogic.com/appservices/search" at "/MarkLogic/appservices/search/search.xqy";
+import module namespace helper = "https://caselaw.nationalarchives.gov.uk/helper" at "./helper.xqy";
 import module namespace dls = "http://marklogic.com/xdmp/dls" at "/MarkLogic/dls.xqy";
 declare namespace akn = "http://docs.oasis-open.org/legaldocml/ns/akn/3.0";
 declare namespace uk = "https://caselaw.nationalarchives.gov.uk";
@@ -33,11 +34,11 @@ let $params := map:map()
     => map:with('page', $page)
     => map:with('page-size', $page-size)
     => map:with('order', $order)
-    => map:with('from',$from)
+    => map:with('from', $from)
     => map:with('to', $to)
     => map:with('show_unpublished', $show_unpublished)
 
-let $query1 := if ($q) then cts:word-query($q) else ()
+let $query1 := if ($q) then helper:make-q-query($q) else ()
 let $query2 := if ($party) then
     cts:or-query((
         cts:element-word-query(fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'party'), $party),
@@ -73,20 +74,17 @@ else
     ()
 
 let $transform-results := if ($show-snippets) then
-    <transform-results apply="snippet">
-        <preferred-matches>
-            <element name="p" ns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"/>
-        </preferred-matches>
-    </transform-results>
+    $helper:transform-results
 else
-    <transform-results apply="empty-snippet" />
+    <transform-results xmlns="http://marklogic.com/appservices/search" apply="empty-snippet" />
 
 let $search-options := <options xmlns="http://marklogic.com/appservices/search">
     { $sort-order }
-    <extract-document-data xmlns:akn="http://docs.oasis-open.org/legaldocml/ns/akn/3.0">
-        <extract-path>//akn:FRBRWork/akn:FRBRname</extract-path>
-        <extract-path>//akn:neutralCitation</extract-path>
+    <extract-document-data xmlns:akn="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn">
         <extract-path>//akn:FRBRWork/akn:FRBRdate</extract-path>
+        <extract-path>//akn:FRBRWork/akn:FRBRname</extract-path>
+        <extract-path>//uk:cite</extract-path>
+        <extract-path>//akn:neutralCitation</extract-path>
     </extract-document-data>
     { $transform-results }
 </options>
