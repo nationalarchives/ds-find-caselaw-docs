@@ -52,7 +52,7 @@ let $query4 := if ($court) then cts:or-query((
     fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'FRBRuri'), xs:QName('value'), $court, ('case-insensitive')
     )
 )) else ()
-let $query5 := if ($judge) then cts:element-word-query(fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'judge'), $judge) else ()
+let $query5 := if ($judge) then cts:element-word-query(fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'judge'), $judge, ('case-insensitive', 'punctuation-insensitive')) else ()
 let $query6 := if (empty($from_date)) then () else cts:path-range-query('akn:FRBRWork/akn:FRBRdate/@date', '>=', $from_date)
 let $query7 := if (empty($to_date)) then () else cts:path-range-query('akn:FRBRWork/akn:FRBRdate/@date', '<=', $to_date)
 let $query8 := if ($show_unpublished) then () else cts:properties-fragment-query(cts:element-value-query(fn:QName("", "published"), "true"))
