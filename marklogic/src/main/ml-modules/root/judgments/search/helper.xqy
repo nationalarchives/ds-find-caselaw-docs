@@ -82,7 +82,7 @@ declare function make-party-query($party as xs:string?) as cts:query? {
 };
 
 declare variable $transform-results :=
-    <transform-results xmlns="http://marklogic.com/appservices/search" apply="snippet" ns="https://caselaw.nationalarchives.gov.uk/helper" at="/helper.xqy">
+    <transform-results xmlns="http://marklogic.com/appservices/search" apply="snippet" ns="https://caselaw.nationalarchives.gov.uk/helper" at="/judgments/search/helper.xqy">
         <preferred-matches>
             <element name="p" ns="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"/>
         </preferred-matches>
