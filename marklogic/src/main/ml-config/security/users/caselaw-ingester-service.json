@@ -1,0 +1,5 @@
+{
+  "user-name" : "caselaw-ingester-service",
+  "description" : "The Ingester service reader & writer",
+  "role" : [ "dls-user", "rest-writer" ]
+}
