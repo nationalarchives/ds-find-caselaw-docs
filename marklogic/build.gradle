@@ -29,6 +29,7 @@ ext {
 
 task manageAllDocuments(type: com.marklogic.gradle.task.CorbTask, dependsOn: ['mlLoadModules']) {
   xccConnectionUri = contentXccUrl
+  xccHttpcompliant = true
   moduleRoot = "/judgments/corb/"
   modulePrefix = "manage-all-documents"
   threadCount = 16
@@ -36,6 +37,7 @@ task manageAllDocuments(type: com.marklogic.gradle.task.CorbTask, dependsOn: ['m
 
 task publishAllDocuments(type: com.marklogic.gradle.task.CorbTask, dependsOn: ['mlLoadModules']) {
   xccConnectionUri = contentXccUrl
+  xccHttpcompliant = true
   moduleRoot = "/judgments/corb/"
   modulePrefix = "publish-all-documents"
   threadCount = 16
