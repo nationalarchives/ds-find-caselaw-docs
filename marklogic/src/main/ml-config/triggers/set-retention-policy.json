@@ -3,7 +3,7 @@
   "description": "Set the retention policy for documents managed by DLS",
   "event": {
     "database-online-event": {
-      "user-name": "admin"
+      "user-name": "%%ADMIN_USER%%"
     }
   },
   "module": "judgments/triggers/set-retention-policy.xqy",

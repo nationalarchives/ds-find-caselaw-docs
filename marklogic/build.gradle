@@ -21,6 +21,9 @@ dependencies {
 }
 
 ext {
+  mlAppConfig {
+		customTokens.put("%%ADMIN_USER%%", mlUsername)
+  }
   contentXccUrl = "xcc://${mlUsername}:${mlPassword}@${mlHost}:${mlRestPort}"
 }
 
