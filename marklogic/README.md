@@ -12,15 +12,16 @@ The file layout is explaines in the [project layout documentation](https://githu
 
 1. Install `gradle`. On MacOS, you can use `brew install gradle`.
 
-2. Copy `gradle-example.properties` to `gradle-local.properties` and set the credentials
-and hostname for your Marklogic server.
+2. If you're running against anything other than development, copy `gradle-development.properties`
+to `gradle-{environment}.properties` and set the credentials and hostname for your Marklogic server.
 
 A `docker-compose.yml` file for running Marklogic locally is included. Run `docker-compose up` to start it.
 
 ## Deployment
 
-To deploy the configuration, run `gradle mlDeploy`. Deployment is idempotent, and will automatically
-configure databases, roles, triggers and modules.
+To deploy the configuration, run `gradle mlDeploy -PenvironmentName={environment}`. Deployment is
+idempotent, and will automatically configure databases, roles, triggers and modules. The `development`
+environment will be used by default if you don't specify `-PenvironmentName`.
 
 ## Bulk import
 
