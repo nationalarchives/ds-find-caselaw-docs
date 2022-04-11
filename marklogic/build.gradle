@@ -45,4 +45,6 @@ task importDocuments(type: com.marklogic.gradle.task.MlcpTask) {
   fastload = true
   input_file_path = "import"
   output_uri_replace = buildscript.sourceFile.getParent() + "/import/" + ",\'/\'"
+  batch_size = 1
+  transaction_size = 1
 }
