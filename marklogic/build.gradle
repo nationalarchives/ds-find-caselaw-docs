@@ -27,21 +27,21 @@ ext {
   contentXccUrl = "xcc://${mlUsername}:${mlPassword}@${mlHost}:${mlRestPort}"
 }
 
-task manageAllDocuments(type: com.marklogic.gradle.task.CorbTask) {
+task manageAllDocuments(type: com.marklogic.gradle.task.CorbTask, dependsOn: ['mlLoadModules']) {
   xccConnectionUri = contentXccUrl
   moduleRoot = "/judgments/corb/"
   modulePrefix = "manage-all-documents"
   threadCount = 16
 }
 
-task publishAllDocuments(type: com.marklogic.gradle.task.CorbTask) {
+task publishAllDocuments(type: com.marklogic.gradle.task.CorbTask, dependsOn: ['mlLoadModules']) {
   xccConnectionUri = contentXccUrl
   moduleRoot = "/judgments/corb/"
   modulePrefix = "publish-all-documents"
   threadCount = 16
 }
 
-task importDocuments(type: com.marklogic.gradle.task.MlcpTask) {
+task importDocuments(type: com.marklogic.gradle.task.MlcpTask, dependsOn: ['mlLoadModules']) {
   classpath = configurations.mlcp
   command = "IMPORT"
   database = mlAppName + "-content"
