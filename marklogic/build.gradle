@@ -42,6 +42,7 @@ task importDocuments(type: com.marklogic.gradle.task.MlcpTask) {
   classpath = configurations.mlcp
   command = "IMPORT"
   database = mlAppName + "-content"
+  fastload = true
   input_file_path = "import"
   output_uri_replace = buildscript.sourceFile.getParent() + "/import/" + ",\'/\'"
 }
