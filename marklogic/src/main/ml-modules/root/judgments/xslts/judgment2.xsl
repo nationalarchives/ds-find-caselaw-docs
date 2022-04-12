@@ -28,9 +28,6 @@
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:variable>
-<xsl:variable name="title" as="xs:string">
-	<xsl:sequence select="/akomaNtoso/judgment/meta/identification/FRBRWork/FRBRname/@value" />
-</xsl:variable>
 
 <xsl:template match="meta" />
 
@@ -74,7 +71,7 @@
 </xsl:template>
 
 <xsl:template match="doc[@name='attachment']/mainBody">
-	<div class="body">
+	<div>
 		<xsl:apply-templates />
 	</div>
 </xsl:template>
@@ -83,16 +80,6 @@
 	<section>
 		<xsl:if test="num | heading">
 			<h2>
-				<xsl:choose>
-					<xsl:when test="exists(heading/@class)">
-						<xsl:attribute name="class">
-							<xsl:value-of select="heading/@class" />
-						</xsl:attribute>
-					</xsl:when>
-					<xsl:when test="empty(heading)">
-						<xsl:attribute name="class">floating</xsl:attribute>
-					</xsl:when>
-				</xsl:choose>
 				<xsl:apply-templates select="num | heading" />
 			</h2>
 		</xsl:if>
@@ -134,21 +121,35 @@
 
 <!-- <xsl:template match="hcontainer[@name='tableOfContents']" /> -->
 
-<!-- <xsl:template match="blockContainer">
-	<section>
-		<xsl:call-template name="class" />
-		<xsl:apply-templates select="@* except @class" />
-		<xsl:apply-templates select="* except num" />
-	</section>
+<xsl:template match="blockContainer[exists(p)]">
+	<xsl:apply-templates select="* except num" />
+</xsl:template>
+
+<xsl:template match="blockContainer">
+	<xsl:apply-templates />
+</xsl:template>
+
+<xsl:template match="blockContainer/num">
+	<span>
+		<xsl:apply-templates />
+	</span>
 </xsl:template>
 
 <xsl:template match="blockContainer/p[1]">
 	<p>
-		<xsl:apply-templates select="@*" />
-		<xsl:apply-templates select="preceding-sibling::num" />
+		<xsl:apply-templates select="../num" />
+		<xsl:text> </xsl:text>
+		<span>
+			<xsl:apply-templates />
+		</span>
+	</p>
+</xsl:template>
+
+<xsl:template match="blockContainer/p[position() gt 1]">
+	<p>
 		<xsl:apply-templates />
 	</p>
-</xsl:template> -->
+</xsl:template>
 
 <xsl:template match="header/p">
 	<xsl:choose>
@@ -189,16 +190,16 @@
 </xsl:template>
 
 <xsl:template match="p">
-	<xsl:element name="{ local-name() }">
+	<p>
 		<xsl:apply-templates />
-	</xsl:element>
+	</p>
 </xsl:template>
 
 <xsl:template match="span">
-	<xsl:element name="{ local-name() }">
+	<span>
 		<xsl:apply-templates select="@style" />
 		<xsl:apply-templates />
-	</xsl:element>
+	</span>
 </xsl:template>
 
 <xsl:template match="p[@class='Quote']">
@@ -215,22 +216,14 @@
 </xsl:template>
 
 <xsl:template match="a">
-	<xsl:element name="{ local-name() }">
+	<a>
 		<xsl:apply-templates select="@*" />
 		<xsl:apply-templates />
-	</xsl:element>
+	</a>
 </xsl:template>
 
 <xsl:template match="block">
 	<p>
-		<xsl:attribute name="class">
-			<xsl:value-of select="@name" />
-			<xsl:if test="@class">
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="@class" />
-			</xsl:if>
-		</xsl:attribute>
-		<xsl:apply-templates select="@* except @name, @class" />
 		<xsl:apply-templates />
 	</p>
 </xsl:template>
@@ -307,28 +300,12 @@
 
 <xsl:template match="toc">
 	<div>
-		<xsl:attribute name="class">
-			<xsl:value-of select="local-name()" />
-			<xsl:if test="@class">
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="@class" />
-			</xsl:if>
-		</xsl:attribute>
-		<xsl:apply-templates select="@* except @class" />
 		<xsl:apply-templates />
 	</div>
 </xsl:template>
 
 <xsl:template match="tocItem">
-	<p class="toc">
-		<xsl:attribute name="class">
-			<xsl:value-of select="local-name()" />
-			<xsl:if test="@class">
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="@class" />
-			</xsl:if>
-		</xsl:attribute>
-		<xsl:apply-templates select="@* except @class" />
+	<p>
 		<xsl:apply-templates />
 	</p>
 </xsl:template>
@@ -337,11 +314,11 @@
 <!-- markers and attributes -->
 
 <xsl:template match="marker[@name='tab']">
-	<span class="tab"> </span>
+	<span> </span>
 </xsl:template>
 
 <xsl:template match="@style">
-	<xsl:param name="properties" as="xs:string*" select="('font-weight', 'font-style', 'text-transform', 'font-variant')" />
+	<xsl:param name="properties" as="xs:string*" select="('font-weight', 'font-style', 'text-transform', 'font-variant', 'text-decoration-line', 'text-decoration-style')" />
 	<xsl:variable name="values" as="xs:string*">
 		<xsl:for-each select="tokenize(., ';')">
 			<xsl:if test="tokenize(., ':')[1] = $properties">
@@ -356,11 +333,11 @@
 	</xsl:if>
 </xsl:template>
 
-<xsl:template match="@class | @src | @href | @title">
+<xsl:template match="@src | @href | @title">
 	<xsl:copy />
 </xsl:template>
 
-<xsl:template match="@refersTo | @date | @as" />
+<xsl:template match="@class | @refersTo | @date | @as" />
 
 <xsl:template match="@*" />
 
@@ -368,35 +345,34 @@
 <!-- footnotes -->
 
 <xsl:template match="authorialNote">
-	<span class="fn">
+	<sup>
 		<xsl:value-of select="@marker" />
-	</span>
+	</sup>
 </xsl:template>
 
 <xsl:template name="footnotes">
 	<xsl:variable name="footnotes" select="descendant::authorialNote" />
 	<xsl:if test="$footnotes">
 		<footer>
-			<hr style="margin-top:2em" />
+			<hr />
 			<xsl:apply-templates select="$footnotes" mode="footnote" />
 		</footer>
 	</xsl:if>
 </xsl:template>
 
 <xsl:template match="authorialNote" mode="footnote">
-	<div class="footnote">
+	<div>
 		<xsl:apply-templates />
 	</div>
 </xsl:template>
 
 <xsl:template match="authorialNote/p[1]">
-	<xsl:element name="{ local-name() }">
-		<xsl:apply-templates select="@*" />
-		<span class="marker">
+	<p>
+		<sup>
 			<xsl:value-of select="../@marker" />
-		</span>
+		</sup>
 		<xsl:apply-templates />
-	</xsl:element>
+	</p>
 </xsl:template>
 
 
