@@ -1,0 +1,118 @@
+openapi: '3.0.3'
+
+info:
+  title: Case Law Public API
+  version: '0.1'
+
+servers:
+- url: https://{environment}.nationalarchives.gov.uk/
+  variables:
+    environment:
+      default: api
+      enum:
+        - caselaw         # Production
+        - caselaw.staging # Staging
+
+tags:
+  - name: Reading
+    description: Operations for reading document content and metadata
+
+components:
+  parameters:
+    judgmentUri:
+      name: judgmentUri
+      in: path
+      required: true
+      schema:
+        type: string
+      example: ewhc/tcc/2022/42
+  responses:
+    judgmentFeed:
+      description: An Atom feed of recently published judgments
+      content:
+        "application/atom+xml":
+          schema:
+            description: List in Atom
+    judgmentList:
+      description: An OData collection of judgment entities
+      content:
+        "application/xml":
+          schema:
+            description: An OData collection of judgment entities
+    judgment:
+      description: A single judgment document, in Akoma Ntoso XML
+      content:
+        "application/akn+xml":
+          schema:
+            description: Akoma Ntoso
+
+paths:
+  /[{court}[[/{subdivision}]/{year}]]:
+    get:
+      summary: Recently published judgments, ordered by date
+      operationId: listJudgments
+      tags:
+        - Reading
+      parameters:
+        - name: court
+          required: false
+          in: path
+          example: ewca
+        - name: subdivision
+          required: false
+          in: path
+          example: pat
+        - name: year
+          required: false
+          in: path
+          example: 2022
+      responses:
+        '200':
+          $ref: "#/components/responses/judgmentFeed"
+
+  /judgments/advanced_search:
+    get:
+      summary: List published judgments
+      operationId: searchJudgments
+      tags:
+        - Reading
+      parameters:
+        - name: query
+          in: query
+          description: Free-text search term. Can include neutral citations
+          example: "[2021] EWCA Crim 1785"
+        - name: party
+          in: query
+          description: search in party name fields
+          example: John Doe
+        - name: judge
+          in: query
+          description: search for judge name
+          example: Lord Justice Smith
+        - name: court
+          in: query
+          description: search for judgments made by a specific court
+          example: ewhc/pat
+        - name: from
+          in: query
+          description: find judgments on or after the specified date
+          example: 1987-12-01
+        - name: to
+          in: query
+          description: find judgments on or before the specified date
+          example: 2022-04-14
+      responses:
+        '200':
+          $ref: "#/components/responses/judgmentList"
+
+  /{judgmentUri}/data:
+    get:
+      summary: Read a published judgment or decision, given its URI
+      operationId: getDocumentByUri
+      tags:
+        - Reading
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
+      responses:
+        '200':
+          $ref: "#/components/responses/judgment"
