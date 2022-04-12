@@ -47,7 +47,7 @@ components:
             description: Akoma Ntoso
 
 paths:
-  /[{court}[[/{subdivision}]/{year}]]:
+  /[{court}/[[{subdivision}/]{year}/]]atom.xml:
     get:
       summary: Recently published judgments, ordered by date
       operationId: listJudgments
