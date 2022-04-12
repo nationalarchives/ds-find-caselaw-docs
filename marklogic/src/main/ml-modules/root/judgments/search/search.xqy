@@ -72,11 +72,11 @@ else if ($order = '-date') then
     <sort-order xmlns="http://marklogic.com/appservices/search" direction="descending">
         <path-index xmlns:akn="http://docs.oasis-open.org/legaldocml/ns/akn/3.0">akn:FRBRWork/akn:FRBRdate/@date</path-index>
     </sort-order>
-else if ($order = 'updated') then
+else if ($order = '-updated') then
      <sort-order xmlns="http://marklogic.com/appservices/search" direction="descending" type="xs:dateTime">
         <element ns="http://marklogic.com/xdmp/property" name="last-modified" />
     </sort-order>
-else if ($order = '-updated') then
+else if ($order = 'updated') then
     <sort-order xmlns="http://marklogic.com/appservices/search" direction="ascending" type="xs:dateTime">
         <element ns="http://marklogic.com/xdmp/property" name="last-modified" />
     </sort-order>
