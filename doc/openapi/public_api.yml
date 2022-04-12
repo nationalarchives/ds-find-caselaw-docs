@@ -105,7 +105,7 @@ paths:
   #       '200':
   #         $ref: "#/components/responses/judgmentList"
 
-  /{judgmentUri}/data:
+  /{judgmentUri}/data.xml:
     get:
       summary: Read a published judgment or decision, given its URI
       operationId: getDocumentByUri
