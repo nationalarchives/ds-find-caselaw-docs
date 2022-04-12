@@ -3,6 +3,8 @@ xquery version "1.0-ml";
 import module namespace search = "http://marklogic.com/appservices/search" at "/MarkLogic/appservices/search/search.xqy";
 import module namespace helper = "https://caselaw.nationalarchives.gov.uk/helper" at "./helper.xqy";
 import module namespace dls = "http://marklogic.com/xdmp/dls" at "/MarkLogic/dls.xqy";
+import module namespace cpf = "http://marklogic.com/cpf" at "/MarkLogic/cpf/cpf.xqy";
+
 declare namespace akn = "http://docs.oasis-open.org/legaldocml/ns/akn/3.0";
 declare namespace uk = "https://caselaw.nationalarchives.gov.uk";
 
@@ -70,6 +72,14 @@ else if ($order = '-date') then
     <sort-order xmlns="http://marklogic.com/appservices/search" direction="descending">
         <path-index xmlns:akn="http://docs.oasis-open.org/legaldocml/ns/akn/3.0">akn:FRBRWork/akn:FRBRdate/@date</path-index>
     </sort-order>
+else if ($order = 'updated') then
+     <sort-order xmlns="http://marklogic.com/appservices/search" direction="descending" type="xs:dateTime">
+        <element ns="http://marklogic.com/xdmp/property" name="last-modified" />
+    </sort-order>
+else if ($order = '-updated') then
+    <sort-order xmlns="http://marklogic.com/appservices/search" direction="ascending" type="xs:dateTime">
+        <element ns="http://marklogic.com/xdmp/property" name="last-modified" />
+    </sort-order>
 else
     ()
 
@@ -78,7 +88,16 @@ let $transform-results := if ($show-snippets) then
 else
     <transform-results xmlns="http://marklogic.com/appservices/search" apply="empty-snippet" />
 
+
+let $scope := if ($order = 'updated') then
+    'properties'
+else if ($order = '-updated') then
+    'properties'
+else
+    'documents'
+
 let $search-options := <options xmlns="http://marklogic.com/appservices/search">
+    <fragment-scope>{ $scope }</fragment-scope>
     { $sort-order }
     <extract-document-data xmlns:akn="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn">
         <extract-path>//akn:FRBRWork/akn:FRBRdate</extract-path>

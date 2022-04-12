@@ -11,5 +11,13 @@
     "range-value-positions" : false,
     "invalid-values": "reject"
   } ],
-  "word-positions": true
+  "range-element-index": [ {
+    "scalar-type" : "dateTime",
+    "namespace-uri": "http://marklogic.com/xdmp/property",
+    "localname": "last-modified",
+    "range-value-positions" : false,
+    "invalid-values": "reject"
+  } ], 
+  "word-positions": true,
+  "maintain-last-modified": true
 }
