@@ -11,7 +11,7 @@ servers:
       default: api
       enum:
         - caselaw         # Production
-        - caselaw.staging # Staging
+        - staging.caselaw # Staging
 
 tags:
   - name: Reading
