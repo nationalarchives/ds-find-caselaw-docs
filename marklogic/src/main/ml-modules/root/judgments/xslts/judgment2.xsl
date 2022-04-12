@@ -2,10 +2,11 @@
 
 <xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
 	xpath-default-namespace="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
+	xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:math="http://www.w3.org/1998/Math/MathML"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	exclude-result-prefixes="html math xs">
+	exclude-result-prefixes="uk html math xs">
 
 <xsl:output method="html" encoding="utf-8" indent="yes" include-content-type="no" /><!-- doctype-system="about:legacy-compat" -->
 
@@ -13,6 +14,57 @@
 <xsl:preserve-space elements="p block span" />
 
 <xsl:param name="image-base" as="xs:string" select="'https://judgment-images.s3.eu-west-2.amazonaws.com/'" />
+
+<xsl:function name="uk:link-is-supported" as="xs:boolean">
+	<xsl:param name="href" as="attribute()?" />
+	<xsl:choose>
+		<xsl:when test="starts-with($href, 'https://www.legislation.gov.uk/')">
+			<xsl:sequence select="true()" />
+		</xsl:when>
+		<xsl:when test="starts-with($href, 'https://caselaw.nationalarchives.gov.uk/')">
+			<xsl:variable name="components" as="xs:string*" select="tokenize(substring-after($href, 'https://caselaw.nationalarchives.gov.uk/'), '/')" />
+			<xsl:choose>
+				<xsl:when test="empty($components[3])">
+					<xsl:sequence select="false()" />
+				</xsl:when>
+				<xsl:when test="$components[1] = ('uksc', 'ukpc')">
+					<xsl:sequence select="$components[2] ge '2014'" />
+				</xsl:when>
+				<xsl:when test="$components[1] = ('ewca', 'ewhc')">
+					<xsl:sequence select="$components[3] ge '2003'" />
+				</xsl:when>
+				<xsl:when test="$components[1] = 'ewcop'">
+					<xsl:sequence select="$components[2] ge '2009'" />
+				</xsl:when>
+				<xsl:when test="$components[1] = 'ewfc'">
+					<xsl:sequence select="$components[2] ge '2014'" />
+				</xsl:when>
+				<xsl:when test="$components[1] = 'ukut'">
+					<xsl:choose>
+						<xsl:when test="$components[2] = 'iac'">
+							<xsl:sequence select="$components[3] ge '2010'" />
+						</xsl:when>
+						<xsl:when test="$components[2] = 'lc'">
+							<xsl:sequence select="$components[3] ge '2015'" />
+						</xsl:when>
+						<xsl:when test="$components[2] = 'tcc'">
+							<xsl:sequence select="$components[3] ge '2017'" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="false()" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:sequence select="false()" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:sequence select="false()" />
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:function>
 
 <xsl:variable name="doc-id" as="xs:string">
 	<xsl:variable name="work-uri" as="xs:string">
@@ -202,7 +254,7 @@
 	</span>
 </xsl:template>
 
-<xsl:template match="p[@class='Quote']">
+<xsl:template match="p[@class='Quote'][empty(parent::*/parent::paragraph/num)]">
 	<div class="judgment-body__section">
 		<span class="judgment-body__number"></span>
 		<div class="judgment-body__text">
@@ -213,13 +265,6 @@
 			</blockquote>
 		</div>
 	</div>
-</xsl:template>
-
-<xsl:template match="a">
-	<a>
-		<xsl:apply-templates select="@*" />
-		<xsl:apply-templates />
-	</a>
 </xsl:template>
 
 <xsl:template match="block">
@@ -293,6 +338,23 @@
 		<xsl:copy-of select="@*" />
 		<xsl:apply-templates />
 	</xsl:element>
+</xsl:template>
+
+
+<!-- links -->
+
+<xsl:template match="a | ref">
+	<xsl:choose>
+		<xsl:when test="uk:link-is-supported(@href)">
+			<a>
+				<xsl:apply-templates select="@href" />
+				<xsl:apply-templates />
+			</a>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:apply-templates />
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:template>
 
 
