@@ -2,10 +2,11 @@
 
 <xsl:transform xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="2.0"
 	xpath-default-namespace="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
+	xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn"
 	xmlns:html="http://www.w3.org/1999/xhtml"
 	xmlns:math="http://www.w3.org/1998/Math/MathML"
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
-	exclude-result-prefixes="html math xs">
+	exclude-result-prefixes="uk html math xs">
 
 <xsl:output method="html" encoding="utf-8" indent="yes" include-content-type="no" /><!-- doctype-system="about:legacy-compat" -->
 
@@ -13,6 +14,57 @@
 <xsl:preserve-space elements="p block span" />
 
 <xsl:param name="image-base" as="xs:string" select="'https://judgment-images.s3.eu-west-2.amazonaws.com/'" />
+
+<xsl:function name="uk:link-is-supported" as="xs:boolean">
+	<xsl:param name="href" as="attribute()?" />
+	<xsl:choose>
+		<xsl:when test="starts-with($href, 'https://www.legislation.gov.uk/')">
+			<xsl:sequence select="true()" />
+		</xsl:when>
+		<xsl:when test="starts-with($href, 'https://caselaw.nationalarchives.gov.uk/')">
+			<xsl:variable name="components" as="xs:string*" select="tokenize(substring-after($href, 'https://caselaw.nationalarchives.gov.uk/'), '/')" />
+			<xsl:choose>
+				<xsl:when test="empty($components[3])">
+					<xsl:sequence select="false()" />
+				</xsl:when>
+				<xsl:when test="$components[1] = ('uksc', 'ukpc')">
+					<xsl:sequence select="$components[2] ge '2014'" />
+				</xsl:when>
+				<xsl:when test="$components[1] = ('ewca', 'ewhc')">
+					<xsl:sequence select="$components[3] ge '2003'" />
+				</xsl:when>
+				<xsl:when test="$components[1] = 'ewcop'">
+					<xsl:sequence select="$components[2] ge '2009'" />
+				</xsl:when>
+				<xsl:when test="$components[1] = 'ewfc'">
+					<xsl:sequence select="$components[2] ge '2014'" />
+				</xsl:when>
+				<xsl:when test="$components[1] = 'ukut'">
+					<xsl:choose>
+						<xsl:when test="$components[2] = 'iac'">
+							<xsl:sequence select="$components[3] ge '2010'" />
+						</xsl:when>
+						<xsl:when test="$components[2] = 'lc'">
+							<xsl:sequence select="$components[3] ge '2015'" />
+						</xsl:when>
+						<xsl:when test="$components[2] = 'tcc'">
+							<xsl:sequence select="$components[3] ge '2017'" />
+						</xsl:when>
+						<xsl:otherwise>
+							<xsl:sequence select="false()" />
+						</xsl:otherwise>
+					</xsl:choose>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:sequence select="false()" />
+				</xsl:otherwise>
+			</xsl:choose>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:sequence select="false()" />
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:function>
 
 <xsl:variable name="doc-id" as="xs:string">
 	<xsl:variable name="work-uri" as="xs:string">
@@ -27,9 +79,6 @@
 			<xsl:sequence select="$work-uri" />
 		</xsl:otherwise>
 	</xsl:choose>
-</xsl:variable>
-<xsl:variable name="title" as="xs:string">
-	<xsl:sequence select="/akomaNtoso/judgment/meta/identification/FRBRWork/FRBRname/@value" />
 </xsl:variable>
 
 <xsl:template match="meta" />
@@ -74,7 +123,7 @@
 </xsl:template>
 
 <xsl:template match="doc[@name='attachment']/mainBody">
-	<div class="body">
+	<div>
 		<xsl:apply-templates />
 	</div>
 </xsl:template>
@@ -83,16 +132,6 @@
 	<section>
 		<xsl:if test="num | heading">
 			<h2>
-				<xsl:choose>
-					<xsl:when test="exists(heading/@class)">
-						<xsl:attribute name="class">
-							<xsl:value-of select="heading/@class" />
-						</xsl:attribute>
-					</xsl:when>
-					<xsl:when test="empty(heading)">
-						<xsl:attribute name="class">floating</xsl:attribute>
-					</xsl:when>
-				</xsl:choose>
 				<xsl:apply-templates select="num | heading" />
 			</h2>
 		</xsl:if>
@@ -134,21 +173,35 @@
 
 <!-- <xsl:template match="hcontainer[@name='tableOfContents']" /> -->
 
-<!-- <xsl:template match="blockContainer">
-	<section>
-		<xsl:call-template name="class" />
-		<xsl:apply-templates select="@* except @class" />
-		<xsl:apply-templates select="* except num" />
-	</section>
+<xsl:template match="blockContainer[exists(p)]">
+	<xsl:apply-templates select="* except num" />
+</xsl:template>
+
+<xsl:template match="blockContainer">
+	<xsl:apply-templates />
+</xsl:template>
+
+<xsl:template match="blockContainer/num">
+	<span>
+		<xsl:apply-templates />
+	</span>
 </xsl:template>
 
 <xsl:template match="blockContainer/p[1]">
 	<p>
-		<xsl:apply-templates select="@*" />
-		<xsl:apply-templates select="preceding-sibling::num" />
+		<xsl:apply-templates select="../num" />
+		<xsl:text> </xsl:text>
+		<span>
+			<xsl:apply-templates />
+		</span>
+	</p>
+</xsl:template>
+
+<xsl:template match="blockContainer/p[position() gt 1]">
+	<p>
 		<xsl:apply-templates />
 	</p>
-</xsl:template> -->
+</xsl:template>
 
 <xsl:template match="header/p">
 	<xsl:choose>
@@ -189,19 +242,19 @@
 </xsl:template>
 
 <xsl:template match="p">
-	<xsl:element name="{ local-name() }">
+	<p>
 		<xsl:apply-templates />
-	</xsl:element>
+	</p>
 </xsl:template>
 
 <xsl:template match="span">
-	<xsl:element name="{ local-name() }">
+	<span>
 		<xsl:apply-templates select="@style" />
 		<xsl:apply-templates />
-	</xsl:element>
+	</span>
 </xsl:template>
 
-<xsl:template match="p[@class='Quote']">
+<xsl:template match="p[@class='Quote'][empty(parent::*/parent::paragraph/num)]">
 	<div class="judgment-body__section">
 		<span class="judgment-body__number"></span>
 		<div class="judgment-body__text">
@@ -214,23 +267,8 @@
 	</div>
 </xsl:template>
 
-<xsl:template match="a">
-	<xsl:element name="{ local-name() }">
-		<xsl:apply-templates select="@*" />
-		<xsl:apply-templates />
-	</xsl:element>
-</xsl:template>
-
 <xsl:template match="block">
 	<p>
-		<xsl:attribute name="class">
-			<xsl:value-of select="@name" />
-			<xsl:if test="@class">
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="@class" />
-			</xsl:if>
-		</xsl:attribute>
-		<xsl:apply-templates select="@* except @name, @class" />
 		<xsl:apply-templates />
 	</p>
 </xsl:template>
@@ -303,32 +341,33 @@
 </xsl:template>
 
 
+<!-- links -->
+
+<xsl:template match="a | ref">
+	<xsl:choose>
+		<xsl:when test="uk:link-is-supported(@href)">
+			<a>
+				<xsl:apply-templates select="@href" />
+				<xsl:apply-templates />
+			</a>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:apply-templates />
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+
 <!-- tables of contents -->
 
 <xsl:template match="toc">
 	<div>
-		<xsl:attribute name="class">
-			<xsl:value-of select="local-name()" />
-			<xsl:if test="@class">
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="@class" />
-			</xsl:if>
-		</xsl:attribute>
-		<xsl:apply-templates select="@* except @class" />
 		<xsl:apply-templates />
 	</div>
 </xsl:template>
 
 <xsl:template match="tocItem">
-	<p class="toc">
-		<xsl:attribute name="class">
-			<xsl:value-of select="local-name()" />
-			<xsl:if test="@class">
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="@class" />
-			</xsl:if>
-		</xsl:attribute>
-		<xsl:apply-templates select="@* except @class" />
+	<p>
 		<xsl:apply-templates />
 	</p>
 </xsl:template>
@@ -337,11 +376,11 @@
 <!-- markers and attributes -->
 
 <xsl:template match="marker[@name='tab']">
-	<span class="tab"> </span>
+	<span> </span>
 </xsl:template>
 
 <xsl:template match="@style">
-	<xsl:param name="properties" as="xs:string*" select="('font-weight', 'font-style', 'text-transform', 'font-variant')" />
+	<xsl:param name="properties" as="xs:string*" select="('font-weight', 'font-style', 'text-transform', 'font-variant', 'text-decoration-line', 'text-decoration-style')" />
 	<xsl:variable name="values" as="xs:string*">
 		<xsl:for-each select="tokenize(., ';')">
 			<xsl:if test="tokenize(., ':')[1] = $properties">
@@ -356,11 +395,11 @@
 	</xsl:if>
 </xsl:template>
 
-<xsl:template match="@class | @src | @href | @title">
+<xsl:template match="@src | @href | @title">
 	<xsl:copy />
 </xsl:template>
 
-<xsl:template match="@refersTo | @date | @as" />
+<xsl:template match="@class | @refersTo | @date | @as" />
 
 <xsl:template match="@*" />
 
@@ -368,35 +407,34 @@
 <!-- footnotes -->
 
 <xsl:template match="authorialNote">
-	<span class="fn">
+	<sup>
 		<xsl:value-of select="@marker" />
-	</span>
+	</sup>
 </xsl:template>
 
 <xsl:template name="footnotes">
 	<xsl:variable name="footnotes" select="descendant::authorialNote" />
 	<xsl:if test="$footnotes">
 		<footer>
-			<hr style="margin-top:2em" />
+			<hr />
 			<xsl:apply-templates select="$footnotes" mode="footnote" />
 		</footer>
 	</xsl:if>
 </xsl:template>
 
 <xsl:template match="authorialNote" mode="footnote">
-	<div class="footnote">
+	<div>
 		<xsl:apply-templates />
 	</div>
 </xsl:template>
 
 <xsl:template match="authorialNote/p[1]">
-	<xsl:element name="{ local-name() }">
-		<xsl:apply-templates select="@*" />
-		<span class="marker">
+	<p>
+		<sup>
 			<xsl:value-of select="../@marker" />
-		</span>
+		</sup>
 		<xsl:apply-templates />
-	</xsl:element>
+	</p>
 </xsl:template>
 
 
