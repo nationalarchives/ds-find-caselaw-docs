@@ -17,6 +17,8 @@ declare variable $q as xs:string? external;
 declare variable $party as xs:string? external;
 declare variable $court as xs:string? external;
 declare variable $judge as xs:string? external;
+declare variable $neutral_citation as xs:string? external;
+declare variable $specific_keyword as xs:string? external;
 declare variable $order as xs:string? external;
 declare variable $page as xs:integer external;
 declare variable $page-size as xs:integer external;
@@ -34,6 +36,8 @@ let $params := map:map()
     => map:with('party', $party)
     => map:with('court', $court)
     => map:with('judge', $judge)
+    => map:with('netural_citation', $neutral_citation)
+    => map:with('specific_keyword', $specific_keyword)
     => map:with('page', $page)
     => map:with('page-size', $page-size)
     => map:with('order', $order)
@@ -61,8 +65,12 @@ let $query6 := if (empty($from_date)) then () else cts:path-range-query('akn:FRB
 let $query7 := if (empty($to_date)) then () else cts:path-range-query('akn:FRBRWork/akn:FRBRdate/@date', '<=', $to_date)
 let $query8 := if ($show_unpublished or $only_unpublished) then () else cts:properties-fragment-query(cts:element-value-query(fn:QName("", "published"), "true"))
 let $query9 := if ($only_unpublished) then cts:properties-fragment-query(cts:not-query(cts:element-value-query(fn:QName("", "published"), "true"))) else ()
+let $query10 := if ($neutral_citation) then cts:element-value-query(fn:QName('https://caselaw.nationalarchives.gov.uk/akn', 'cite'), $court, ('case-insensitive')) else ()
+let $query11 := if ($specific_keyword) then
+    cts:word-query($specific_keyword, ('case-insensitive', 'unstemmed'))
+else ()
 
-let $queries := ( $query1, $query2, $query4, $query5, $query6, $query7, $query8, $query9, dls:documents-query() )
+let $queries := ( $query1, $query2, $query4, $query5, $query6, $query7, $query8, $query9, $query10, $query11, dls:documents-query() )
 let $query := cts:and-query($queries)
 
 let $show-snippets as xs:boolean := exists(( $query1, $query2, $query5 ))
