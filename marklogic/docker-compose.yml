@@ -16,3 +16,7 @@ services:
     volumes:
       - ./.docker/db/data/:/var/opt/MarkLogic/
       - ./.docker/db/backup:/var/opt/backup
+
+networks:
+  default:
+    name: caselaw
