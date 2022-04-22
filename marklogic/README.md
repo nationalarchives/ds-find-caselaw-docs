@@ -10,9 +10,12 @@ The file layout is explaines in the [project layout documentation](https://githu
 
 ## Setup
 
-1. Install `gradle`. On MacOS, you can use `brew install gradle`.
+1. Access to the Marklogic Docker image is restricted to those who have 'purchased' it on Docker Hub. It's actually FREE to
+purchase, but you need to fill out [a short form](https://hub.docker.com/_/marklogic/purchase).
 
-2. If you're running against anything other than development, copy `gradle-development.properties`
+2. Install `gradle`. On MacOS, you can use `brew install gradle`.
+
+3. If you're running against anything other than development, copy `gradle-development.properties`
 to `gradle-{environment}.properties` and set the credentials and hostname for your Marklogic server.
 
 A `docker-compose.yml` file for running Marklogic locally is included. Run `docker-compose up` to start it.
