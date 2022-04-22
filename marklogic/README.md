@@ -44,3 +44,33 @@ examples for future data migrations.
 
 * `gradle manageAllDocuments`: Enables version management for all documents
 * `gradle publishAllDocuments`: Sets the `published` flag for all documents
+
+## Local development
+
+### Loading from a backup
+
+Rather than running an import of a set of files, you can restore from a shared backup. Note that this
+bucket is currently only available to dxw developers.
+
+1. First, navigate to http://localhost:8001/, which will ask for basic auth. Username and password are both `admin`.
+2. Then add AWS credentials to MarkLogic (under Security > Credentials), so it can pull the backup from a shared S3 bucket.
+   The credentials (AWS access ID & secret key) should be for your `dxwbilling` account. You will need to create them in AWS
+   if you haven't already.
+3. In the Backup/Restore tab in Marklogic for your the `caselaw-content` Judgments database, initiate a restore, using the following as the
+   `"directory": s3://tna-judgments-marklogic-backup/`. Set `Forest topology changed` to `true`.
+4. Uncheck the `security` database when restoring or your passwords will be wiped.
+
+Assuming you have entered the S3 credentials correctly, this will kick off a restore from s3. Once you have the data locally,
+you can then back it up locally using the path `/var/opt/backup` in the management console. It will be backed up to your local
+machine in `docker/db/backup`
+
+Depending on the backup state, you may need to run `gradle manageAllDocuments` and `gradle publishAllDocuments` after the restore has finished.
+
+### Marklogic URL Guide
+
+- http://localhost:8000/ this is the query interface where you can browse documents in the `Judgments` database.
+- http://localhost:8001/ this is the management console where you can administer your database.
+- http://localhost:8002/ this is the monitoring dashboard.
+- http://localhost:8011/ this is the application server for the Marklogic REST interface
+
+All four URLs use basic auth, username and password are both `admin`.
