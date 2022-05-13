@@ -143,6 +143,7 @@ declare private function match-neutral-citation($phrase as xs:string) as element
 };
 
 declare function make-q-query($q as xs:string) {
+    let $q := fn:replace($q, '- *v *-', ' v ', 'i')
     let $q := fn:normalize-space($q)
     return cts:and-query((
         for $phrase at $pos in fn:tokenize($q, '"')
