@@ -19,5 +19,16 @@
     "invalid-values": "reject"
   } ], 
   "word-positions": true,
-  "maintain-last-modified": true
+  "maintain-last-modified": true,
+  "field" : [ {
+    "field-name" : "",
+    "include-root" : true,
+    "excluded-element" : [ {
+      "namespace-uri" : "http://www.w3.org/1999/xhtml",
+      "localname" : "style",
+      "attribute-namespace-uri" : "",
+      "attribute-localname" : "",
+      "attribute-value" : ""
+    } ]
+  } ]
 }
