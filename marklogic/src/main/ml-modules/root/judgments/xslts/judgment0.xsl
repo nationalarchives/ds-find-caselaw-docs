@@ -103,7 +103,9 @@
 						<xsl:value-of select="$title" />
 					</title>
 					<style>
+						<xsl:text>
 body { margin: 1cm 1in }
+</xsl:text>
 						<xsl:call-template name="style" />
 					</style>
 				</head>
@@ -113,7 +115,7 @@ body { margin: 1cm 1in }
 			</html>
 		</xsl:when>
 		<xsl:otherwise>
-			<div>
+			<div id="judgment-wrapper">
 				<xsl:apply-templates />
 			</div>
 		</xsl:otherwise>
@@ -122,45 +124,9 @@ body { margin: 1cm 1in }
 
 <xsl:template match="meta" />
 
-<xsl:template name="style">
-	<xsl:apply-templates select="/akomaNtoso/judgment/meta/presentation/html:style" />
-	<xsl:apply-templates select="/akomaNtoso/judgment/attachments/attachment/doc/meta/presentation/html:style" />
-</xsl:template>
+<xsl:variable name="selector1" as="xs:string" select="if ($standalone) then 'body' else '#judgment-wrapper'" />
 
-<xsl:template match="html:style">
-	<xsl:variable name="selector1" as="xs:string">
-		<xsl:variable name="raw" as="xs:string" select="normalize-space(substring-before(., '{'))" />
-		<xsl:choose>
-			<xsl:when test="starts-with($raw, '#')">
-				<xsl:sequence select="$raw" />
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:sequence select="'#judgment'" />
-			</xsl:otherwise>
-		</xsl:choose>
-	</xsl:variable>
-	<xsl:for-each select="tokenize(., '\n')">
-		<xsl:choose>
-			<xsl:when test="matches(., '^\s*$')" />
-			<xsl:when test="matches(., '^\s*#')">
-				<xsl:value-of select="." />
-			</xsl:when>
-			<xsl:when test="matches(., '^\s*\.')">
-				<xsl:value-of select="$selector1" />
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="." />
-			</xsl:when>
-			<xsl:otherwise>
-				<xsl:variable name="selector" as="xs:string" select="substring-before(., '{')" />
-				<xsl:variable name="value" as="xs:string" select="concat('{', substring-after(., '{'))" />
-				<xsl:value-of select="$selector1" />
-				<xsl:text> </xsl:text>
-				<xsl:value-of select="$value" />
-			</xsl:otherwise>
-		</xsl:choose>
-		<xsl:text>
-</xsl:text>
-	</xsl:for-each>
+<xsl:template name="style">
 <xsl:value-of select="$selector1" /> .tab { display: inline-block; width: 0.25in }
 <xsl:value-of select="$selector1" /> section { position: relative }
 <xsl:value-of select="$selector1" /> h2 { font-size: inherit; font-weight: normal }
@@ -175,19 +141,29 @@ body { margin: 1cm 1in }
 <xsl:value-of select="$selector1" /> .fn { vertical-align: super; font-size: small }
 <xsl:value-of select="$selector1" /> .footnote > p > .marker { vertical-align: super; font-size: small }
 <xsl:value-of select="$selector1" /> .restriction { color: red }
+<xsl:apply-templates select="/akomaNtoso/judgment/meta/presentation/html:style" />
+<xsl:apply-templates select="/akomaNtoso/judgment/attachments/attachment/doc/meta/presentation/html:style" />
+<xsl:text>
+</xsl:text>
+</xsl:template>
 
+<xsl:template match="html:style">
+	<xsl:value-of select="." />
 </xsl:template>
 
 <xsl:template match="judgment">
 	<article id="judgment">
 		<xsl:apply-templates />
-		<xsl:apply-templates select="attachments/attachment/doc[@name='annex']" />
-		<xsl:call-template name="footnotes" />
-		<xsl:for-each select="attachments/attachment/doc[@name='annex']">
-			<xsl:call-template name="footnotes" />
-		</xsl:for-each>
+		<xsl:apply-templates select="attachments/attachment/doc[@name=('annex','schedule')]" />
+		<xsl:call-template name="footnotes">
+			<xsl:with-param name="footnotes">
+				<xsl:sequence select="header//authorialNote" />
+				<xsl:sequence select="judgmentBody//authorialNote" />
+				<xsl:sequence select="attachments/attachment/doc[@name=('annex','schedule')]//authorialNote" />
+			</xsl:with-param>
+		</xsl:call-template>
 	</article>
-	<xsl:apply-templates select="attachments/attachment/doc[not(@name='annex')]" />
+	<xsl:apply-templates select="attachments/attachment/doc[not(@name=('annex','schedule'))]" />
 </xsl:template>
 
 <xsl:template match="attachments" />
@@ -204,14 +180,20 @@ body { margin: 1cm 1in }
 	</div>
 </xsl:template>
 
-<xsl:template match="doc[@name='annex']">
-	<section id="{ @name }{ count(../preceding-sibling::*) + 1 }">
+<xsl:template match="doc[@name=('annex','schedule')]">
+	<section>
+		<xsl:attribute name="id"><!-- not needed for CSS -->
+			<xsl:value-of select="@name" />
+			<xsl:if test="exists(../preceding-sibling::*[@name=current()/@name]) or exists(../following-sibling::*[@name=current()/@name])">
+				<xsl:value-of select="count(../preceding-sibling::*[@name=current()/@name]) + 1" />
+			</xsl:if>
+		</xsl:attribute>
 		<xsl:apply-templates />
 	</section>
 </xsl:template>
 
-<xsl:template match="doc[not(@name='annex')]">
-	<xsl:variable name="id" as="xs:string">
+<xsl:template match="doc[not(@name=('annex','schedule'))]">
+	<xsl:variable name="id" as="xs:string"><!-- must match selector in XML presentation element -->
 		<xsl:choose>
 			<xsl:when test="@name = 'attachment'"> <!-- for backwards compatibility -->
 				<xsl:sequence select="concat(@name, string(count(../preceding-sibling::*) + 1))" />
@@ -230,7 +212,7 @@ body { margin: 1cm 1in }
 	</article>
 </xsl:template>
 
-<xsl:template match="doc[not(@name='annex')]/mainBody">
+<xsl:template match="doc[not(@name=('annex','schedule'))]/mainBody">
 	<div class="body">
 		<xsl:apply-templates />
 	</div>
@@ -244,6 +226,24 @@ body { margin: 1cm 1in }
 			<xsl:value-of select="@class" />
 		</xsl:if>
 	</xsl:attribute>
+</xsl:template>
+
+<xsl:template match="decision">
+	<xsl:choose>
+		<xsl:when test="exists(preceding-sibling::*) or exists(following-sibling::*)">
+			<section class="decision">
+				<xsl:if test="exists(@eId)">
+					<xsl:attribute name="id">
+						<xsl:value-of select="@eId" />
+					</xsl:attribute>
+				</xsl:if>
+				<xsl:apply-templates />
+			</section>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:next-match />
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:template>
 
 <xsl:template match="level | paragraph">
@@ -454,9 +454,9 @@ body { margin: 1cm 1in }
 </xsl:template>
 
 <xsl:template name="footnotes">
-	<xsl:variable name="footnotes" select="descendant::authorialNote" />
+	<xsl:param name="footnotes" select="descendant::authorialNote" />
 	<xsl:if test="$footnotes">
-		<footer>
+		<footer class="footnotes">
 			<hr style="margin-top:2em" />
 			<xsl:apply-templates select="$footnotes" mode="footnote" />
 		</footer>
@@ -475,6 +475,7 @@ body { margin: 1cm 1in }
 		<span class="marker">
 			<xsl:value-of select="../@marker" />
 		</span>
+		<xsl:text> </xsl:text>
 		<xsl:apply-templates />
 	</xsl:element>
 </xsl:template>
