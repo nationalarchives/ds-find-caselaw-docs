@@ -8,10 +8,10 @@
 	xmlns:xs="http://www.w3.org/2001/XMLSchema"
 	exclude-result-prefixes="uk html math xs">
 
-<xsl:output method="html" encoding="utf-8" indent="yes" include-content-type="no" /><!-- doctype-system="about:legacy-compat" -->
+<xsl:output method="html" encoding="utf-8" indent="no" include-content-type="no" />
 
 <xsl:strip-space elements="*" />
-<xsl:preserve-space elements="p block span" />
+<xsl:preserve-space elements="p block num heading span a courtType date docDate docTitle docketNumber judge lawyer location neutralCitation party role time" />
 
 <xsl:param name="image-base" as="xs:string" select="'https://judgment-images.s3.eu-west-2.amazonaws.com/'" />
 
@@ -86,13 +86,16 @@
 <xsl:template match="judgment">
 	<article class="judgment">
 		<xsl:apply-templates />
-		<xsl:apply-templates select="attachments/attachment/doc[@name='annex']" />
-		<xsl:call-template name="footnotes" />
-		<xsl:for-each select="attachments/attachment/doc[@name='annex']">
-			<xsl:call-template name="footnotes" />
-		</xsl:for-each>
+		<xsl:apply-templates select="attachments/attachment/doc[@name=('annex','schedule')]" />
+		<xsl:call-template name="footnotes">
+			<xsl:with-param name="footnotes">
+				<xsl:sequence select="header//authorialNote" />
+				<xsl:sequence select="judgmentBody//authorialNote" />
+				<xsl:sequence select="attachments/attachment/doc[@name=('annex','schedule')]//authorialNote" />
+			</xsl:with-param>
+		</xsl:call-template>
+		<xsl:apply-templates select="attachments/attachment/doc[not(@name=('annex','schedule'))]" />
 	</article>
-	<xsl:apply-templates select="attachments/attachment/doc[not(@name='annex')]" />
 </xsl:template>
 
 <xsl:template match="attachments" />
@@ -109,23 +112,36 @@
 	</section>
 </xsl:template>
 
-<xsl:template match="doc[@name='annex']">
-	<section id="{ @name }{ count(../preceding-sibling::*) + 1 }">
+<xsl:template match="doc[@name=('annex','schedule')]">
+	<section>
 		<xsl:apply-templates />
 	</section>
 </xsl:template>
 
-<xsl:template match="doc[not(@name='annex')]">
-	<article>
+<xsl:template match="doc[not(@name=('annex','schedule'))]">
+	<section>
 		<xsl:apply-templates />
 		<xsl:call-template name="footnotes" />
-	</article>
+	</section>
 </xsl:template>
 
-<xsl:template match="doc[@name='attachment']/mainBody">
+<xsl:template match="doc[not(@name=('annex','schedule'))]/mainBody">
 	<div>
 		<xsl:apply-templates />
 	</div>
+</xsl:template>
+
+<xsl:template match="decision">
+	<xsl:choose>
+		<xsl:when test="exists(preceding-sibling::*) or exists(following-sibling::*)">
+			<section>
+				<xsl:apply-templates />
+			</section>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:next-match />
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:template>
 
 <xsl:template match="level">
@@ -415,7 +431,7 @@
 </xsl:template>
 
 <xsl:template name="footnotes">
-	<xsl:variable name="footnotes" select="descendant::authorialNote" />
+	<xsl:param name="footnotes" select="descendant::authorialNote" />
 	<xsl:if test="$footnotes">
 		<footer>
 			<hr />
@@ -435,6 +451,7 @@
 		<sup>
 			<xsl:value-of select="../@marker" />
 		</sup>
+		<xsl:text> </xsl:text>
 		<xsl:apply-templates />
 	</p>
 </xsl:template>
