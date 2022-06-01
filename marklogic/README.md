@@ -35,6 +35,11 @@ full file path and name within `import`.
 You may want to run `gradle publishAllDocuments` (see below) afterwards. All files
 are automatically put under management on import, so there is no need to run the manage task.
 
+## Bulk export
+
+To export the latest versions of all documents, for instance for bulk processing, you can use:
+` gradle mlExportToZip -PwhereUrisQuery="const dls = require('/MarkLogic/dls'); cts.uris('', [], dls.documentsQuery())" -PenvironmentName=<env> -PexportPath=export.zip`
+
 ## Document processing
 
 Two gradle tasks are available for bulk management of documents in a database using
