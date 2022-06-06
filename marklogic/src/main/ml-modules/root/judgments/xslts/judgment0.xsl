@@ -335,7 +335,7 @@ body { margin: 1cm 1in }
 </xsl:template>
 
 <xsl:template match="img">
-	<xsl:if test="matches(@src, '\.gif|\.png|\.jpg|\.jpeg|\.webp|\.svg|\.bmp')">
+	<xsl:if test="matches(@src, '\.gif$|\.png$|\.jpg$|\.jpeg$|\.webp$|\.svg$|\.bmp$')">
 		<img>
 			<xsl:apply-templates select="@*" />
 			<xsl:apply-templates />
