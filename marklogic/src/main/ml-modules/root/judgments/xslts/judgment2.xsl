@@ -311,7 +311,7 @@
 </xsl:template>
 
 <xsl:template match="img">
-	<xsl:if test="matches(@src, '.(?:gif|png|jpg|jpeg|svg|webp|bmp)$')">
+	<xsl:if test="matches(@src, '\.gif|\.png|\.jpg|\.jpeg|\.webp|\.svg')">
 		<img>
 			<xsl:apply-templates select="@*" />
 			<xsl:apply-templates />
