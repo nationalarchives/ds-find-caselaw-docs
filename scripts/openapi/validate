@@ -1,0 +1,4 @@
+set -e
+swagger-cli validate $* doc/openapi/public_api.yml
+swagger-cli validate $* doc/openapi/privileged_api.yml
+

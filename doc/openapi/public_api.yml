@@ -47,25 +47,35 @@ components:
             description: Akoma Ntoso
 
 paths:
-  /[{court}/[[{subdivision}/]{year}/]]atom.xml:
+  /{court}/{subdivision}/{year}/atom.xml:
     get:
       summary: Get recently published or updated judgments
+      description: >
+        Less specific feeds can be gained by omitting the components
+        e.g. /, /2022/, /ewhc/ and /ewhc/ch/ are all valid prefixes to atom.xml
+        Note that a {court} is required if there is a {subdivision}
       operationId: listJudgments
       tags:
         - Reading
       parameters:
         - name: court
-          required: false
+          required: true
           in: path
           example: ewca
+          schema:
+            type: string
         - name: subdivision
-          required: false
+          required: true
           in: path
           example: pat
+          schema:
+            type: string
         - name: year
-          required: false
+          required: true
           in: path
           example: 2022
+          schema:
+            type: integer
         - name: order
           required: false
           in: query
