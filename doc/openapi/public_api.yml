@@ -2,7 +2,7 @@ openapi: '3.0.3'
 
 info:
   title: Case Law Public API
-  version: '0.1'
+  version: '0.1.1'
 
 servers:
 - url: https://{environment}.nationalarchives.gov.uk/
@@ -87,6 +87,12 @@ paths:
               - updated
               - -updated
             default: -date
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: integer
+            default: 1
       responses:
         '200':
           $ref: "#/components/responses/judgmentFeed"
