@@ -12,17 +12,31 @@
 
 ## Background
 
-This is the central repository for the Case Law Public Access service. It includes architectural decisions, designs, and links to individual code repositories for the various component [microservices](doc/adr/0002-use-a-microservice-architecture.md).
+This is the central repository for the [Case Law Public Access service](https://caselaw.nationalarchives.gov.uk/). It includes [architectural decisions](https://github.com/nationalarchives/ds-caselaw-public-access-service/tree/main/doc/adr),[technical designs](https://github.com/nationalarchives/ds-caselaw-public-access-service/tree/main/doc/arch), and links to individual code repositories for the various component [microservices](doc/adr/0002-use-a-microservice-architecture.md).
 
 ## Services
 
 * [Public Access UI](https://github.com/nationalarchives/ds-caselaw-public-ui/)
+* [Editorial UI](https://github.com/nationalarchives/ds-caselaw-editor-ui/)
+* [Ingester](https://github.com/nationalarchives/ds-caselaw-ingester)
+* [PDF conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion)
+* [Marklogic database configuration](https://github.com/nationalarchives/ds-caselaw-public-access-service/tree/main/marklogic)
+
+### Shared support libraries
+
+* [API client](https://github.com/nationalarchives/ds-caselaw-custom-api-client)
+* [Utility library](https://github.com/nationalarchives/ds-caselaw-utils)
 
 ### Related services
 
+Services provide data to, or take data from, this system.
+
 * [Transformation Engine](https://github.com/nationalarchives/da-transform-dev-documentation/blob/develop/editorial-system-integration/README.md)
+* [Enrichment Service](https://github.com/nationalarchives/ds-caselaw-data-enrichment-service)
 
 ### Prototypes
+
+Design-phase prototype code.
 
 * [Frontend Prototypes](https://github.com/nationalarchives/ds-caselaw-frontend)
 * [Marklogic Prototype](https://github.com/mangiafico/tna-judgments-website)
