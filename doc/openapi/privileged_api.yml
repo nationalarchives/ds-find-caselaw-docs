@@ -2,7 +2,7 @@ openapi: '3.0.2'
 
 info:
   title: Case Law Privileged API
-  version: '0.1'
+  version: '0.1.2'
 
 servers:
 - url: https://{environment}.caselaw.nationalarchives.gov.uk/v1
@@ -173,6 +173,8 @@ paths:
       summary: Set document properties
       tags:
         - Writing
+      parameters:
+        - $ref: "#/components/parameters/judgmentUri"
       responses:
         '200':
           description: OK
