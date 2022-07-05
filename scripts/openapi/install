@@ -1,0 +1,5 @@
+# validator
+npm install -g @apidevtools/swagger-cli
+
+# html version
+npm install -g redoc-cli

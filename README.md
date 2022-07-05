@@ -21,6 +21,7 @@ This is the central repository for the [Case Law Public Access service](https://
 * [Ingester](https://github.com/nationalarchives/ds-caselaw-ingester)
 * [PDF conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion)
 * [Marklogic database configuration](https://github.com/nationalarchives/ds-caselaw-public-access-service/tree/main/marklogic)
+* [OpenAPI spec](https://github.com/nationalarchives/ds-caselaw-public-access-service/tree/main/doc/openapi)
 
 ### Shared support libraries
 
