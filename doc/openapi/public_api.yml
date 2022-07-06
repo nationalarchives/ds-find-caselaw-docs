@@ -2,13 +2,13 @@ openapi: '3.0.3'
 
 info:
   title: Case Law Public API
-  version: '0.1.1'
+  version: '0.1.2'
 
 servers:
 - url: https://{environment}.nationalarchives.gov.uk/
   variables:
     environment:
-      default: api
+      default: caselaw
       enum:
         - caselaw         # Production
         - staging.caselaw # Staging
