@@ -97,6 +97,16 @@ paths:
       parameters:
         - $ref: "#/components/parameters/judgmentUri"
         - $ref: "#/components/parameters/ifMatch"
+      requestBody:
+        required: True
+        content:
+          application/xml:
+            schema:
+              xml:
+                name:
+                  akomaNtoso
+              type: object
+
       responses:
         '204':
           description: The document was updated successfully and any client lock released
