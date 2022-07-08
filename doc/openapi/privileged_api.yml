@@ -76,6 +76,7 @@ paths:
   /{judgmentUri}:
     get:
       summary: Read a judgment or decision, given its URI
+
       description: Unless the client has `read_unpublished_documents` permission, then only published documents are accessible.
       operationId: getDocumentByUri
       tags:
@@ -89,6 +90,7 @@ paths:
         - basic:
           - read_documents
           - read_unpublished_documents
+
     put:
       summary: Update a judgment
       description: Write a complete new version of the document to the database, and release any client lock.
