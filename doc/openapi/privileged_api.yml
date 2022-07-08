@@ -108,6 +108,13 @@ paths:
 
         '400':
           description: The request was malformed, and the document was not modified
+        '403':
+          description: The request was not updated, as the document is locked by another user
+          headers:
+            locking_user:
+              description: The user who has locked the document
+              schema:
+                type: string
         '412':
           description: The document was not updated, as it has changed since the version number specified If-Match. To avoid this, the client should lock the document before making any changes to it.
       security:
