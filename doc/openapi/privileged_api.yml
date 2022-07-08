@@ -141,7 +141,7 @@ paths:
 
   /{judgmentUri}/lock:
     get:
-      summary: Query lock status for a document
+      summary: Query lock status for a document [not implemented]
       tags:
         - Writing
       parameters:
