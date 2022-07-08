@@ -56,6 +56,13 @@ components:
           schema:
             type: boolean
           example: true
+      content:
+        application/xml:
+          schema:
+            xml:
+              name: akomaNtoso
+            type: object
+
 paths:
   /status:
     get:
@@ -89,6 +96,7 @@ paths:
         - basic:
           - read_documents
           - read_unpublished_documents
+
     put:
       summary: Update a judgment
       description: Write a complete new version of the document to the database, and release any client lock.
