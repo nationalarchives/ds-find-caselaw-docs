@@ -1,2 +1,2 @@
-redoc-cli bundle -o generated/public_api.html doc/openapi/public_api.yml
-redoc-cli bundle -o generated/privileged_api.html doc/openapi/privileged_api.yml
+redoc-cli build -o generated/public_api.html doc/openapi/public_api.yml
+redoc-cli build -o generated/privileged_api.html doc/openapi/privileged_api.yml
