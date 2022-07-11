@@ -1,2 +1,2 @@
-openapi-generator generate -i doc/openapi/public_api.yml -g python -o generated/public
-openapi-generator generate -i doc/openapi/privileged_api.yml -g python -o generated/privileged
+openapi-generator generate -i doc/openapi/public_api.yml -g python -o generated/public --git-host github.com --git-user-id nationalarchives --git-repo-id ds-caselaw-public-ui
+openapi-generator generate -i doc/openapi/privileged_api.yml -g python -o generated/privileged --git-host github.com --git-user-id nationalarchives --git-repo-id ds-caselaw-privileged-api
