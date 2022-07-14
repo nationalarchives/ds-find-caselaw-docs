@@ -7,69 +7,69 @@ import module namespace ml = "http://marklogic.com/appservices/search" at "/Mark
 declare namespace akn = "http://docs.oasis-open.org/legaldocml/ns/akn/3.0";
 declare namespace uk = "https://caselaw.nationalarchives.gov.uk";
 
-declare variable $default-options as xs:string* := ( 'case-insensitive' );
-
-declare private function make-simple-name-query($word as xs:string) as cts:query {
+declare private function make-simple-name-query($word as xs:string, $stemmed as xs:boolean) as cts:query {
     let $element as xs:QName := fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'FRBRname')
     let $attribute as xs:QName := fn:QName('', 'value')
-    let $options as xs:string* := $default-options
+    let $options := if ($stemmed) then ( 'case-insensitive', 'stemmed' ) else ( 'case-insensitive', 'unstemmed' )
     let $weight as xs:double := 16.0
     return cts:element-attribute-word-query($element, $attribute, $word, $options, $weight)
 };
 
 declare private function make-simple-cite-query($phrase as xs:string) as cts:query {
     let $element as xs:QName := fn:QName('https://caselaw.nationalarchives.gov.uk/akn', 'cite')
-    let $options as xs:string* := ( 'case-insensitive' )
+    let $options as xs:string* := ( 'case-insensitive', 'unstemmed' )
     let $weight as xs:double := 32.0
     return cts:element-word-query($element, $phrase, $options, $weight)
 };
 
-declare private function make-simple-party-query($phrase as xs:string) as cts:query {
+declare private function make-simple-party-query($phrase as xs:string, $stemmed as xs:boolean) as cts:query {
     let $element as xs:QName := fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'party')
-    let $options as xs:string* := $default-options
+    let $options := if ($stemmed) then ( 'case-insensitive', 'stemmed' ) else ( 'case-insensitive', 'unstemmed' )
     let $weight as xs:double := 8.0
     return cts:element-word-query($element, $phrase, $options, $weight)
 };
 
-declare private function make-simple-body-query($phrase as xs:string, $weight as xs:double) as cts:word-query {
-    cts:word-query($phrase, $default-options, $weight)
+declare private function make-simple-body-query($phrase as xs:string, $stemmed as xs:boolean, $weight as xs:double) as cts:word-query {
+    let $options := if ($stemmed) then ( 'case-insensitive', 'stemmed' ) else ( 'case-insensitive', 'unstemmed' )
+    return cts:word-query($phrase, $options, $weight)
 };
-declare private function make-simple-body-query($phrase as xs:string) as cts:word-query {
-    make-simple-body-query($phrase, 1.0)
+declare private function make-simple-body-query($phrase as xs:string, $stemmed as xs:boolean) as cts:word-query {
+    make-simple-body-query($phrase, $stemmed, 1.0)
 };
 
-declare private function make-name-party-or-body-query($phrase as xs:string, $weight as xs:double) as cts:or-query {
+declare private function make-name-party-or-body-query($phrase as xs:string, $stemmed as xs:boolean, $weight as xs:double) as cts:or-query {
     cts:or-query((
-        make-simple-name-query($phrase),
-        make-simple-party-query($phrase),
-        make-simple-body-query($phrase, $weight)
+        make-simple-name-query($phrase, $stemmed),
+        make-simple-party-query($phrase, $stemmed),
+        make-simple-body-query($phrase, $stemmed, $weight)
     ))
 };
-declare private function make-name-party-or-body-query($phrase as xs:string) as cts:or-query {
-    make-name-party-or-body-query($phrase, 1.0)
+declare private function make-name-party-or-body-query($phrase as xs:string, $stemmed as xs:boolean) as cts:or-query {
+    make-name-party-or-body-query($phrase, $stemmed, 1.0)
 };
+(: never inside quotes :)
 declare private function make-name-party-or-body-queries($phrase as xs:string) as cts:query {
     let $words as xs:string+ := fn:tokenize($phrase, '\s') (: $phrase is normalized and not empty :)
     let $phrase-weight as xs:double := 4.0
     let $distance-weight as xs:string := 'distance-weight=2'
     return
         if (fn:empty(fn:tail($words))) then
-            make-name-party-or-body-query($phrase)
+            make-name-party-or-body-query($phrase, fn:true())
         else
             cts:or-query((
                 cts:and-query((
                     for $word in $words
-                    return make-name-party-or-body-query($word),
-                    cts:word-query($words, ($default-options, $distance-weight))
+                    return make-name-party-or-body-query($word, fn:true()),
+                    cts:word-query($words, ( 'case-insensitive', 'stemmed', $distance-weight))
                 )),
-                make-simple-body-query($phrase, $phrase-weight)
+                make-simple-body-query($phrase, fn:false(), $phrase-weight)
             ))
 };
 
 declare private function make-cite-or-body-query($phrase as xs:string) as cts:or-query {
     cts:or-query((
         make-simple-cite-query($phrase),
-        make-simple-body-query($phrase, 2.0)
+        make-simple-body-query($phrase, fn:false(), 2.0)
     ))
 };
 
@@ -108,12 +108,12 @@ declare private variable $neutral-citation-patterns as xs:string+ := (
         '(^| )EWCA (Civ|Crim) \d+( |$)',
         '(^| )EWCA (Civ|Crim)( |$)',
         '(^| )(Civ|Crim) \d+( |$)',
-    '(^| )\[?\d{4}\]? EWHC \d+ \(?(Admin|Admlty|Ch|Comm|Costs|Fam|IPEC|Pat|QB|TCC)\)?( |$)',
+    '(^| )\[?\d{4}\]? EWHC \d+ \(?(Admin|Admlty|Ch|Comm|Costs|Fam|IPEC|Pat|QB|SCCO|TCC)\)?( |$)',
         '(^| )\[?\d{4}\]? EWHC \d+( |$)',
         '(^| )\[?\d{4}\]? EWHC( |$)',
-        '(^| )EWHC \d+ \(?(Admin|Admlty|Ch|Comm|Costs|Fam|IPEC|Pat|QB|TCC)\)?( |$)',
+        '(^| )EWHC \d+ \(?(Admin|Admlty|Ch|Comm|Costs|Fam|IPEC|Pat|QB|SCCO|TCC)\)?( |$)',
         '(^| )EWHC \d+( |$)',
-        (: '(^| )\d+ \(?(Admin|Admlty|Ch|Comm|Costs|Fam|IPEC|Pat|QB|TCC)\)?( |$)', :)
+        (: '(^| )\d+ \(?(Admin|Admlty|Ch|Comm|Costs|Fam|IPEC|Pat|QB|SCCO|TCC)\)?( |$)', :)
     '(^| )\[?\d{4}\]? (EWFC|EWCOP) \d+( |$)',
         '(^| )\[?\d{4}\]? (EWFC|EWCOP)( |$)',
         '(^| )(EWFC|EWCOP) \d+( |$)',
@@ -126,12 +126,12 @@ declare private variable $neutral-citation-patterns as xs:string+ := (
     '(^| )\[?\d{4}\]? EAT \d+( |$)',
         '(^| )\[?\d{4}\]? EAT( |$)',
         '(^| )EAT \d+( |$)',
-    '(^| )\[?\d{4}\]? UKFTT \d+ \(?(TC)\)?( |$)',
+    '(^| )\[?\d{4}\]? UKFTT \d+ \(?(TC|GRC)\)?( |$)',
         '(^| )\[?\d{4}\]? UKFTT \d+( |$)',
         '(^| )\[?\d{4}\]? UKFTT( |$)',
-        '(^| )UKFTT \d+ \(?(TC)\)?( |$)',
+        '(^| )UKFTT \d+ \(?(TC|GRC)\)?( |$)',
         '(^| )UKFTT \d+( |$)'
-        (: '(^| )\d+ \(?(TC)\)?( |$)' :)
+        (: '(^| )\d+ \(?(TC|GRC)\)?( |$)' :)
 );
 
 declare private function is-a-neutral-citation($phrase as xs:string) as xs:boolean {
@@ -155,7 +155,7 @@ declare function make-q-query($q as xs:string) {
                 if (is-a-neutral-citation($phrase)) then
                     make-cite-or-body-query($phrase)
                 else
-                    make-name-party-or-body-query($phrase, 4.0)
+                    make-name-party-or-body-query($phrase, fn:false(), 4.0)
             else
                 let $result as element(fn:analyze-string-result)? := match-neutral-citation($phrase)
                 return
@@ -175,11 +175,12 @@ declare function make-q-query($q as xs:string) {
 
 declare function make-party-query($party as xs:string?) as cts:query? {
     let $weight as xs:double := 8.0
+    let $options as xs:string* := ( 'case-insensitive', 'unstemmed' )
     return
         if ($party) then
             cts:or-query((
-                cts:element-attribute-word-query(fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'FRBRname'), fn:QName('', 'value'), $party, $default-options, $weight * 2),
-                cts:element-word-query(fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'party'), $party, $default-options, $weight)
+                cts:element-attribute-word-query(fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'FRBRname'), fn:QName('', 'value'), $party, $options, $weight * 2),
+                cts:element-word-query(fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'party'), $party, $options, $weight)
             ))
         else
             ()
