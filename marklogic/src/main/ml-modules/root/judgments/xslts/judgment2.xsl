@@ -394,7 +394,9 @@
 <!-- markers and attributes -->
 
 <xsl:template match="marker[@name='tab']">
-	<span> </span>
+	<span>
+		<xsl:text> </xsl:text>
+	</span>
 </xsl:template>
 
 <xsl:template match="@style">

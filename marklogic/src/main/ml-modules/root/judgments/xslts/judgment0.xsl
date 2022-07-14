@@ -435,7 +435,9 @@ body { margin: 1cm 1in }
 <!-- markers and attributes -->
 
 <xsl:template match="marker[@name='tab']">
-	<span class="tab"> </span>
+	<span class="tab">
+		<xsl:text> </xsl:text>
+	</span>
 </xsl:template>
 
 <xsl:template match="@class | @style | @src | @href | @title">
