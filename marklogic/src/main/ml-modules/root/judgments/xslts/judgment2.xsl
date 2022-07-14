@@ -88,7 +88,7 @@
 		<xsl:apply-templates />
 		<xsl:apply-templates select="attachments/attachment/doc[@name=('annex','schedule')]" />
 		<xsl:call-template name="footnotes">
-			<xsl:with-param name="footnotes">
+			<xsl:with-param name="footnotes" as="element()*">
 				<xsl:sequence select="header//authorialNote" />
 				<xsl:sequence select="judgmentBody//authorialNote" />
 				<xsl:sequence select="attachments/attachment/doc[@name=('annex','schedule')]//authorialNote" />
@@ -431,8 +431,8 @@
 </xsl:template>
 
 <xsl:template name="footnotes">
-	<xsl:param name="footnotes" select="descendant::authorialNote" />
-	<xsl:if test="$footnotes">
+	<xsl:param name="footnotes" as="element()*" select="descendant::authorialNote" />
+	<xsl:if test="exists($footnotes)">
 		<footer>
 			<hr />
 			<xsl:apply-templates select="$footnotes" mode="footnote" />
