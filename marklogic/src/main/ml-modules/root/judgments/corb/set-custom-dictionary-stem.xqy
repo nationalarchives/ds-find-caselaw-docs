@@ -9,9 +9,5 @@ let $dict :=
       <cdict:word>racial</cdict:word>
       <cdict:stem>race</cdict:stem>
     </cdict:entry>
-    <cdict:entry>
-      <cdict:word>discriminatory</cdict:word>
-      <cdict:stem>discrimination</cdict:stem>
-    </cdict:entry>
   </cdict:dictionary>
 return cdict:dictionary-write("en", $dict)
