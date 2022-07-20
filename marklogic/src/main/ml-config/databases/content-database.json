@@ -1,7 +1,6 @@
 {
   "database-name" : "%%DATABASE%%",
   "triggers-database": "%%TRIGGERS_DATABASE%%",
-  "stemmed-searches": "basic",
   "path-namespace" : [ {
     "prefix": "akn",
     "namespace-uri" : "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
