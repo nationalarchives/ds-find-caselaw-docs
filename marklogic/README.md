@@ -20,6 +20,29 @@ to `gradle-{environment}.properties` and set the credentials and hostname for yo
 
 A `docker-compose.yml` file for running Marklogic locally is included. Run `docker-compose up` to start it.
 
+## Release versioning
+
+The releases are currently manually tagged. Please do not deploy to production without tagging a release.
+
+When making a new release version, update the [changelog](CHANGELOG.md) in the release
+pull request.
+
+To create a versioned release:
+
+1. Create a branch `release/v{major}.{minor}.{patch}`
+2. Update changelog for the release
+3. Commit and push
+4. Open a PR from that branch to main
+5. Get approval on the PR
+6. Tag the HEAD of the PR `v{major}.{minor}.{patch}` and push the tag
+7. Merge the PR to main and push
+
+When deploying to production, check out the tag you want to deploy using (for example) `git checkout tags/v1.0.0`
+then deploy from there. Git will put you into a "detatched head" state, and once you have finished deploying you can
+switch back to the main branch (or any branch) but using `git checkout branchname` as normal.
+
+TODO: Automatically deploy main to staging, and tags to production using CodeBuild.
+
 ## Deployment
 
 To deploy the configuration, run `gradle mlDeploy -PenvironmentName={environment}`. Deployment is
