@@ -10,6 +10,11 @@
     "path-expression" : "akn:FRBRWork/akn:FRBRdate/@date",
     "range-value-positions" : false,
     "invalid-values": "reject"
+  }, {
+    "scalar-type": "dateTime",
+    "path-expression" : "akn:akomaNtoso/akn:judgment/akn:meta/akn:identification/akn:FRBRManifestation/akn:FRBRdate[@name='transform']/@date",
+    "range-value-positions" : false,
+    "invalid-values": "ignore"
   } ],
   "range-element-index": [ {
     "scalar-type" : "dateTime",
@@ -17,7 +22,7 @@
     "localname": "last-modified",
     "range-value-positions" : false,
     "invalid-values": "reject"
-  } ], 
+  } ],
   "word-positions": true,
   "maintain-last-modified": true,
   "field" : [ {
