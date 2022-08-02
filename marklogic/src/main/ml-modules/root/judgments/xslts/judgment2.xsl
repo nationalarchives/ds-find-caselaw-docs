@@ -264,10 +264,7 @@
 </xsl:template>
 
 <xsl:template match="span">
-	<span>
-		<xsl:apply-templates select="@style" />
-		<xsl:apply-templates />
-	</span>
+	<xsl:call-template name="inline" />
 </xsl:template>
 
 <xsl:template match="p[@class='Quote'][empty(parent::*/parent::paragraph/num)]">
@@ -297,17 +294,68 @@
 </xsl:template>
 
 <xsl:template match="neutralCitation | courtType | docketNumber | docDate">
-	<span>
-		<xsl:apply-templates select="@style" />
-		<xsl:apply-templates />
-	</span>
+	<xsl:call-template name="inline" />
 </xsl:template>
 
 <xsl:template match="party | role | judge | lawyer">
-	<span>
-		<xsl:apply-templates select="@style" />
-		<xsl:apply-templates />
-	</span>
+	<xsl:call-template name="inline" />
+</xsl:template>
+
+<xsl:template name="inline">
+	<xsl:param name="name" as="xs:string" select="'span'" />
+	<xsl:param name="styles" as="xs:string*" select="tokenize(@style, ';')[normalize-space(.)]" />
+	<xsl:variable name="styles" as="xs:string*" select="$styles[not(starts-with(., 'font-size:'))]" />
+	<xsl:choose>
+		<xsl:when test="exists($styles[starts-with(., 'font-weight:') and not(starts-with(., 'font-weight:normal'))])">
+			<b>
+				<xsl:attribute name="style">
+					<xsl:value-of select="string-join($styles[starts-with(., 'font-weight:')], ';')" />
+				</xsl:attribute>
+				<xsl:call-template name="inline">
+					<xsl:with-param name="name" select="$name" />
+					<xsl:with-param name="styles" select="$styles[not(starts-with(., 'font-weight:'))]" />
+				</xsl:call-template>
+			</b>
+		</xsl:when>
+		<xsl:when test="exists($styles[starts-with(., 'font-style:') and not(starts-with(., 'font-style:normal'))])">
+			<i>
+				<xsl:attribute name="style">
+					<xsl:value-of select="string-join($styles[starts-with(., 'font-style:')], ';')" />
+				</xsl:attribute>
+				<xsl:call-template name="inline">
+					<xsl:with-param name="name" select="$name" />
+					<xsl:with-param name="styles" select="$styles[not(starts-with(., 'font-style:'))]" />
+				</xsl:call-template>
+			</i>
+		</xsl:when>
+		<xsl:when test="exists($styles[starts-with(., 'text-decoration-line:') and not(starts-with(., 'text-decoration-line:none'))])">
+			<u>
+				<xsl:attribute name="style">
+					<xsl:value-of select="string-join($styles[starts-with(., 'text-decoration-')], ';')" />
+				</xsl:attribute>
+				<xsl:call-template name="inline">
+					<xsl:with-param name="name" select="$name" />
+					<xsl:with-param name="styles" select="$styles[not(starts-with(., 'text-decoration-'))]" />
+				</xsl:call-template>
+			</u>
+		</xsl:when>
+		<xsl:when test="exists($styles)">
+			<xsl:element name="{ $name }">
+				<xsl:attribute name="style">
+					<xsl:value-of select="string-join($styles, ';')" />
+				</xsl:attribute>
+				<xsl:apply-templates />
+			</xsl:element>
+		</xsl:when>
+		<xsl:when test="$name = 'span'">
+			<xsl:apply-templates />
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:element name="{ $name }">
+				<xsl:apply-templates />
+			</xsl:element>
+		</xsl:otherwise>
+	</xsl:choose>
 </xsl:template>
 
 <xsl:template match="img">
@@ -333,9 +381,7 @@
 </xsl:template>
 
 <xsl:template match="date">
-	<span>
-		<xsl:apply-templates />
-	</span>
+	<xsl:call-template name="inline" />
 </xsl:template>
 
 
