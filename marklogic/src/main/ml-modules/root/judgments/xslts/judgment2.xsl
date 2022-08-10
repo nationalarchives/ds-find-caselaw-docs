@@ -147,9 +147,9 @@
 <xsl:template match="level">
 	<section>
 		<xsl:if test="num | heading">
-			<h2>
+			<p>
 				<xsl:apply-templates select="num | heading" />
-			</h2>
+			</p>
 		</xsl:if>
 		<xsl:apply-templates select="* except (num, heading)" />
 	</section>
