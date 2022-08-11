@@ -75,7 +75,10 @@ examples for future data migrations.
 
 ## Local development
 
-### Loading from a backup
+The simplest way to get a set of data in your local instance of Marklogic is to do a [Bulk export](#bulk-export) from
+staging or production, then a [Bulk import](#bulk-import) to your local development environment.
+
+### Loading data from a backup on S3 (deprecated)
 
 Rather than running an import of a set of files, you can restore from a shared backup. Note that this
 bucket is currently only available to dxw developers.
