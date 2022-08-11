@@ -147,9 +147,9 @@
 <xsl:template match="level">
 	<section>
 		<xsl:if test="num | heading">
-			<h2>
+			<p>
 				<xsl:apply-templates select="num | heading" />
-			</h2>
+			</p>
 		</xsl:if>
 		<xsl:apply-templates select="* except (num, heading)" />
 	</section>
@@ -287,10 +287,7 @@
 </xsl:template>
 
 <xsl:template match="num | heading">
-	<span>
-		<xsl:apply-templates select="@style" />
-		<xsl:apply-templates />
-	</span>
+	<xsl:call-template name="inline" />
 </xsl:template>
 
 <xsl:template match="neutralCitation | courtType | docketNumber | docDate">
@@ -305,6 +302,7 @@
 	<xsl:param name="name" as="xs:string" select="'span'" />
 	<xsl:param name="styles" as="xs:string*" select="tokenize(@style, ';')[normalize-space(.)]" />
 	<xsl:variable name="styles" as="xs:string*" select="$styles[not(starts-with(., 'font-size:'))]" />
+	<xsl:variable name="styles" as="xs:string*" select="$styles[not(starts-with(., 'font-family:')) or contains(., 'Symbol')]" />
 	<xsl:choose>
 		<xsl:when test="exists($styles[starts-with(., 'font-weight:') and not(starts-with(., 'font-weight:normal'))])">
 			<b>
