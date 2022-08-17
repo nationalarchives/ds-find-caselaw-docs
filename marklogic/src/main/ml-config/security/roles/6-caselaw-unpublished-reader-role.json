@@ -1,0 +1,12 @@
+{
+  "role-name" : "caselaw-unpublished-reader",
+  "description" : "Can view documents, including unpublished documents, but not edit",
+  "role" : [ "rest-reader", "caselaw-nobody" ],
+  "privilege": [
+    {
+      "privilege-name": "can-view-unpublished-documents",
+      "kind": "execute",
+      "action": "https://caselaw.nationalarchives.gov.uk/custom/privileges/can-view-unpublished-documents"
+    }
+  ]
+}
