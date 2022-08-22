@@ -155,35 +155,37 @@
 	</section>
 </xsl:template>
 
-<xsl:template match="paragraph[exists(content/p)]">
-	<xsl:apply-templates select="* except num" />
-</xsl:template>
-
 <xsl:template match="paragraph">
-	<xsl:apply-templates />
+	<section class="judgment-body__section">
+		<span class="judgment-body__number">
+			<xsl:apply-templates select="num/node()" />
+		</span>
+		<div>
+			<xsl:apply-templates select="* except num" />
+		</div>
+	</section>
 </xsl:template>
 
-<xsl:template match="paragraph/num">
-	<span class="judgment-body__number">
+<xsl:template match="subparagraph">
+	<section class="judgment-body__nested-section">
+		<span class="judgment-body__number">
+			<xsl:apply-templates select="num/node()" />
+		</span>
+		<div>
+			<xsl:apply-templates select="* except num" />
+		</div>
+	</section>
+</xsl:template>
+
+<xsl:template match="paragraph/*/p | subparagraph/*/p">
+	<p>
+		<xsl:attribute name="class">
+			<xsl:choose>
+				<xsl:when test="position() = 1">judgment-body__text judgment-body__no-margin-top</xsl:when>
+				<xsl:otherwise>judgment-body__text</xsl:otherwise>
+			</xsl:choose>
+		</xsl:attribute>
 		<xsl:apply-templates />
-	</span>
-</xsl:template>
-
-<xsl:template match="paragraph/content/p[1]">
-	<p class="judgment-body__section">
-		<xsl:apply-templates select="../../num | ../../heading" />
-		<span class="judgment-body__text">
-			<xsl:apply-templates />
-		</span>
-	</p>
-</xsl:template>
-
-<xsl:template match="paragraph/content/p[position() gt 1]">
-	<p class="judgment-body__section">
-		<span class="judgment-body__number"></span>
-		<span class="judgment-body__text">
-			<xsl:apply-templates />
-		</span>
 	</p>
 </xsl:template>
 
@@ -263,11 +265,7 @@
 	</p>
 </xsl:template>
 
-<xsl:template match="span">
-	<xsl:call-template name="inline" />
-</xsl:template>
-
-<xsl:template match="p[@class='Quote'][empty(parent::*/parent::paragraph/num)]">
+<xsl:template match="level/*/p[@class='Quote']">
 	<div class="judgment-body__section">
 		<span class="judgment-body__number"></span>
 		<div class="judgment-body__text">
@@ -295,6 +293,10 @@
 </xsl:template>
 
 <xsl:template match="party | role | judge | lawyer">
+	<xsl:call-template name="inline" />
+</xsl:template>
+
+<xsl:template match="span">
 	<xsl:call-template name="inline" />
 </xsl:template>
 
