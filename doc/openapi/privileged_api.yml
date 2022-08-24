@@ -181,7 +181,7 @@ paths:
 
   /{judgmentUri}/metadata:
     get:
-      summary: Gets the document's metadata
+      summary: Gets the document's metadata [not implemented]
       description: Unless the client has `read_unpublished_documents` permission, then only metadata for published documents are accessible.
       tags:
         - Reading
@@ -195,7 +195,7 @@ paths:
           - read_documents
           - read_unpublished_documents
     patch:
-      summary: Set document properties
+      summary: Set document metadata [not implemented]
       tags:
         - Writing
       parameters:
