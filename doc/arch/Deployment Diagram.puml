@@ -2,8 +2,11 @@
 !include include/c4.puml
 !include include/style.puml
 
+left to right direction
+
 Node(internet, "Internet") {
     !include include/people.puml
+    System_Ext(republisher, "Republisher")
 }
 
 Node(te, "Transformation Engine", "AWS") {
@@ -20,26 +23,23 @@ Node(account, "Case Law System", "AWS"){
     Node(ecs, "Elastic Container Service"){
         Container(publicui, "Public UI", "Django", $sprite="docker")
         Container(editorui, "Editor UI", "Django", $sprite="docker")
+        Container(api, "REST API", "Python", $sprite="docker")
     }
     System(api_lb, "Elastic Load Balancing", "Distributes API demand across Marklogic nodes", $sprite="aws")
     Node(ec2, "EC2"){
         Node(marklogic, "Marklogic Server") {
             SystemDb(db, "Marklogic", "Document and service metadata store")
-            Container(api, "REST API", "Javascript", $tags="Marklogic Application")
-            BiRel(api, db, "queries", "XQuery")
         }
     }
-    BiRel(api_lb, api, "proxies", "HTTPS")
+    BiRel(api_lb, db, "proxies", "HTTPS")
+    BiRel(api, api_lb, "queries", "HTTPS")
     Node(lambda, "Lambda"){
-        Container(parser, "Alpha Parser", "AWS Lambda", $sprite="aws")
         Container(ingester, "Ingester", "Javascript", $sprite="aws")
     }
     System(cache, "Cloudfront", "Public UI web cache", $sprite="aws")
-    System(pubsub, "SNS", "Change notifications", $sprite="aws")
     Rel(publicui, api_lb, "reads from", "HTTPS")
     Rel(cache, publicui, "reads from", "HTTPS")
     BiRel(editorui, api_lb, "reads/writes", "HTTPS")
-    Rel(api, pubsub, "publishes change notification")
 }
 
 BiRel(ingester, te_sns, "subscribes/notifies", "SNS")
@@ -49,16 +49,12 @@ Rel(ingester, api_lb, "writes to", "HTTPS")
 Rel(joepublic, cache, "browses", "HTTPS")
 
 Rel(editor, editorui, "uses", "HTTPS")
-BiRel(editorui, parser, "advanced ingestion", "HTTPS")
 Rel(ingester, editor, "notifies", "email")
 
-BiRel(enrichment, api_lb, "reads/writes", "HTTPS")
-BiRel(enrichment, pubsub, "subscribes/notifies", "SNS")
+Rel(enrichment, api, "writes", "HTTPS")
 
-Rel(apiUser, api_lb, "reads", "HTTPS")
-
-Lay_D(joepublic, editor)
-Lay_D(editor, apiUser)
+Rel(enrichment, cache, "reads", "HTTPS/Atom")
+Rel(republisher, cache, "reads", "HTTPS/Atom")
 
 !include include/display.puml
 @enduml

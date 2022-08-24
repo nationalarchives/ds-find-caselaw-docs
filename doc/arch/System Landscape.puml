@@ -6,27 +6,28 @@
 System_Ext(tdr, "Transfer Digital Records")
 System_Ext(transformationEngine, "Transformation Engine")
 System_Ext(enrichment, "Enrichment Engine")
+System_Ext(republisher, "Republisher")
 
 System_Boundary(access, "Case Law Access") {
   System(publicUI, "Public UI")
   System(editorUI, "Editor UI")
   System(ingester, "Ingester")
-  System(api, "REST API", $tags="Marklogic Application")
+  System(api, "REST API")
   SystemDb(markLogic, "LegalDocML document store", "MarkLogic")
 }
 
-BiRel(api, markLogic, "queries", "XQuery")
+BiRel(api, markLogic, "reads/writes", "HTTP/XQuery")
 
 Rel(tdr, transformationEngine, "sends uploaded documents")
 Rel(transformationEngine, ingester, "sends parsed documents", "S3/SNS")
-Rel(ingester, api, "stores documents", "HTTPS")
-BiRel(enrichment, api, "reads/writes", "HTTPS")
-BiRel(editorUI, api, "reads/writes", "HTTPS")
-Rel(publicUI, api, "reads", "HTTPS")
-Rel_R(apiUser, api, "reads", "HTTPS")
+Rel(ingester, markLogic, "stores documents", "HTTP/XQuery")
+Rel(enrichment, publicUI, "reads", "HTTPS/Atom")
+Rel(enrichment, api, "writes", "HTTPS")
+BiRel(editorUI, markLogic, "reads/writes", "HTTP/XQuery")
+Rel(publicUI, markLogic, "reads", "HTTP/XQuery")
 Rel(joepublic, publicUI, "uses", "HTTPS")
+Rel(republisher, publicUI, "reads", "HTTPS/Atom")
 Rel(editor, editorUI, "uses", "HTTPS")
-Lay_D(apiUser, enrichment)
 
 !include include/display.puml
 @enduml

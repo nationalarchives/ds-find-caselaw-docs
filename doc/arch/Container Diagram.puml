@@ -3,35 +3,33 @@
 !include include/style.puml
 !include include/people.puml
 
+System_Ext(tdr, "Transfer Digital Records")
 System_Ext(transformationEngine, "Transformation Engine")
 System_Ext(enrichment, "Enrichment Engine")
+System_Ext(republisher, "Republisher")
 
 System_Boundary(access, "Case Law Access") {
   Container(publicUI, "Public UI", "Django", $sprite="docker")
   Container(editorUI, "Editor UI", "Django", $sprite="docker")
-  Container(ingester, "Ingester", "AWS Lambda", $sprite="aws")
-  Container(pubsub, "Change Notifications", "AWS SNS", $sprite="aws")
-  Container(parser, "Alpha Parser", "AWS Lambda", $sprite="aws")
+  Container(ingester, "Ingester", "Python/Lambda", $sprite="aws")
+  Container(api, "REST API", "Python", $sprite="docker")
   System_Boundary(markLogicServer, "Marklogic Server") {
     SystemDb(markLogic, "Marklogic", "Document and service metadata store")
-    Container(api, "REST API", "Javascript", $tags="Marklogic Application")
     BiRel(api, markLogic, "queries", "XQuery")
   }
 }
 
-Rel(api, pubsub, "publishes change notification")
-
+Rel(tdr, transformationEngine, "sends uploaded documents")
 Rel(transformationEngine, ingester, "sends parsed documents", "S3/SNS")
-Rel(ingester, api, "stores documents", "HTTPS")
-BiRel(enrichment, api, "reads/writes", "HTTPS")
-BiRel(enrichment, pubsub, "subscribes/notifies", "HTTPS")
-BiRel(editorUI, api, "reads/writes", "HTTPS")
-Rel(publicUI, api, "reads", "HTTPS")
-Rel(apiUser, api, "reads", "HTTPS")
+Rel(ingester, markLogic, "stores documents", "HTTP/XQuery")
+Rel(enrichment, publicUI, "reads", "HTTPS/Atom")
+Rel(enrichment, api, "writes", "HTTPS")
+BiRel(editorUI, markLogic, "reads/writes", "HTTP/XQuery")
+Rel(publicUI, markLogic, "reads", "HTTP/XQuery")
 Rel(joepublic, publicUI, "uses", "HTTPS")
+Rel(republisher, publicUI, "reads", "HTTPS/Atom")
 Rel(editor, editorUI, "uses", "HTTPS")
-BiRel(editorUI, parser, "advanced ingestion", "HTTPS")
-Lay_D(apiUser, enrichment)
+
 
 !include include/display.puml
 @enduml
