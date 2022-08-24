@@ -1,2 +1,0 @@
-openapi-generator generate -i doc/openapi/public_api.yml -g python -o generated/public
-openapi-generator generate -i doc/openapi/privileged_api.yml -g python -o generated/privileged
