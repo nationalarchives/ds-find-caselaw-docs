@@ -3,6 +3,8 @@ openapi: '3.0.3'
 info:
   title: Case Law Public API
   version: '0.1.3'
+  description: National Archives Caselaw Public API
+  version: '0.1.2'
 
 servers:
 - url: https://{environment}.nationalarchives.gov.uk/

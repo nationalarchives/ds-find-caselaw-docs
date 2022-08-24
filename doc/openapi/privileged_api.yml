@@ -2,6 +2,7 @@ openapi: '3.0.2'
 
 info:
   title: Case Law Privileged API
+  description: National Archives Caselaw Privileged API
   version: '0.1.2'
 
 servers:
@@ -56,6 +57,13 @@ components:
           schema:
             type: boolean
           example: true
+      content:
+        application/xml:
+          schema:
+            xml:
+              name: akomaNtoso
+            type: object
+
 paths:
   /status:
     get:
@@ -89,6 +97,7 @@ paths:
         - basic:
           - read_documents
           - read_unpublished_documents
+
     put:
       summary: Update a judgment
       description: Write a complete new version of the document to the database, and release any client lock.
@@ -97,6 +106,16 @@ paths:
       parameters:
         - $ref: "#/components/parameters/judgmentUri"
         - $ref: "#/components/parameters/ifMatch"
+      requestBody:
+        required: True
+        content:
+          application/xml:
+            schema:
+              xml:
+                name:
+                  akomaNtoso
+              type: object
+
       responses:
         '204':
           description: The document was updated successfully and any client lock released
@@ -108,6 +127,13 @@ paths:
 
         '400':
           description: The request was malformed, and the document was not modified
+        '403':
+          description: The request was not updated, as the document is locked by another user
+          headers:
+            locking_user:
+              description: The user who has locked the document
+              schema:
+                type: string
         '412':
           description: The document was not updated, as it has changed since the version number specified If-Match. To avoid this, the client should lock the document before making any changes to it.
       security:
@@ -116,7 +142,7 @@ paths:
 
   /{judgmentUri}/lock:
     get:
-      summary: Query lock status for a document
+      summary: Query lock status for a document [not implemented]
       tags:
         - Writing
       parameters:
@@ -156,7 +182,7 @@ paths:
 
   /{judgmentUri}/metadata:
     get:
-      summary: Gets the document's metadata
+      summary: Gets the document's metadata [not implemented]
       description: Unless the client has `read_unpublished_documents` permission, then only metadata for published documents are accessible.
       tags:
         - Reading
@@ -170,7 +196,7 @@ paths:
           - read_documents
           - read_unpublished_documents
     patch:
-      summary: Set document properties
+      summary: Set document metadata [not implemented]
       tags:
         - Writing
       parameters:
