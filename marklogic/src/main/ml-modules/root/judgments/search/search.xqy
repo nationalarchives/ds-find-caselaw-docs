@@ -118,6 +118,7 @@ else
     'documents'
 
 let $search-options := <options xmlns="http://marklogic.com/appservices/search">
+    <search-option>unfiltered</search-option>
     <fragment-scope>{ $scope }</fragment-scope>
     { $sort-order }
     <extract-document-data xmlns:akn="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn">
