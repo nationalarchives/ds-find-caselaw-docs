@@ -221,6 +221,32 @@
 	</p>
 </xsl:template>
 
+<xsl:variable name="global-styles" as="xs:string" select="normalize-space(/akomaNtoso/judgment/meta/presentation)" />
+
+<xsl:function name="uk:extract-alignment" as="xs:string?">
+	<xsl:param name="p" as="element()" />
+	<xsl:variable name="from-style-attr" as="xs:string?">
+		<xsl:analyze-string select="$p/@style" regex="text-align: *([a-z]+)">
+			<xsl:matching-substring>
+				<xsl:sequence select="regex-group(1)"/>
+			</xsl:matching-substring>
+		</xsl:analyze-string>
+	</xsl:variable>
+	<xsl:choose>
+		<xsl:when test="exists($from-style-attr)">
+			<xsl:sequence select="$from-style-attr" />
+		</xsl:when>
+		<xsl:when test="exists($p/@class)">
+			<xsl:variable name="regex" as="xs:string" select="concat('\.', $p/@class, ' \{[^\}]*text-align: ?([a-z]+)')" />
+			<xsl:analyze-string select="$global-styles" regex="{ $regex }">
+				<xsl:matching-substring>
+					<xsl:sequence select="regex-group(1)"/>
+				</xsl:matching-substring>
+			</xsl:analyze-string>
+		</xsl:when>
+	</xsl:choose>
+</xsl:function>
+
 <xsl:template match="header/p">
 	<xsl:choose>
 		<xsl:when test="empty(preceding-sibling::*) and exists(child::img)">
@@ -254,7 +280,20 @@
 			</div>
 		</xsl:when>
 		<xsl:otherwise>
-			<xsl:next-match />
+			<xsl:variable name="alignment" as="xs:string?" select="uk:extract-alignment(.)" />
+			<xsl:choose>
+				<xsl:when test="$alignment = ('center', 'right', 'left')">
+					<p>
+						<xsl:attribute name="class">
+							<xsl:sequence select="concat('judgment-header__pr-', $alignment)" />
+						</xsl:attribute>
+						<xsl:apply-templates />
+					</p>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:next-match />
+				</xsl:otherwise>
+			</xsl:choose>
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:template>
