@@ -15,7 +15,7 @@ declare function uk:get-request-date($name as xs:string) as xs:date? {
 
 declare variable $q as xs:string? external;
 declare variable $party as xs:string? external;
-declare variable $court as xs:string? external;
+declare variable $court as json:array? external;
 declare variable $judge as xs:string? external;
 declare variable $neutral_citation as xs:string? external;
 declare variable $specific_keyword as xs:string? external;
@@ -53,13 +53,17 @@ let $query2 := if ($party) then
         cts:element-attribute-word-query(fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'FRBRname'), fn:QName('', 'value'), $party)
     ))
 else ()
-let $query4 := if ($court) then cts:or-query((
-    cts:element-value-query(fn:QName('https://judgments.gov.uk/', 'court'), $court, ('case-insensitive')),
-    cts:element-value-query(fn:QName('https://caselaw.nationalarchives.gov.uk/akn', 'court'), $court, ('case-insensitive')),
+
+let $query4 := if ($court) then cts:or-query(
+    for $c in json:array-values($court) return (
+    cts:element-value-query(fn:QName('https://judgments.gov.uk/', 'court'), $c, ('case-insensitive')),
+    cts:element-value-query(fn:QName('https://caselaw.nationalarchives.gov.uk/akn', 'court'), $c, ('case-insensitive')),
     cts:element-attribute-word-query(
-    fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'FRBRuri'), xs:QName('value'), $court, ('case-insensitive')
+    fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'FRBRuri'), xs:QName('value'), $c, ('case-insensitive')
     )
 )) else ()
+
+
 let $query5 := if ($judge) then cts:element-word-query(fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'judge'), $judge, ('case-insensitive', 'punctuation-insensitive')) else ()
 let $query6 := if (empty($from_date)) then () else cts:path-range-query('akn:FRBRWork/akn:FRBRdate/@date', '>=', $from_date)
 let $query7 := if (empty($to_date)) then () else cts:path-range-query('akn:FRBRWork/akn:FRBRdate/@date', '<=', $to_date)
