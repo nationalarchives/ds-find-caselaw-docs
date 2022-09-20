@@ -144,7 +144,7 @@ declare private function match-neutral-citation($phrase as xs:string) as element
 
 declare private variable $consignment-number-pattern as xs:string := '^TDR-\d{4}-.+';
 
-declare private function is-a-consignment-number($phrase as xs:string) as xs:boolean {
+declare function is-a-consignment-number($phrase as xs:string) as xs:boolean {
     if (fn:empty($phrase)) then
         false()
     else
