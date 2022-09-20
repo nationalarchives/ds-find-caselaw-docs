@@ -119,6 +119,7 @@ else
 
 let $search-options := <options xmlns="http://marklogic.com/appservices/search">
     <fragment-scope>{ $scope }</fragment-scope>
+    <search-option>unfiltered</search-option>
     { $sort-order }
     <extract-document-data xmlns:akn="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn">
         <extract-path>//akn:FRBRWork/akn:FRBRdate</extract-path>
