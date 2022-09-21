@@ -71,8 +71,10 @@ else ()
 let $query11 := if ($specific_keyword) then
     cts:word-query($specific_keyword, ('case-insensitive', 'unstemmed'))
 else ()
+let $query12 := if (helper:is-a-consignment-number($q)) then (helper:make-consignment-number-query($q)) else ()
 
-let $queries := ( $query1, $query2, $query4, $query5, $query6, $query7, $query8, $query9, $query10, $query11, dls:documents-query() )
+
+let $queries := ( $query1, $query2, $query4, $query5, $query6, $query7, $query8, $query9, $query10, $query11, $query12, dls:documents-query() )
 let $query := cts:and-query($queries)
 
 let $show-snippets as xs:boolean := exists(( $query1, $query2, $query5 ))
@@ -114,8 +116,11 @@ let $scope := if ($order = 'updated') then
     'properties'
 else if ($order = '-updated') then
     'properties'
+else if (exists($query12)) then
+    'properties'
 else
     'documents'
+
 
 let $search-options := <options xmlns="http://marklogic.com/appservices/search">
     <fragment-scope>{ $scope }</fragment-scope>
