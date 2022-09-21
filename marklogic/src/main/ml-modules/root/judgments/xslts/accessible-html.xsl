@@ -226,11 +226,13 @@
 <xsl:function name="uk:extract-alignment" as="xs:string?">
 	<xsl:param name="p" as="element()" />
 	<xsl:variable name="from-style-attr" as="xs:string?">
-		<xsl:analyze-string select="$p/@style" regex="text-align: *([a-z]+)">
-			<xsl:matching-substring>
-				<xsl:sequence select="regex-group(1)"/>
-			</xsl:matching-substring>
-		</xsl:analyze-string>
+		<xsl:if test="exists($p/@style)">
+			<xsl:analyze-string select="$p/@style" regex="text-align: *([a-z]+)">
+				<xsl:matching-substring>
+					<xsl:sequence select="regex-group(1)"/>
+				</xsl:matching-substring>
+			</xsl:analyze-string>
+		</xsl:if>
 	</xsl:variable>
 	<xsl:choose>
 		<xsl:when test="exists($from-style-attr)">
