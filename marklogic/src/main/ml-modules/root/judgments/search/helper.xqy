@@ -142,6 +142,25 @@ declare private function match-neutral-citation($phrase as xs:string) as element
     match-neutral-citation-2($phrase, $neutral-citation-patterns)
 };
 
+declare private variable $consignment-number-pattern as xs:string := '^TDR-\d{4}-.+';
+
+declare function is-a-consignment-number($phrase as xs:string) as xs:boolean {
+    if (fn:empty($phrase)) then
+        false()
+    else
+        fn:matches($phrase, $consignment-number-pattern, 'i')
+};
+
+declare function make-consignment-number-query($consignment-number as xs:string) {
+    cts:properties-fragment-query(
+        cts:element-value-query(
+            fn:QName("", "transfer-consignment-reference"),
+            $consignment-number,
+            ("case-insensitive")
+        )
+    )
+};
+
 declare function make-q-query($q as xs:string) {
     let $q := fn:replace($q, '- *v *-', ' v ', 'i')
     let $q := fn:normalize-space($q)
