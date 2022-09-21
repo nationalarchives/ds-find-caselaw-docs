@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog 1.0.0].
 
 ## [Unreleased]
 
+## [Release 1.0.7]
+- condition for <p>s without a @style attribute
+
 ## [Release 1.0.6]
 - ADR 0009: Reading unpublished judgments and Marklogic security boundaries
 - ADR 0010: Interface with Enrichment
@@ -42,7 +45,8 @@ The format is based on [Keep a Changelog 1.0.0].
 - Initial tagged release
 - Add transformation sort order for search
 
-[Unreleased]: https://github.com/nationalarchives/ds-caselaw-public-access-service/compare/v1.0.6...HEAD
+[Unreleased]: https://github.com/nationalarchives/ds-caselaw-public-access-service/compare/v1.0.7...HEAD
+[Release 1.0.7]: https://github.com/nationalarchives/ds-caselaw-public-access-service/compare/v1.0.7...v1.0.6
 [Release 1.0.6]: https://github.com/nationalarchives/ds-caselaw-public-access-service/compare/v1.0.6...v1.0.5
 [Release 1.0.5]: https://github.com/nationalarchives/ds-caselaw-public-access-service/compare/v1.0.5...v1.0.4
 [Release 1.0.4]: https://github.com/nationalarchives/ds-caselaw-public-access-service/compare/v1.0.4...v1.0.3
