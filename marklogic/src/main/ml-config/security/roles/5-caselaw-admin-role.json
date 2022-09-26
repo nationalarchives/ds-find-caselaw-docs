@@ -1,7 +1,7 @@
 {
   "role-name" : "caselaw-admin",
   "description" : "Non-admin administrator",
-  "role" : [ "rest-admin", "manage-admin", "caselaw-writer" ],
+  "role" : [ "rest-admin", "manage-admin", "caselaw-writer", "caselaw-unpublished-reader" ],
   "privilege" : [ {
     "privilege-name" : "any-uri",
     "action" : "http://marklogic.com/xdmp/privileges/any-uri",
