@@ -157,6 +157,7 @@
 
 <xsl:template match="paragraph">
 	<section class="judgment-body__section">
+		<xsl:apply-templates select="@eId" />
 		<span class="judgment-body__number">
 			<xsl:apply-templates select="num/node()" />
 		</span>
@@ -164,6 +165,12 @@
 			<xsl:apply-templates select="* except num" />
 		</div>
 	</section>
+</xsl:template>
+
+<xsl:template match="paragraph/@eId">
+	<xsl:attribute name="id">
+		<xsl:sequence select="." />
+	</xsl:attribute>
 </xsl:template>
 
 <xsl:template match="subparagraph">
