@@ -246,7 +246,7 @@ body { margin: 1cm 1in }
 	</xsl:choose>
 </xsl:template>
 
-<xsl:template match="level | paragraph">
+<xsl:template match="level | paragraph | subparagraph">
 	<section>
 		<xsl:call-template name="class" />
 		<xsl:apply-templates select="@* except @class" />
@@ -436,6 +436,12 @@ body { margin: 1cm 1in }
 	<span class="tab">
 		<xsl:text> </xsl:text>
 	</span>
+</xsl:template>
+
+<xsl:template match="@eId">
+	<xsl:attribute name="id">
+		<xsl:sequence select="." />
+	</xsl:attribute>
 </xsl:template>
 
 <xsl:template match="@class | @style | @src | @href | @title">
