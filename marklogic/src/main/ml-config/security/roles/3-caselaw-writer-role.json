@@ -1,7 +1,7 @@
 {
   "role-name" : "caselaw-writer",
   "description" : "Can read and write all documents, including unpublished",
-  "role" : [ "rest-writer", "caselaw-unpublished-reader" ],
+  "role" : [ "rest-writer", "caselaw-reader", "caselaw-unpublished-reader" ],
   "privilege" : [ {
     "privilege-name" : "any-uri",
     "action" : "http://marklogic.com/xdmp/privileges/any-uri",
