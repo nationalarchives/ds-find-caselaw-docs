@@ -22,24 +22,16 @@ A `docker-compose.yml` file for running Marklogic locally is included. Run `dock
 
 ## Release versioning
 
-The releases are currently manually tagged. Please do not deploy to production without tagging a release.
+The releases are currently manually tagged. Please do not deploy to production without tagging a release. Currently
+there is no auto-deployment of releases, but we are using releases & tags to keep track of what has been deployed to
+production.
 
-When making a new release version, update the [changelog](CHANGELOG.md) in the release
-pull request.
-
-To create a versioned release:
-
-1. Create a branch `release/v{major}.{minor}.{patch}`
-2. Update changelog for the release
-3. Commit and push
-4. Open a PR from that branch to main
-5. Get approval on the PR
-6. Tag the HEAD of the PR `v{major}.{minor}.{patch}` and push the tag
-7. Merge the PR to main and push
+To create a versioned release, use Github's [release pricess](https://github.com/nationalarchives/ds-caselaw-public-access-service/releases)
+to create a tag and generate release notes.
 
 When deploying to production, check out the tag you want to deploy using (for example) `git checkout tags/v1.0.0`
 then deploy from there. Git will put you into a "detatched head" state, and once you have finished deploying you can
-switch back to the main branch (or any branch) but using `git checkout branchname` as normal.
+switch back to the main branch (or any branch) by using `git checkout branchname` as normal.
 
 TODO: Automatically deploy main to staging, and tags to production using CodeBuild.
 
