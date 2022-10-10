@@ -39,10 +39,6 @@ as well as allowing the user to write documents via the `rest-writer` pre-define
 This role inherits everything from `caselaw-writer` and  `caselaw-unpublished-reader` and is intended for users who
 only need to access the privileged API.
 
-## caselaw-internal
-
-An internal role used for amping.
-
 ## caselaw-admin
 
 A role intended for admins on the Caselaw project who do not need full Marklogic `admin` access.
