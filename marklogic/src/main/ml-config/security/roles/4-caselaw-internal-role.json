@@ -1,5 +1,0 @@
-{
-  "role-name" : "caselaw-internal",
-  "description" : "Internal role used for amping",
-  "role" : [ "caselaw-writer" ]
-}
