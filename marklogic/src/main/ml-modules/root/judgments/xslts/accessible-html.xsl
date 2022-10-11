@@ -356,9 +356,11 @@
 	<xsl:choose>
 		<xsl:when test="exists($styles[starts-with(., 'font-weight:') and not(starts-with(., 'font-weight:normal'))])">
 			<b>
-				<xsl:attribute name="style">
-					<xsl:value-of select="string-join($styles[starts-with(., 'font-weight:')], ';')" />
-				</xsl:attribute>
+				<xsl:if test="exists($styles[starts-with(., 'font-weight:') and not(starts-with(., 'font-weight:bold'))])">
+					<xsl:attribute name="style">
+						<xsl:value-of select="string-join($styles[starts-with(., 'font-weight:')], ';')" />
+					</xsl:attribute>
+				</xsl:if>
 				<xsl:call-template name="inline">
 					<xsl:with-param name="name" select="$name" />
 					<xsl:with-param name="styles" select="$styles[not(starts-with(., 'font-weight:'))]" />
@@ -367,9 +369,11 @@
 		</xsl:when>
 		<xsl:when test="exists($styles[starts-with(., 'font-style:') and not(starts-with(., 'font-style:normal'))])">
 			<i>
-				<xsl:attribute name="style">
-					<xsl:value-of select="string-join($styles[starts-with(., 'font-style:')], ';')" />
-				</xsl:attribute>
+				<xsl:if test="exists($styles[starts-with(., 'font-style:') and not(starts-with(., 'font-style:italic'))])">
+					<xsl:attribute name="style">
+						<xsl:value-of select="string-join($styles[starts-with(., 'font-style:')], ';')" />
+					</xsl:attribute>
+				</xsl:if>
 				<xsl:call-template name="inline">
 					<xsl:with-param name="name" select="$name" />
 					<xsl:with-param name="styles" select="$styles[not(starts-with(., 'font-style:'))]" />
@@ -378,9 +382,11 @@
 		</xsl:when>
 		<xsl:when test="exists($styles[starts-with(., 'text-decoration-line:') and not(starts-with(., 'text-decoration-line:none'))])">
 			<u>
-				<xsl:attribute name="style">
-					<xsl:value-of select="string-join($styles[starts-with(., 'text-decoration-')], ';')" />
-				</xsl:attribute>
+				<xsl:if test="exists($styles[starts-with(., 'text-decoration-line:') and not(starts-with(., 'text-decoration-line:underline'))])">
+					<xsl:attribute name="style">
+						<xsl:value-of select="string-join($styles[starts-with(., 'text-decoration-')], ';')" />
+					</xsl:attribute>
+				</xsl:if>
 				<xsl:call-template name="inline">
 					<xsl:with-param name="name" select="$name" />
 					<xsl:with-param name="styles" select="$styles[not(starts-with(., 'text-decoration-'))]" />
