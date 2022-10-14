@@ -20,13 +20,12 @@ BiRel(api, markLogic, "reads/writes", "HTTP/XQuery")
 
 Rel(tdr, transformationEngine, "sends uploaded documents")
 Rel(transformationEngine, ingester, "sends parsed documents", "S3/SNS")
-Rel(ingester, markLogic, "stores documents", "HTTP/XQuery")
-Rel(enrichment, publicUI, "reads", "HTTPS/Atom")
-Rel(enrichment, api, "writes", "HTTPS")
-BiRel(editorUI, markLogic, "reads/writes", "HTTP/XQuery")
-Rel(publicUI, markLogic, "reads", "HTTP/XQuery")
+Rel(ingester, api, "stores documents", "HTTP")
+BiRel(enrichment, api, "reads/writes", "HTTPS")
+BiRel(editorUI, api, "reads/writes", "HTTP")
+Rel(publicUI, api, "reads", "HTTP")
 Rel(joepublic, publicUI, "uses", "HTTPS")
-Rel(republisher, publicUI, "reads", "HTTPS/Atom")
+BiRel(republisher, api, "reads/writes", "HTTPS")
 Rel(editor, editorUI, "uses", "HTTPS")
 
 !include include/display.puml

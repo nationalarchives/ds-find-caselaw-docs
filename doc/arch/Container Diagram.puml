@@ -3,7 +3,8 @@
 !include include/style.puml
 !include include/people.puml
 
-System_Ext(tdr, "Transfer Digital Records")
+left to right direction
+
 System_Ext(transformationEngine, "Transformation Engine")
 System_Ext(enrichment, "Enrichment Engine")
 System_Ext(republisher, "Republisher")
@@ -12,6 +13,7 @@ System_Boundary(access, "Case Law Access") {
   Container(publicUI, "Public UI", "Django", $sprite="docker")
   Container(editorUI, "Editor UI", "Django", $sprite="docker")
   Container(ingester, "Ingester", "Python/Lambda", $sprite="aws")
+  Container(pubsub, "Notifications", "???")
   Container(api, "REST API", "Python", $sprite="docker")
   System_Boundary(markLogicServer, "Marklogic Server") {
     SystemDb(markLogic, "Marklogic", "Document and service metadata store")
@@ -19,17 +21,19 @@ System_Boundary(access, "Case Law Access") {
   }
 }
 
-Rel(tdr, transformationEngine, "sends uploaded documents")
 Rel(transformationEngine, ingester, "sends parsed documents", "S3/SNS")
-Rel(ingester, markLogic, "stores documents", "HTTP/XQuery")
-Rel(enrichment, publicUI, "reads", "HTTPS/Atom")
-Rel(enrichment, api, "writes", "HTTPS")
-BiRel(editorUI, markLogic, "reads/writes", "HTTP/XQuery")
-Rel(publicUI, markLogic, "reads", "HTTP/XQuery")
+Rel(ingester, api, "stores documents", "HTTP/XQuery")
+BiRel(enrichment, api, "reads/writes", "HTTPS")
+BiRel(editorUI, api, "reads/writes", "HTTP")
+Rel(publicUI, api, "reads", "HTTP")
 Rel(joepublic, publicUI, "uses", "HTTPS")
-Rel(republisher, publicUI, "reads", "HTTPS/Atom")
+Rel(republisher, api, "reads", "HTTPS")
 Rel(editor, editorUI, "uses", "HTTPS")
 
+BiRel(republisher, pubsub, "subscribes to", "Websub")
+BiRel(enrichment, pubsub, "subscribes to", "Websub")
+BiRel(editorUI, pubsub, "subscribes to", "Websub")
+Rel(api, pubsub, "sends updates", "Websub")
 
 !include include/display.puml
 @enduml

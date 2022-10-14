@@ -23,6 +23,7 @@ Node(account, "Case Law System", "AWS"){
     Node(ecs, "Elastic Container Service"){
         Container(publicui, "Public UI", "Django", $sprite="docker")
         Container(editorui, "Editor UI", "Django", $sprite="docker")
+        Container(pubsub, "Notifications", $sprite="docker")
         Container(api, "REST API", "Python", $sprite="docker")
     }
     System(api_lb, "Elastic Load Balancing", "Distributes API demand across Marklogic nodes", $sprite="aws")
@@ -37,24 +38,28 @@ Node(account, "Case Law System", "AWS"){
         Container(ingester, "Ingester", "Javascript", $sprite="aws")
     }
     System(cache, "Cloudfront", "Public UI web cache", $sprite="aws")
-    Rel(publicui, api_lb, "reads from", "HTTPS")
+    Rel(publicui, api, "reads from", "HTTPS")
     Rel(cache, publicui, "reads from", "HTTPS")
-    BiRel(editorui, api_lb, "reads/writes", "HTTPS")
+    BiRel(editorui, api, "reads/writes", "HTTPS")
 }
 
 BiRel(ingester, te_sns, "subscribes/notifies", "SNS")
 Rel(ingester, te_s3, "reads from", "HTTPS")
-Rel(ingester, api_lb, "writes to", "HTTPS")
+Rel(ingester, api, "writes to", "HTTPS")
 
 Rel(joepublic, cache, "browses", "HTTPS")
 
 Rel(editor, editorui, "uses", "HTTPS")
 Rel(ingester, editor, "notifies", "email")
 
-Rel(enrichment, api, "writes", "HTTPS")
+BiRel(enrichment, api, "reads/writes", "HTTPS/Atom")
+BiRel(republisher, api, "reads/writes", "HTTPS/Atom")
 
-Rel(enrichment, cache, "reads", "HTTPS/Atom")
-Rel(republisher, cache, "reads", "HTTPS/Atom")
+BiRel(republisher, pubsub, "subscribes to", "Websub")
+BiRel(enrichment, pubsub, "subscribes to", "Websub")
+BiRel(editorui, pubsub, "subscribes to", "Websub")
+Rel(api, pubsub, "sends updates", "Websub")
+
 
 !include include/display.puml
 @enduml
