@@ -2,7 +2,7 @@
   "database-name" : "%%DATABASE%%",
   "schema-database": "%%SCHEMAS_DATABASE%%",
   "triggers-database": "%%TRIGGERS_DATABASE%%",
-  "schemas-database": "%%SCHEMAS_DATABASE%%",
+  "schema-database": "%%SCHEMAS_DATABASE%%",
   "path-namespace" : [ {
     "prefix": "akn",
     "namespace-uri" : "http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
