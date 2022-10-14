@@ -23,6 +23,12 @@ the [AWS client VPN software](https://aws.amazon.com/vpn/client-vpn-download/).
   with the user
 - take an old one and replace the certificate and key in the `<cert>` and `<key>` sections with the one for the user found in `/mnt/efs/easy-rsa-ca/pki/{issued,private}`
 
+## providing certificate for the AWS VPN to the user
+
+- You can share the AWS VPN config that you have created for them via 1password
+- Ask them to copy the content within AWS VPN config into a new file and save as .ovpn
+- Provide the link to the [AWS client VPN software](https://aws.amazon.com/vpn/client-vpn-download/)
+
 ## revoking an issued certificate
 
 When someone leaves we should revoke their certificate.
