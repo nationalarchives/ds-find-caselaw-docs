@@ -1,0 +1,30 @@
+<template xmlns="http://marklogic.com/xdmp/tde">
+  <context>//akn:ref</context>
+	<collections>
+		<collection>http://marklogic.com/collections/dls/latest-version</collection>
+	</collections>
+	<path-namespaces>
+    <path-namespace>
+      <prefix>akn</prefix>
+      <namespace-uri>http://docs.oasis-open.org/legaldocml/ns/akn/3.0</namespace-uri>
+    </path-namespace>
+    <path-namespace>
+      <prefix>uk</prefix>
+      <namespace-uri>https://caselaw.nationalarchives.gov.uk/akn</namespace-uri>
+    </path-namespace>
+  </path-namespaces>
+	<triples>
+    <triple>
+      <subject>
+        <val>sem:iri(//akn:FRBRWork/akn:FRBRuri/@value)</val>
+      </subject>
+      <predicate>
+        <val>sem:iri( xs:string( "cites" ) )</val>
+        <invalid-values>reject</invalid-values>
+      </predicate>
+      <object>
+        <val>sem:iri(@href)</val>
+      </object>
+    </triple>
+  </triples>
+</template>
