@@ -262,7 +262,7 @@
 	</xsl:choose>
 </xsl:function>
 
-<xsl:template match="header//p">
+<xsl:template match="header//p[not(parent::blockContainer)]">
 	<xsl:choose>
 		<xsl:when test="empty(preceding-sibling::*) and exists(child::img)">
 			<div class="judgment-header__logo">
