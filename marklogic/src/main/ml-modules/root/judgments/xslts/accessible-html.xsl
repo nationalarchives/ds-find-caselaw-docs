@@ -513,7 +513,7 @@
 </xsl:function>
 
 <xsl:template match="table" mode="remove-first-column">
-	<table class="pr_two_column">
+	<table class="pr-two-column">
 		<tbody>
 			<xsl:apply-templates mode="remove-first-column" />
 		</tbody>
