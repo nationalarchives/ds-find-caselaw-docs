@@ -1,9 +1,8 @@
 xquery version "1.0-ml";
 
 import module namespace search = "http://marklogic.com/appservices/search" at "/MarkLogic/appservices/search/search.xqy";
-import module namespace helper = "https://caselaw.nationalarchives.gov.uk/helper" at "./helper.xqy";
+import module namespace helper = "https://caselaw.nationalarchives.gov.uk/helper" at "/judgments/search/helper.xqy";
 import module namespace dls = "http://marklogic.com/xdmp/dls" at "/MarkLogic/dls.xqy";
-import module namespace cpf = "http://marklogic.com/cpf" at "/MarkLogic/cpf/cpf.xqy";
 
 declare namespace akn = "http://docs.oasis-open.org/legaldocml/ns/akn/3.0";
 declare namespace uk = "https://caselaw.nationalarchives.gov.uk";
@@ -28,6 +27,9 @@ declare variable $from_date as xs:date? := uk:get-request-date($from);
 declare variable $to_date as xs:date? := uk:get-request-date($to);
 declare variable $show_unpublished as xs:boolean? external;
 declare variable $only_unpublished as xs:boolean? external;
+declare variable $editor_status as xs:string? external := "";
+declare variable $editor_assigned as xs:string? external := "";
+declare variable $editor_priority as xs:string? external := "";
 
 let $start as xs:integer := ($page - 1) * $page-size + 1
 
@@ -45,6 +47,9 @@ let $params := map:map()
     => map:with('to', $to)
     => map:with('show_unpublished', $show_unpublished)
     => map:with('only_unpublished', $only_unpublished)
+    => map:with('editor_status', $editor_status)
+    => map:with('editor_assigned', $editor_assigned)
+    => map:with('editor_priority', $editor_priority)
 
 let $query1 := if ($q) then helper:make-q-query($q) else ()
 let $query2 := if ($party) then
@@ -76,9 +81,43 @@ let $query11 := if ($specific_keyword) then
     cts:word-query($specific_keyword, ('case-insensitive', 'unstemmed'))
 else ()
 let $query12 := if (helper:is-a-consignment-number($q)) then (helper:make-consignment-number-query($q)) else ()
+let $query13 := if (($show_unpublished or $only_unpublished) and $editor_assigned) then cts:properties-fragment-query(cts:element-value-query(fn:QName("", "assigned-to"), $editor_assigned)) else ()
+let $query14 := if (($show_unpublished or $only_unpublished) and $editor_priority) then cts:properties-fragment-query(cts:element-value-query(fn:QName("", "editor-priority"), $editor_priority)) else ()
+
+let $status_new_query := cts:properties-fragment-query(cts:not-query(
+    cts:element-value-query(fn:QName("", "assigned-to"), "*", "wildcarded")
+    ))
+
+(: currently there is no way to get an empty assigned-to, but that's a bug :)
+(: let $empty_assignment_query := cts:properties-fragment-query(
+    cts:element-value-query(fn:QName("", "assigned-to"), "")
+    ) :)
+
+let $status_held_query := cts:properties-fragment-query(
+    cts:and-query((
+        cts:element-value-query(fn:QName("", "editor-hold"), "true"),
+        cts:element-value-query(fn:QName("", "assigned-to"), "*", "wildcarded")
+    ))
+)
+let $status_progress_query := cts:properties-fragment-query(
+    cts:and-query((
+        (: does this include no editor-hold? :)
+        cts:not-query(cts:element-value-query(fn:QName("", "editor-hold"), "true")),
+        cts:element-value-query(fn:QName("", "assigned-to"), "*", "wildcarded")
+    ))
+)
 
 
-let $queries := ( $query1, $query2, $query4, $query5, $query6, $query7, $query8, $query9, $query10, $query11, $query12, dls:documents-query() )
+let $query15 := if (($show_unpublished or $only_unpublished) and $editor_status) then (
+    if ($editor_status = 'new') then ($status_new_query) else (
+        if ($editor_status = 'held') then ($status_held_query) else (
+            if ($editor_status = 'inprogress') then ($status_progress_query) else ()
+        )
+    )
+) else ()
+
+
+let $queries := ( $query1, $query2, $query4, $query5, $query6, $query7, $query8, $query9, $query10, $query11, $query12, $query13, $query14, $query15, dls:documents-query() )
 let $query := cts:and-query($queries)
 
 let $show-snippets as xs:boolean := exists(( $query1, $query2, $query5 ))
