@@ -380,13 +380,19 @@ body { margin: 1cm 1in }
 				</xsl:for-each>
 			</colgroup>
 		</xsl:if>
+		<xsl:variable name="header-rows" as="element()*" select="*[child::th]" />
+		<xsl:if test="exists($header-rows)">
+			<thead>
+				<xsl:apply-templates select="$header-rows" />
+			</thead>
+		</xsl:if>
 		<tbody>
-			<xsl:apply-templates />
+			<xsl:apply-templates select="* except $header-rows" />
 		</tbody>
 	</table>
 </xsl:template>
 
-<xsl:template match="tr | td">
+<xsl:template match="tr | th| td">
 	<xsl:element name="{ local-name() }">
 		<xsl:copy-of select="@*" />
 		<xsl:apply-templates />
