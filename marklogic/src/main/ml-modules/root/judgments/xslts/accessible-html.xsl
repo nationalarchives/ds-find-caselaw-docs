@@ -234,7 +234,7 @@
 	</p>
 </xsl:template>
 
-<xsl:variable name="global-styles" as="xs:string" select="normalize-space(/akomaNtoso/judgment/meta/presentation)" />
+<xsl:variable name="global-styles" as="xs:string" select="normalize-space(string(/akomaNtoso/judgment/meta/presentation))" />
 
 <xsl:function name="uk:extract-alignment" as="xs:string?">
 	<xsl:param name="p" as="element()" />
@@ -509,7 +509,7 @@
 
 <xsl:function name="uk:cell-is-empty" as="xs:boolean">
 	<xsl:param name="cell" as="element()" />
-	<xsl:sequence select="empty($cell/@colspan) and empty($cell/@rowspan) and not(normalize-space($cell))" />
+	<xsl:sequence select="empty($cell/@colspan) and empty($cell/@rowspan) and not(normalize-space(string($cell)))" />
 </xsl:function>
 
 <xsl:template match="table" mode="remove-first-column">
