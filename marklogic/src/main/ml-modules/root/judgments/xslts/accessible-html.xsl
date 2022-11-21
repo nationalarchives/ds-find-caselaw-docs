@@ -362,7 +362,13 @@
 	<xsl:call-template name="inline" />
 </xsl:template>
 
-<xsl:template match="neutralCitation | courtType | docketNumber | docDate">
+<xsl:template match="neutralCitation">
+	<span class="ncn-nowrap">
+		<xsl:call-template name="inline" />
+	</span>
+</xsl:template>
+
+<xsl:template match="courtType | docketNumber | docDate">
 	<xsl:call-template name="inline" />
 </xsl:template>
 
