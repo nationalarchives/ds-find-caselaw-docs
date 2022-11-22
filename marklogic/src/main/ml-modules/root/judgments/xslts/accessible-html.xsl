@@ -380,9 +380,36 @@
 	<xsl:call-template name="inline" />
 </xsl:template>
 
+<xsl:function name="uk:get-combined-inline-styles" as="xs:string*">
+	<xsl:param name="e" as="element()" />
+	<xsl:variable name="from-class-attr" as="xs:string*">
+		<xsl:if test="exists($e/@class)">
+			<xsl:variable name="regex" as="xs:string" select="concat('\.', $e/@class, ' \{([^\}]+)')" />
+			<xsl:analyze-string select="$global-styles" regex="{ $regex }">
+				<xsl:matching-substring>
+					<xsl:sequence select="tokenize(regex-group(1), ';')[normalize-space(.)]"/>
+				</xsl:matching-substring>
+			</xsl:analyze-string>
+		</xsl:if>
+	</xsl:variable>
+	<xsl:variable name="from-style-attr" as="xs:string*" select="tokenize($e/@style, ';')[normalize-space(.)]" />
+	<xsl:variable name="style-selectors" as="xs:string*">
+		<xsl:for-each select="$from-style-attr">
+			<xsl:sequence select="normalize-space(substring-before(., ':'))" />
+		</xsl:for-each>
+	</xsl:variable>
+	<xsl:for-each select="$from-class-attr">
+		<xsl:variable name="selector" as="xs:string" select="normalize-space(substring-before(., ':'))" />
+		<xsl:if test="not($selector = $style-selectors)">
+			<xsl:sequence select="." />
+		</xsl:if>
+	</xsl:for-each>
+	<xsl:sequence select="$from-style-attr" />
+</xsl:function>
+
 <xsl:template name="inline">
 	<xsl:param name="name" as="xs:string" select="'span'" />
-	<xsl:param name="styles" as="xs:string*" select="tokenize(@style, ';')[normalize-space(.)]" />
+	<xsl:param name="styles" as="xs:string*" select="uk:get-combined-inline-styles(.)" />
 	<xsl:param name="is-uppercase" as="xs:boolean" select="false()" tunnel="yes" />
 	<xsl:variable name="styles" as="xs:string*" select="$styles[not(starts-with(., 'font-size:'))]" />
 	<xsl:variable name="styles" as="xs:string*" select="$styles[not(starts-with(., 'font-family:')) or contains(., 'Symbol') or contains(., 'Wingdings')]" />
