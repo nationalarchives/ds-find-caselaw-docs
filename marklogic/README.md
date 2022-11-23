@@ -26,7 +26,7 @@ The releases are currently manually tagged. Please do not deploy to production w
 there is no auto-deployment of releases, but we are using releases & tags to keep track of what has been deployed to
 production.
 
-To create a versioned release, use Github's [release pricess](https://github.com/nationalarchives/ds-caselaw-public-access-service/releases)
+To create a versioned release, use Github's [release process](https://github.com/nationalarchives/ds-find-caselaw-docs/releases)
 to create a tag and generate release notes.
 
 When deploying to production, check out the tag you want to deploy using (for example) `git checkout tags/v1.0.0`
