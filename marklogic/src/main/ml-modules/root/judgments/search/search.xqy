@@ -46,7 +46,7 @@ let $params := map:map()
     => map:with('show_unpublished', $show_unpublished)
     => map:with('only_unpublished', $only_unpublished)
 
-let $query1 := if ($q) then helper:make-q-query($q) else ()
+let $query1 := if ($q and not(helper:is-a-consignment-number($q))) then (helper:make-q-query($q)) else ()
 let $query2 := if ($party) then
     cts:or-query((
         cts:element-word-query(fn:QName('http://docs.oasis-open.org/legaldocml/ns/akn/3.0', 'party'), $party),
@@ -115,8 +115,6 @@ else
 let $scope := if ($order = 'updated') then
     'properties'
 else if ($order = '-updated') then
-    'properties'
-else if (exists($query12)) then
     'properties'
 else
     'documents'
