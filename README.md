@@ -20,6 +20,7 @@ This is the central repository for the [Find Case Law service](https://caselaw.n
 * [Editorial UI](https://github.com/nationalarchives/ds-caselaw-editor-ui)
 * [Ingester](https://github.com/nationalarchives/ds-caselaw-ingester)
 * [PDF conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion)
+* [Privileged API](https://github.com/nationalarchives/ds-caselaw-privileged-api)
 
 ### Configuration
 
@@ -33,19 +34,24 @@ For historical reasons, some parts of the service are contained in this reposito
 * [API client](https://github.com/nationalarchives/ds-caselaw-custom-api-client)
 * [Utility library](https://github.com/nationalarchives/ds-caselaw-utils)
 
-### Related services
+### Content
 
-Services provide data to, or take data from, this system.
-
-* [Transformation Engine](https://github.com/nationalarchives/da-transform-dev-documentation/blob/develop/editorial-system-integration/README.md)
-* [Enrichment Service](https://github.com/nationalarchives/ds-caselaw-data-enrichment-service)
+* [Custom PDFs](https://github.com/nationalarchives/ds-caselaw-custom-pdfs)
 
 ### Prototypes
 
 Design-phase prototype code.
 
+* [Prototypes](https://github.com/nationalarchives/ds-caselaw-prototypes)
 * [Frontend Prototypes](https://github.com/nationalarchives/ds-caselaw-frontend)
 * [Marklogic Prototype](https://github.com/mangiafico/tna-judgments-website)
+
+## Related services
+
+Services provide data to, or take data from, this system.
+
+* [Transformation Engine](https://github.com/nationalarchives/da-transform-dev-documentation/blob/develop/editorial-system-integration/README.md)
+* [Enrichment Service](https://github.com/nationalarchives/ds-caselaw-data-enrichment-service)
 
 ## Architecture
 
