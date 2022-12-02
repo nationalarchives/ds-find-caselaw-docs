@@ -22,6 +22,8 @@ This is the central repository for the [Find Case Law service](https://caselaw.n
 * [PDF conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion)
 * [Privileged API](https://github.com/nationalarchives/ds-caselaw-privileged-api)
 
+Want an overview of all our repositories? Check the [repository dashboard](/repo-dashboard.md).
+
 ### Configuration
 
 For historical reasons, some parts of the service are contained in this repository.
