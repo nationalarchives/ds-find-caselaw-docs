@@ -1,6 +1,8 @@
-# Find Case Law
+# The National Archives: Find Case Law
 
-[![standard-readme compliant](https://img.shields.io/badge/readme%20style-standard-brightgreen.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
+This repository is part of the [Find Case Law](https://caselaw.nationalarchives.gov.uk/) project at [The National Archives](https://www.nationalarchives.gov.uk/).
+
+# Project Documentation
 
 ## Table of Contents
 
