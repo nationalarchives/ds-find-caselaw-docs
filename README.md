@@ -15,33 +15,35 @@ This is the central repository for the [Find Case Law service](https://caselaw.n
 
 If you are looking for documentation covering user research, design decisions or accessibility, take a look at the [Wiki](https://github.com/nationalarchives/ds-find-caselaw-docs/wiki).
 
-## Parts of the service
+## Repositories
 
-* [Public Access UI](https://github.com/nationalarchives/ds-caselaw-public-ui)
-* [Editorial UI](https://github.com/nationalarchives/ds-caselaw-editor-ui)
-* [Ingester](https://github.com/nationalarchives/ds-caselaw-ingester)
-* [PDF conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion)
-* [Privileged API](https://github.com/nationalarchives/ds-caselaw-privileged-api)
+<!-- Begin list of repositories -->
+<!-- This section is automatically generated from scripts/build_repo_lists. You shouldn't edit it manually. -->
+| Repository | Description |
+| --- | --- |
+| [ds-find-caselaw-docs](https://github.com/nationalarchives/ds-find-caselaw-docs) | High-level documentation for the service, and MarkLogic configuration. |
+| [ds-caselaw-public-ui](https://github.com/nationalarchives/ds-caselaw-public-ui) | Public interface to the service. |
+| [ds-caselaw-editor-ui](https://github.com/nationalarchives/ds-caselaw-editor-ui) | Editor interface to the service. |
+| [ds-caselaw-ingester](https://github.com/nationalarchives/ds-caselaw-ingester) | Ingests cases from the Transformation Engine into MarkLogic. |
+| [ds-caselaw-pdf-conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion) | Converts a judgement to PDF. |
+| [ds-caselaw-privileged-api](https://github.com/nationalarchives/ds-caselaw-privileged-api) | The API which annotating services talk to. |
+| [ds-caselaw-custom-api-client](https://github.com/nationalarchives/ds-caselaw-custom-api-client) | API client to interface with MarkLogic. |
+| [ds-caselaw-utils](https://github.com/nationalarchives/ds-caselaw-utils) | Common utilities across codebases. |
+| [ds-caselaw-custom-pdfs](https://github.com/nationalarchives/ds-caselaw-custom-pdfs) | Custom PDFs to overwrite generated ones. |
+<!-- End list of repositories -->
 
-Want an overview of all our repositories? Check the [repository dashboard](/repo-dashboard.md).
+See the [repository dashboard](/repo-dashboard.md) for an overview of things like pull requests and release versions.
 
-### Configuration
+### Configurations
 
 For historical reasons, some parts of the service are contained in this repository.
 
 * [Marklogic database configuration](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/marklogic)
 * [OpenAPI specification](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/doc/openapi)
 
-### Shared support libraries
+### Other repositories
 
-* [API client](https://github.com/nationalarchives/ds-caselaw-custom-api-client)
-* [Utility library](https://github.com/nationalarchives/ds-caselaw-utils)
-
-### Content
-
-* [Custom PDFs](https://github.com/nationalarchives/ds-caselaw-custom-pdfs)
-
-### Prototypes
+#### Prototypes
 
 Design-phase prototype code.
 
@@ -49,7 +51,7 @@ Design-phase prototype code.
 * [Frontend Prototypes](https://github.com/nationalarchives/ds-caselaw-frontend)
 * [Marklogic Prototype](https://github.com/mangiafico/tna-judgments-website)
 
-## Related services
+#### Related services
 
 Services provide data to, or take data from, this system.
 
