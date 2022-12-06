@@ -3,15 +3,42 @@
 print("Building dashboard...")
 
 REPOSITORIES = [
-    {"id": "ds-find-caselaw-docs"},
-    {"id": "ds-caselaw-public-ui"},
-    {"id": "ds-caselaw-editor-ui"},
-    {"id": "ds-caselaw-ingester"},
-    {"id": "ds-caselaw-pdf-conversion"},
-    {"id": "ds-caselaw-privileged-api"},
-    {"id": "ds-caselaw-custom-api-client"},
-    {"id": "ds-caselaw-utils"},
-    {"id": "ds-caselaw-custom-pdfs"},
+    {
+        "id": "ds-find-caselaw-docs",
+        "description": "High-level documentation for the service, and MarkLogic configuration.",
+    },
+    {
+        "id": "ds-caselaw-public-ui",
+        "description": "Public interface to the service.",
+    },
+    {
+        "id": "ds-caselaw-editor-ui",
+        "description": "Editor interface to the service.",
+    },
+    {
+        "id": "ds-caselaw-ingester",
+        "description": "Ingests cases from the Transformation Engine into MarkLogic.",
+    },
+    {
+        "id": "ds-caselaw-pdf-conversion",
+        "description": "Converts a judgement to PDF.",
+    },
+    {
+        "id": "ds-caselaw-privileged-api",
+        "description": "The API which annotating services talk to.",
+    },
+    {
+        "id": "ds-caselaw-custom-api-client",
+        "description": "API client to interface with MarkLogic.",
+    },
+    {
+        "id": "ds-caselaw-utils",
+        "description": "Common utilities across codebases.",
+    },
+    {
+        "id": "ds-caselaw-custom-pdfs",
+        "description": "Custom PDFs to overwrite generated ones.",
+    },
 ]
 
 with open("repo-dashboard.md", "w") as f:
@@ -22,9 +49,9 @@ with open("repo-dashboard.md", "w") as f:
     )
     f.write("\n")
     f.write(
-        "| Repository | Pull requests | Latest release | Latest commit (`main`) |\n"
+        "| Repository | Description | Pull requests | Latest release | Latest commit (`main`) |\n"
     )
-    f.write("| --- | --- | --- | --- |\n")
+    f.write("| --- | --- | --- | --- | --- |\n")
 
     for repo in REPOSITORIES:
 
@@ -33,14 +60,21 @@ with open("repo-dashboard.md", "w") as f:
 
         f.write("| ")
         f.write(f"[{repo_name}]({repo_base_url})")
+
+        f.write(" | ")
+        if "description" in repo:
+            f.write(repo["description"])
+
         f.write(" | ")
         f.write(
             f"[![Pull requests](https://img.shields.io/github/issues-pr/nationalarchives/{repo_name}?label)]({repo_base_url}/pulls)"
         )
+
         f.write(" | ")
         f.write(
             f"[![Latest release](https://img.shields.io/github/v/release/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)"
         )
+
         f.write(" | ")
         f.write(
             f"[![Latest commit to main](https://img.shields.io/github/last-commit/nationalarchives/{repo_name}/main?label)]({repo_base_url}/commits)"
