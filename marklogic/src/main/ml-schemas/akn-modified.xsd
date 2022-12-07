@@ -3,8 +3,8 @@
             xmlns:xsd="http://www.w3.org/2001/XMLSchema"
             targetNamespace="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
             xmlns:uk="https://caselaw.nationalarchives.gov.uk/akn"
-            elementFormDefault="qualified">
-
+            elementFormDefault="qualified"
+						version="3.0-nationalarchives.0.5">
 
 	  <xsd:import namespace="http://www.w3.org/XML/1998/namespace"
                schemaLocation="./xml.xsd"/>
