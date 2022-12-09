@@ -210,7 +210,7 @@
 
 <xsl:template match="blockContainer/num">
 	<span>
-		<xsl:apply-templates />
+		<xsl:call-template name="inline" />
 	</span>
 </xsl:template>
 
@@ -396,6 +396,9 @@
 	<xsl:call-template name="inline" />
 </xsl:template>
 
+<!-- all of the inline properties the parser produces -->
+<xsl:variable name="inline-properties" as="xs:string+" select="('font-family', 'font-size', 'font-weight', 'font-style', 'font-variant', 'color', 'background-color', 'text-transform', 'text-decoration-line', 'text-decoration-style')" />
+
 <xsl:function name="uk:get-combined-inline-styles" as="xs:string*">
 	<xsl:param name="e" as="element()" />
 	<xsl:variable name="from-class-attr" as="xs:string*">
@@ -403,20 +406,32 @@
 			<xsl:variable name="regex" as="xs:string" select="concat('\.', $e/@class, ' \{([^\}]+)')" />
 			<xsl:analyze-string select="$global-styles" regex="{ $regex }">
 				<xsl:matching-substring>
-					<xsl:sequence select="tokenize(regex-group(1), ';')[normalize-space(.)]"/>
+					<xsl:for-each select="tokenize(regex-group(1), ';')">
+						<xsl:variable name="prop" as="xs:string" select="normalize-space(substring-before(., ':'))" />
+						<xsl:if test="$prop = $inline-properties">
+							<xsl:sequence select="normalize-space(.)" />
+						</xsl:if>
+					</xsl:for-each>
 				</xsl:matching-substring>
 			</xsl:analyze-string>
 		</xsl:if>
 	</xsl:variable>
-	<xsl:variable name="from-style-attr" as="xs:string*" select="tokenize($e/@style, ';')[normalize-space(.)]" />
-	<xsl:variable name="style-selectors" as="xs:string*">
+	<xsl:variable name="from-style-attr" as="xs:string*">
+		<xsl:for-each select="tokenize($e/@style, ';')">
+			<xsl:variable name="prop" as="xs:string" select="normalize-space(substring-before(., ':'))" />
+			<xsl:if test="$prop = $inline-properties">
+				<xsl:sequence select="normalize-space(.)" />
+			</xsl:if>
+		</xsl:for-each>
+	</xsl:variable>
+	<xsl:variable name="style-properties" as="xs:string*">
 		<xsl:for-each select="$from-style-attr">
 			<xsl:sequence select="normalize-space(substring-before(., ':'))" />
 		</xsl:for-each>
 	</xsl:variable>
 	<xsl:for-each select="$from-class-attr">
-		<xsl:variable name="selector" as="xs:string" select="normalize-space(substring-before(., ':'))" />
-		<xsl:if test="not($selector = $style-selectors)">
+		<xsl:variable name="prop" as="xs:string" select="normalize-space(substring-before(., ':'))" />
+		<xsl:if test="not($prop = $style-properties)">
 			<xsl:sequence select="." />
 		</xsl:if>
 	</xsl:for-each>
