@@ -1,0 +1,851 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema targetNamespace="https://caselaw.nationalarchives.gov.uk/akn"
+           xmlns="https://caselaw.nationalarchives.gov.uk/akn"
+					 xmlns:akn="http://docs.oasis-open.org/legaldocml/ns/akn/3.0"
+					 xmlns:xs="http://www.w3.org/2001/XMLSchema"
+					 version="0.5">
+
+<xs:import namespace="http://docs.oasis-open.org/legaldocml/ns/akn/3.0" schemaLocation="./akn-modified.xsd" />
+
+<!-- metadata -->
+
+<xs:complexType name="proprietaryType">
+	<xs:annotation>
+		<xs:documentation>
+			<p>A restriction of the LegalDocML "proprietary" metadata element</p>
+		</xs:documentation>
+	</xs:annotation>
+	<xs:all>
+		<xs:element ref="court" minOccurs="0"/>
+		<xs:element ref="year" minOccurs="0"/>
+		<xs:element ref="number" minOccurs="0"/>
+		<xs:element ref="cite" minOccurs="0"/>
+		<xs:element ref="parser"/>
+		<xs:element ref="hash"/>
+	</xs:all>
+	<xs:attributeGroup ref="akn:source"/>
+</xs:complexType>
+
+<xs:element name="court" type="mainCourtsType">
+	<xs:annotation>
+		<xs:documentation>
+			<p>The court responsible for the judgment</p>
+		</xs:documentation>
+	</xs:annotation>
+</xs:element>
+
+<xs:element name="year" type="xs:gYear">
+	<xs:annotation>
+		<xs:documentation>
+			<p>The year of the judgment</p>
+		</xs:documentation>
+	</xs:annotation>
+</xs:element>
+
+<xs:element name="number">
+	<xs:annotation>
+		<xs:documentation>
+			<p>The number of the judgment</p>
+		</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType>
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:element>
+
+<xs:element name="cite" type="xs:string">
+	<xs:annotation>
+		<xs:documentation>
+			<p>The neutral citation</p>
+		</xs:documentation>
+	</xs:annotation>
+</xs:element>
+
+<xs:element name="parser">
+	<xs:annotation>
+		<xs:documentation>
+			<p>The version of the parser that generated the XML</p>
+		</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-9]+\.[0-9]+\.[0-9]+" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:element>
+
+<xs:element name="hash">
+	<xs:annotation>
+		<xs:documentation>
+			<p>The SHA-256 hash of the textual content of the document, excluding metadata elements and all whitespace</p>
+		</xs:documentation>
+	</xs:annotation>
+	<xs:simpleType>
+		<xs:restriction base="xs:hexBinary">
+			<xs:length value="32" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:element>
+
+
+<!-- references -->
+
+<xs:attributeGroup name="refAttributes">
+	<xs:attribute ref="type" use="optional" />
+	<xs:attribute ref="canonical" use="required" />
+	<xs:attribute ref="jurisdiction" />
+	<xs:attribute ref="reportSeries" />
+	<xs:attribute ref="isNeutral" />
+	<xs:attribute ref="court" />
+	<xs:attribute ref="year" />
+	<xs:attribute ref="neutral" />
+</xs:attributeGroup>
+
+<xs:attribute name="type">
+	<xs:simpleType>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="case" />
+			<xs:enumeration value="legislation" />
+		</xs:restriction>
+	</xs:simpleType>
+</xs:attribute>
+
+<xs:attribute name="canonical" type="xs:string" />
+
+<xs:attribute name="jurisdiction" type="xs:string" />
+
+<xs:attribute name="reportSeries" type="reportSeriesType" />
+
+<xs:attribute name="isNeutral" type="xs:boolean" />
+
+<xs:attribute name="court">
+	<xs:simpleType>
+		<xs:union memberTypes="mainCourtsType otherCourtsType" />
+	</xs:simpleType>
+</xs:attribute>
+
+<xs:attribute name="year" type="xs:gYear" />
+
+<xs:attribute name="neutral" type="xs:string" />
+
+
+<!-- types -->
+
+<xs:simpleType name="mainCourtsType">
+	<xs:annotation>
+		<xs:documentation>
+			<p>Codes representing the courts whose judgments are available at https://caselaw.nationalarchives.gov.uk</p>
+			<p>One of these values will be present in the "uk:court" element within the "akn:proprietary" metadata element.</p>
+		</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="UKSC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Supreme Court</name>
+					<link>https://www.supremecourt.uk/</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="UKPC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Judicial Committee of the Privy Council</name>
+					<link>https://www.jcpc.uk/</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWCA-Criminal">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Court of Appeal Criminal Division</name>
+					<link>https://www.gov.uk/courts-tribunals/court-of-appeal-criminal-division</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWCA-Civil">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Court of Appeal Civil Division</name>
+					<link>https://www.gov.uk/courts-tribunals/court-of-appeal-civil-division</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The High Court</name>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-QBD">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Queen's Bench Division of the High Court</name>
+					<link>https://www.gov.uk/courts-tribunals/queens-bench-division-of-the-high-court</link>
+					<note>The same court as EWHC-KBD, used when the monarch is a queen</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-KBD">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Kings's Bench Division of the High Court</name>
+					<note>The same court as EWHC-QBD, used when the monarch is a king</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-Chancery">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Chancery Division of the High Court</name>
+					<link>https://www.gov.uk/courts-tribunals/chancery-division-of-the-high-court</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-Family">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Family Division of the High Court</name>
+					<link>https://www.gov.uk/courts-tribunals/family-division-of-the-high-court</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-QBD-Admin">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Administrative Court</name>
+					<link>https://www.gov.uk/courts-tribunals/administrative-court</link>
+					<note>The same court as EWHC-KBD-Admin, used when the monarch is a queen</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-KBD-Admin">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Administrative Court</name>
+					<note>The same court as EWHC-QBD-Admin, used when the monarch is a king</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-QBD-Planning">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Planning Court</name>
+					<link>https://www.gov.uk/courts-tribunals/planning-court</link>
+					<note>The same court as EWHC-KBD-Planning, used when the monarch is a queen</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-KBD-Planning">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Planning Court</name>
+					<note>The same court as EWHC-QBD-Planning, used when the monarch is a king</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-QBD-BusinessAndProperty">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Business and Property Courts</name>
+					<link>https://www.gov.uk/courts-tribunals/the-business-and-property-courts</link>
+					<note>The same court as EWHC-KBD-BusinessAndProperty, used when the monarch is a queen</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-KBD-BusinessAndProperty">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Business and Property Courts</name>
+					<note>The same court as EWHC-QBD-BusinessAndProperty, used when the monarch is a king</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-QBD-Commercial">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Commercial Court</name>
+					<link>https://www.gov.uk/courts-tribunals/commercial-court</link>
+					<note>The same court as EWHC-KBD-Commercial, used when the monarch is a queen</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-KBD-Commercial">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Commercial Court</name>
+					<note>The same court as EWHC-QBD-Commercial, used when the monarch is a king</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-QBD-Admiralty">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Admiralty Court</name>
+					<link>https://www.gov.uk/courts-tribunals/admiralty-court</link>
+					<note>The same court as EWHC-KBD-Admiralty, used when the monarch is a queen</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-KBD-Admiralty">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Admiralty Court</name>
+					<note>The same court as EWHC-QBD-Admiralty, used when the monarch is a king</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-QBD-TCC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Technology and Construction Court</name>
+					<link>https://www.gov.uk/courts-tribunals/technology-and-construction-court</link>
+					<note>The same court as EWHC-KBD-TCC, used when the monarch is a queen</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-KBD-TCC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Technology and Construction Court</name>
+					<note>The same court as EWHC-QBD-TCC, used when the monarch is a king</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-QBD-Commercial-Financial">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Financial List</name>
+					<link>https://www.gov.uk/courts-tribunals/the-financial-list</link>
+					<note>The same court as EWHC-KBD-Commercial-Financial, used when the monarch is a queen</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-KBD-Commercial-Financial">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Financial List</name>
+					<note>The same court as EWHC-QBD-Commercial-Financial, used when the monarch is a king</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-QBD-Commercial-Circuit">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Circuit Commercial Court</name>
+					<link>https://www.gov.uk/courts-tribunals/commercial-circuit-court</link>
+					<note>The same court as EWHC-KBD-Commercial-Circuit, used when the monarch is a queen</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-KBD-Commercial-Circuit">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Circuit Commercial Court</name>
+					<note>The same court as EWHC-QBD-Commercial-Circuit, used when the monarch is a king</note>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-Chancery-BusinessAndProperty">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Business and Property Courts</name>
+					<link>https://www.gov.uk/courts-tribunals/the-business-and-property-courts</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-Chancery-Business">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Business List</name>
+					<link>https://www.gov.uk/courts-tribunals/the-business-list</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-Chancery-InsolvencyAndCompanies">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Insolvency and Companies List</name>
+					<link>https://www.gov.uk/courts-tribunals/insolvency-list</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-Chancery-Financial">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Financial List</name>
+					<link>https://www.gov.uk/courts-tribunals/the-financial-list</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-Chancery-IntellectualProperty">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Intellectual Property List</name>
+					<link>https://www.gov.uk/courts-tribunals/the-intellectual-property-list</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-Chancery-Patents">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Patents Court</name>
+					<link>https://www.gov.uk/courts-tribunals/patents-court</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-Chancery-PropertyTrustsProbate">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Property, Trusts and Probate List</name>
+					<link>https://www.gov.uk/courts-tribunals/the-property-trusts-and-probate-list</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-Chancery-IPEC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Intellectual Property Enterprise Court</name>
+					<link>https://www.gov.uk/courts-tribunals/intellectual-property-enterprise-court</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-Chancery-Appeals">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Chancery Appeals</name>
+					<link>https://www.gov.uk/courts-tribunals/chancery-division-of-the-high-court</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWHC-SeniorCourtsCosts">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Senior Courts Costs Office</name>
+					<link>https://www.gov.uk/courts-tribunals/senior-courts-costs-office</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWCOP">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Court of Protection</name>
+					<link>https://www.gov.uk/courts-tribunals/court-of-protection</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EWFC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>The Family Court</name>
+					<link>https://www.judiciary.uk/you-and-the-judiciary/going-to-court/family-law-courts/</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="UKUT-AAC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Upper Tribunal (Administrative Appeals Chamber)</name>
+					<link>https://www.gov.uk/courts-tribunals/upper-tribunal-administrative-appeals-chamber</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="UKUT-IAC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Upper Tribunal (Immigration and Asylum Chamber)</name>
+					<link>https://www.gov.uk/courts-tribunals/upper-tribunal-immigration-and-asylum-chamber</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="UKUT-LC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Upper Tribunal (Lands Chamber)</name>
+					<link>https://www.gov.uk/courts-tribunals/upper-tribunal-lands-chamber</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="UKUT-TCC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Upper Tribunal (Tax and Chancery Chamber)</name>
+					<link>https://www.gov.uk/courts-tribunals/upper-tribunal-tax-and-chancery-chamber</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="EAT">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Employment Appeal Tribunal</name>
+					<link>https://www.gov.uk/courts-tribunals/employment-appeal-tribunal</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="UKFTT-TC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>First-tier Tribunal (Tax)</name>
+					<link>https://www.gov.uk/courts-tribunals/first-tier-tribunal-tax</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="UKFTT-GRC">
+			<xs:annotation>
+				<xs:documentation>
+					<name>First-tier Tribunal (General Regulatory Chamber)</name>
+					<link>https://www.gov.uk/courts-tribunals/first-tier-tribunal-general-regulatory-chamber</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+		<xs:enumeration value="ET">
+			<xs:annotation>
+				<xs:documentation>
+					<name>Employment Tribunal</name>
+					<link>https://www.gov.uk/courts-tribunals/employment-tribunal</link>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:enumeration>
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="otherCourtsType">
+	<xs:annotation>
+		<xs:documentation>
+			<p>Codes representing the courts, in addition to those above, that may be refered to by a <ref/> element</p>
+		</xs:documentation>
+	</xs:annotation>
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="ABCA" />
+		<xs:enumeration value="ABQB" />
+		<xs:enumeration value="BCCA" />
+		<xs:enumeration value="BCSC" />
+		<xs:enumeration value="CCJ" />
+		<xs:enumeration value="CM" />
+		<xs:enumeration value="CSIH" />
+		<xs:enumeration value="CSOH" />
+		<xs:enumeration value="ECHR" />
+		<xs:enumeration value="ECJ" />
+		<xs:enumeration value="EW-Misc" />
+		<xs:enumeration value="EWCA" />
+		<xs:enumeration value="EWFC" />
+		<xs:enumeration value="EWPCC" />
+		<xs:enumeration value="FAMCA" />
+		<xs:enumeration value="FC" />
+		<xs:enumeration value="FCA" />
+		<xs:enumeration value="FCAFC" />
+		<xs:enumeration value="FCJ-NO" />
+		<xs:enumeration value="FMCA" />
+		<xs:enumeration value="GC" />
+		<xs:enumeration value="HCA" />
+		<xs:enumeration value="HCJAC" />
+		<xs:enumeration value="HKCA" />
+		<xs:enumeration value="HKCFA" />
+		<xs:enumeration value="HKCFI" />
+		<xs:enumeration value="HKSC" />
+		<xs:enumeration value="IECA" />
+		<xs:enumeration value="IEHC" />
+		<xs:enumeration value="IESC" />
+		<xs:enumeration value="JCA" />
+		<xs:enumeration value="JMCA-APP" />
+		<xs:enumeration value="JMCA-CIV" />
+		<xs:enumeration value="JMFC-FULL" />
+		<xs:enumeration value="JRC" />
+		<xs:enumeration value="NI-CH" />
+		<xs:enumeration value="NICA" />
+		<xs:enumeration value="NICC" />
+		<xs:enumeration value="NICH" />
+		<xs:enumeration value="NIFAM" />
+		<xs:enumeration value="NIQB" />
+		<xs:enumeration value="NSCA" />
+		<xs:enumeration value="MSWCA" />
+		<xs:enumeration value="MSWSC" />
+		<xs:enumeration value="NTSC" />
+		<xs:enumeration value="NZCA" />
+		<xs:enumeration value="NZHC" />
+		<xs:enumeration value="NZSC" />
+		<xs:enumeration value="OJ" />
+		<xs:enumeration value="OJ-EPO" />
+		<xs:enumeration value="OJ-NO" />
+		<xs:enumeration value="ONCA" />
+		<xs:enumeration value="ONSC" />
+		<xs:enumeration value="QCA" />
+		<xs:enumeration value="QCCS" />
+		<xs:enumeration value="QSC" />
+		<xs:enumeration value="SASC" />
+		<xs:enumeration value="SCC" />
+		<xs:enumeration value="SCJ" />
+		<xs:enumeration value="SGCA" />
+		<xs:enumeration value="SGHC" />
+		<xs:enumeration value="SGPC" />
+		<xs:enumeration value="SKCA" />
+		<xs:enumeration value="SKQB" />
+		<xs:enumeration value="TASSC" />
+		<xs:enumeration value="TCC" />
+		<xs:enumeration value="UKAIT" />
+		<xs:enumeration value="UKEAT" />
+		<xs:enumeration value="UKHL" />
+		<xs:enumeration value="UKIAT" />
+		<xs:enumeration value="UKUT" />
+		<xs:enumeration value="VSC" />
+		<xs:enumeration value="VSCA" />
+		<xs:enumeration value="WASC" />
+		<xs:enumeration value="WASCA" />
+		<!-- found in samples -->
+		<xs:enumeration value="Cm" />
+		<xs:enumeration value="csih" />
+		<xs:enumeration value="csih" />
+		<xs:enumeration value="csoh" />
+		<xs:enumeration value="ecj" />
+		<xs:enumeration value="ewcc" />
+		<xs:enumeration value="ewcop" />
+		<xs:enumeration value="ewfc" />
+		<xs:enumeration value="EWHC-COP" />
+		<xs:enumeration value="ewhc" />
+		<xs:enumeration value="ewpcc" />
+		<xs:enumeration value="gc" />
+		<xs:enumeration value="ni" />
+		<xs:enumeration value="nifam" />
+		<xs:enumeration value="niqb" />
+		<xs:enumeration value="NSWCA" />
+		<xs:enumeration value="NSWSC" />
+		<xs:enumeration value="ukait" />
+		<xs:enumeration value="ukhl" />
+		<xs:enumeration value="ukiat" />
+		<xs:enumeration value="ukpc" />
+		<xs:enumeration value="uksc" />
+	</xs:restriction>
+</xs:simpleType>
+
+<xs:simpleType name="reportSeriesType">
+	<xs:restriction base="xs:string">
+		<xs:enumeration value="sw"/>
+		<xs:enumeration value="r"/>
+		<xs:enumeration value="f"/>
+		<xs:enumeration value="cl"/>
+		<xs:enumeration value="ac"/>
+		<xs:enumeration value="acd"/>
+		<xs:enumeration value="aclc"/>
+		<xs:enumeration value="acsr"/>
+		<xs:enumeration value="actr"/>
+		<xs:enumeration value="ad"/>
+		<xs:enumeration value="adrlj"/>
+		<xs:enumeration value="air"/>
+		<xs:enumeration value="ajil"/>
+		<xs:enumeration value="al"/>
+		<xs:enumeration value="alj"/>
+		<xs:enumeration value="aljr"/>
+		<xs:enumeration value="all-er"/>
+		<xs:enumeration value="alr"/>
+		<xs:enumeration value="amc"/>
+		<xs:enumeration value="apr"/>
+		<xs:enumeration value="ar"/>
+		<xs:enumeration value="atc"/>
+		<xs:enumeration value="atk"/>
+		<xs:enumeration value="atr"/>
+		<xs:enumeration value="bcc"/>
+		<xs:enumeration value="bcl"/>
+		<xs:enumeration value="bclc"/>
+		<xs:enumeration value="bclr"/>
+		<xs:enumeration value="bctc"/>
+		<xs:enumeration value="bcwld"/>
+		<xs:enumeration value="bhrc"/>
+		<xs:enumeration value="blgr"/>
+		<xs:enumeration value="blr"/>
+		<xs:enumeration value="bmlr"/>
+		<xs:enumeration value="bpir"/>
+		<xs:enumeration value="br"/>
+		<xs:enumeration value="btc"/>
+		<xs:enumeration value="bvc"/>
+		<xs:enumeration value="bwcc"/>
+		<xs:enumeration value="byil"/>
+		<xs:enumeration value="ca"/>
+		<xs:enumeration value="cb"/>
+		<xs:enumeration value="cbns"/>
+		<xs:enumeration value="ccc"/>
+		<xs:enumeration value="cclr"/>
+		<xs:enumeration value="cec"/>
+		<xs:enumeration value="chrr"/>
+		<xs:enumeration value="cill"/>
+		<xs:enumeration value="cilr"/>
+		<xs:enumeration value="clc"/>
+		<xs:enumeration value="clj"/>
+		<xs:enumeration value="clr"/>
+		<xs:enumeration value="cly"/>
+		<xs:enumeration value="cmlr"/>
+		<xs:enumeration value="cnlr"/>
+		<xs:enumeration value="cod"/>
+		<xs:enumeration value="conlr"/>
+		<xs:enumeration value="cplr"/>
+		<xs:enumeration value="cr"/>
+		<xs:enumeration value="cr-app-r"/>
+		<xs:enumeration value="dlr"/>
+		<xs:enumeration value="ecr"/>
+		<xs:enumeration value="eg"/>
+		<xs:enumeration value="egcs"/>
+		<xs:enumeration value="egd"/>
+		<xs:enumeration value="eglr"/>
+		<xs:enumeration value="ehlr"/>
+		<xs:enumeration value="ehrlr"/>
+		<xs:enumeration value="ehrr"/>
+		<xs:enumeration value="elr"/>
+		<xs:enumeration value="emlr"/>
+		<xs:enumeration value="envlr"/>
+		<xs:enumeration value="epor"/>
+		<xs:enumeration value="er"/>
+		<xs:enumeration value="etmr"/>
+		<xs:enumeration value="ex"/>
+		<xs:enumeration value="fcr"/>
+		<xs:enumeration value="flc"/>
+		<xs:enumeration value="flr"/>
+		<xs:enumeration value="frd"/>
+		<xs:enumeration value="fsr"/>
+		<xs:enumeration value="ftlr"/>
+		<xs:enumeration value="gccr"/>
+		<xs:enumeration value="grur"/>
+		<xs:enumeration value="hare"/>
+		<xs:enumeration value="hkc"/>
+		<xs:enumeration value="hklr"/>
+		<xs:enumeration value="hklrd"/>
+		<xs:enumeration value="hlc"/>
+		<xs:enumeration value="hlr"/>
+		<xs:enumeration value="hrlr"/>
+		<xs:enumeration value="iclr"/>
+		<xs:enumeration value="icr"/>
+		<xs:enumeration value="ihrr"/>
+		<xs:enumeration value="ilj"/>
+		<xs:enumeration value="ilm"/>
+		<xs:enumeration value="ilpr"/>
+		<xs:enumeration value="ilr"/>
+		<xs:enumeration value="ilrm"/>
+		<xs:enumeration value="inlr"/>
+		<xs:enumeration value="ipr"/>
+		<xs:enumeration value="ir"/>
+		<xs:enumeration value="itelr"/>
+		<xs:enumeration value="itlr"/>
+		<xs:enumeration value="jc"/>
+		<xs:enumeration value="jca"/>
+		<xs:enumeration value="jibfl"/>
+		<xs:enumeration value="jj"/>
+		<xs:enumeration value="jlr"/>
+		<xs:enumeration value="jp"/>
+		<xs:enumeration value="jpel"/>
+		<xs:enumeration value="jpil"/>
+		<xs:enumeration value="jpl"/>
+		<xs:enumeration value="jrc"/>
+		<xs:enumeration value="jt"/>
+		<xs:enumeration value="kir"/>
+		<xs:enumeration value="la"/>
+		<xs:enumeration value="lac"/>
+		<xs:enumeration value="lbr"/>
+		<xs:enumeration value="lgr"/>
+		<xs:enumeration value="lgra"/>
+		<xs:enumeration value="ljkb"/>
+		<xs:enumeration value="ljp"/>
+		<xs:enumeration value="ljpc"/>
+		<xs:enumeration value="ljqb"/>
+		<xs:enumeration value="ljr"/>
+		<xs:enumeration value="llr"/>
+		<xs:enumeration value="lmclq"/>
+		<xs:enumeration value="lmln"/>
+		<xs:enumeration value="lrc"/>
+		<xs:enumeration value="lrir"/>
+		<xs:enumeration value="lrlr"/>
+		<xs:enumeration value="lsg"/>
+		<xs:enumeration value="lt"/>
+		<xs:enumeration value="ltr"/>
+		<xs:enumeration value="mc"/>
+		<xs:enumeration value="mer"/>
+		<xs:enumeration value="mhlr"/>
+		<xs:enumeration value="mlj"/>
+		<xs:enumeration value="mvr"/>
+		<xs:enumeration value="nc"/>
+		<xs:enumeration value="ne"/>
+		<xs:enumeration value="ni"/>
+		<xs:enumeration value="nijb"/>
+		<xs:enumeration value="nijr"/>
+		<xs:enumeration value="nlj"/>
+		<xs:enumeration value="npc"/>
+		<xs:enumeration value="nswlr"/>
+		<xs:enumeration value="nswsr"/>
+		<xs:enumeration value="ntr"/>
+		<xs:enumeration value="nw"/>
+		<xs:enumeration value="ny"/>
+		<xs:enumeration value="nys"/>
+		<xs:enumeration value="nzar"/>
+		<xs:enumeration value="nzflr"/>
+		<xs:enumeration value="nzlr"/>
+		<xs:enumeration value="oplr"/>
+		<xs:enumeration value="pc"/>
+		<xs:enumeration value="pcb"/>
+		<xs:enumeration value="pcc"/>
+		<xs:enumeration value="piqr"/>
+		<xs:enumeration value="pl"/>
+		<xs:enumeration value="plcr"/>
+		<xs:enumeration value="plr"/>
+		<xs:enumeration value="pn"/>
+		<xs:enumeration value="pnlr"/>
+		<xs:enumeration value="ptsr"/>
+		<xs:enumeration value="qb"/>
+		<xs:enumeration value="qr"/>
+		<xs:enumeration value="ra"/>
+		<xs:enumeration value="rcs"/>
+		<xs:enumeration value="rpc"/>
+		<xs:enumeration value="rrc"/>
+		<xs:enumeration value="rtr"/>
+		<xs:enumeration value="rvr"/>
+		<xs:enumeration value="sa"/>
+		<xs:enumeration value="sasr"/>
+		<xs:enumeration value="sc"/>
+		<xs:enumeration value="sca"/>
+		<xs:enumeration value="sccr"/>
+		<xs:enumeration value="scl"/>
+		<xs:enumeration value="sclr"/>
+		<xs:enumeration value="scr"/>
+		<xs:enumeration value="sftd"/>
+		<xs:enumeration value="sim"/>
+		<xs:enumeration value="sj"/>
+		<xs:enumeration value="sjlb"/>
+		<xs:enumeration value="slr"/>
+		<xs:enumeration value="slt"/>
+		<xs:enumeration value="spc"/>
+		<xs:enumeration value="tc"/>
+		<xs:enumeration value="tclr"/>
+		<xs:enumeration value="tlr"/>
+		<xs:enumeration value="tr"/>
+		<xs:enumeration value="ts"/>
+		<xs:enumeration value="ugsc"/>
+		<xs:enumeration value="ukclr"/>
+		<xs:enumeration value="ukftt"/>
+		<xs:enumeration value="ukhrr"/>
+		<xs:enumeration value="uspq"/>
+		<xs:enumeration value="vattr"/>
+		<xs:enumeration value="vlr"/>
+		<xs:enumeration value="vr"/>
+		<xs:enumeration value="vsc"/>
+		<xs:enumeration value="wir"/>
+		<xs:enumeration value="wl"/>
+		<xs:enumeration value="wlr"/>
+		<xs:enumeration value="wn"/>
+		<xs:enumeration value="wr"/>
+		<xs:enumeration value="wtlr"/>
+		<xs:enumeration value="wwr"/>
+		<xs:enumeration value="zacc"/>
+		<xs:enumeration value="zmsc"/>
+	</xs:restriction>
+</xs:simpleType>
+
+<!-- tables -->
+
+<xs:attribute name="widths" type="xs:string">
+	<xs:annotation>
+		<xs:documentation>
+			<p>A whitespace-separated list of column widths, e.g., "1.5in 3in"</p>
+		</xs:documentation>
+	</xs:annotation>
+</xs:attribute>
+
+</xs:schema>
