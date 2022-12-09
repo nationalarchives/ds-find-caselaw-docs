@@ -216,6 +216,14 @@
 
 <xsl:template match="blockContainer/p[1]">
 	<p>
+		<xsl:if test="exists(ancestor::header)">
+			<xsl:variable name="alignment" as="xs:string?" select="uk:extract-alignment(.)" />
+			<xsl:if test="$alignment = ('center', 'right', 'left')">
+				<xsl:attribute name="class">
+					<xsl:sequence select="concat('judgment-header__pr-', $alignment)" />
+				</xsl:attribute>
+			</xsl:if>
+		</xsl:if>
 		<xsl:apply-templates select="../num" />
 		<xsl:text> </xsl:text>
 		<span>
@@ -228,6 +236,14 @@
 
 <xsl:template match="blockContainer/p[position() gt 1]">
 	<p>
+		<xsl:if test="exists(ancestor::header)">
+			<xsl:variable name="alignment" as="xs:string?" select="uk:extract-alignment(.)" />
+			<xsl:if test="$alignment = ('center', 'right', 'left')">
+				<xsl:attribute name="class">
+					<xsl:sequence select="concat('judgment-header__pr-', $alignment)" />
+				</xsl:attribute>
+			</xsl:if>
+		</xsl:if>
 		<xsl:apply-templates>
 			<xsl:with-param name="is-uppercase" select="uk:is-uppercase(.)" tunnel="yes" />
 		</xsl:apply-templates>
