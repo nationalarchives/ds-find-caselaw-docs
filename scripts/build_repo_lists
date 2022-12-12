@@ -40,8 +40,10 @@ REPOSITORIES = [
     {
         "id": "ds-caselaw-custom-pdfs",
         "description": "Custom PDFs to overwrite generated ones.",
+        "hide_releases": True,
     },
 ]
+NA_STRING = "![n/a](https://img.shields.io/badge/-n%2Fa-eee)"
 
 print("Building dashboard...")
 
@@ -72,18 +74,24 @@ with open("repo-dashboard.md", "w") as f:
         )
 
         f.write(" | ")
-        f.write(
-            f"[![Latest release (GitHub)](https://img.shields.io/github/v/release/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)<br>"
-        )
-        f.write(
-            f"[![GitHub Release Date](https://img.shields.io/github/release-date/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)"
-        )
+
+        if not "hide_releases" in repo or not repo["hide_releases"]:
+            f.write(
+                f"[![Latest release (GitHub)](https://img.shields.io/github/v/release/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)<br>"
+            )
+            f.write(
+                f"[![GitHub Release Date](https://img.shields.io/github/release-date/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)"
+            )
+        else:
+            f.write(NA_STRING)
 
         f.write(" | ")
         if "pypi" in repo:
             f.write(
                 f"[![Latest release (PyPi)](https://img.shields.io/pypi/v/{repo['pypi']}?label)](https://pypi.org/project/{repo['pypi']}/)"
             )
+        else:
+            f.write(NA_STRING)
 
         f.write(" | ")
         f.write(
