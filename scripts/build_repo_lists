@@ -30,10 +30,12 @@ REPOSITORIES = [
     {
         "id": "ds-caselaw-custom-api-client",
         "description": "API client to interface with MarkLogic.",
+        "pypi": "ds-caselaw-marklogic-api-client",
     },
     {
         "id": "ds-caselaw-utils",
         "description": "Common utilities across codebases.",
+        "pypi": "ds-caselaw-utils",
     },
     {
         "id": "ds-caselaw-custom-pdfs",
@@ -51,9 +53,9 @@ with open("repo-dashboard.md", "w") as f:
     )
     f.write("\n")
     f.write(
-        "| Repository | Description | Pull requests | Latest release | Latest commit (`main`) |\n"
+        "| Repository | Description | Pull requests | Latest release (GitHub) | Latest release (PyPi) | Latest commit (`main`) |\n"
     )
-    f.write("| --- | --- | --- | --- | --- |\n")
+    f.write("| --- | --- | --- | --- | --- | --- |\n")
 
     for repo in REPOSITORIES:
 
@@ -74,8 +76,14 @@ with open("repo-dashboard.md", "w") as f:
 
         f.write(" | ")
         f.write(
-            f"[![Latest release](https://img.shields.io/github/v/release/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)"
+            f"[![Latest release (GitHub)](https://img.shields.io/github/v/release/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)"
         )
+
+        f.write(" | ")
+        if "pypi" in repo:
+            f.write(
+                f"[![Latest release (PyPi)](https://img.shields.io/pypi/v/{repo['pypi']}?label)](https://pypi.org/project/{repo['pypi']}/)"
+            )
 
         f.write(" | ")
         f.write(
