@@ -73,7 +73,10 @@ with open("repo-dashboard.md", "w") as f:
 
         f.write(" | ")
         f.write(
-            f"[![Latest release (GitHub)](https://img.shields.io/github/v/release/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)"
+            f"[![Latest release (GitHub)](https://img.shields.io/github/v/release/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)<br>"
+        )
+        f.write(
+            f"[![GitHub Release Date](https://img.shields.io/github/release-date/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)"
         )
 
         f.write(" | ")
