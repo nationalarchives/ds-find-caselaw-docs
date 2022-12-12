@@ -53,9 +53,9 @@ with open("repo-dashboard.md", "w") as f:
     )
     f.write("\n")
     f.write(
-        "| Repository | Description | Pull requests | Latest release (GitHub) | Latest release (PyPi) | Latest commit (`main`) |\n"
+        "| Repository | Pull requests | Latest release (GitHub) | Latest release (PyPi) | Latest commit (`main`) |\n"
     )
-    f.write("| --- | --- | --- | --- | --- | --- |\n")
+    f.write("| --- | --- | --- | --- | --- |\n")
 
     for repo in REPOSITORIES:
 
@@ -65,9 +65,6 @@ with open("repo-dashboard.md", "w") as f:
 
         f.write("| ")
         f.write(f"[{repo_name}]({repo_base_url})")
-
-        f.write(" | ")
-        f.write(repo_description)
 
         f.write(" | ")
         f.write(
