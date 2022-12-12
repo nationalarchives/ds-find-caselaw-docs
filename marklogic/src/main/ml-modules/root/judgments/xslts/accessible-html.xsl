@@ -192,9 +192,9 @@
 				<xsl:otherwise>judgment-body__text</xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>
-		<xsl:apply-templates>
+		<xsl:call-template name="inline">
 			<xsl:with-param name="is-uppercase" select="uk:is-uppercase(.)" tunnel="yes" />
-		</xsl:apply-templates>
+		</xsl:call-template>
 	</p>
 </xsl:template>
 
@@ -227,9 +227,9 @@
 		<xsl:apply-templates select="../num" />
 		<xsl:text> </xsl:text>
 		<span>
-			<xsl:apply-templates>
+			<xsl:call-template name="inline">
 				<xsl:with-param name="is-uppercase" select="uk:is-uppercase(.)" tunnel="yes" />
-			</xsl:apply-templates>
+			</xsl:call-template>
 		</span>
 	</p>
 </xsl:template>
@@ -244,9 +244,9 @@
 				</xsl:attribute>
 			</xsl:if>
 		</xsl:if>
-		<xsl:apply-templates>
+		<xsl:call-template name="inline">
 			<xsl:with-param name="is-uppercase" select="uk:is-uppercase(.)" tunnel="yes" />
-		</xsl:apply-templates>
+		</xsl:call-template>
 	</p>
 </xsl:template>
 
@@ -330,9 +330,9 @@
 						<xsl:attribute name="class">
 							<xsl:sequence select="concat('judgment-header__pr-', $alignment)" />
 						</xsl:attribute>
-						<xsl:apply-templates>
+						<xsl:call-template name="inline">
 							<xsl:with-param name="is-uppercase" select="uk:is-uppercase(.)" tunnel="yes" />
-						</xsl:apply-templates>
+						</xsl:call-template>
 					</p>
 				</xsl:when>
 				<xsl:otherwise>
@@ -345,9 +345,9 @@
 
 <xsl:template match="p">
 	<p>
-		<xsl:apply-templates>
+		<xsl:call-template name="inline">
 			<xsl:with-param name="is-uppercase" select="uk:is-uppercase(.)" tunnel="yes" />
-		</xsl:apply-templates>
+		</xsl:call-template>
 	</p>
 </xsl:template>
 
@@ -357,9 +357,9 @@
 		<div class="judgment-body__text">
 			<blockquote>
 				<p>
-					<xsl:apply-templates>
+					<xsl:call-template name="inline">
 						<xsl:with-param name="is-uppercase" select="uk:is-uppercase(.)" tunnel="yes" />
-					</xsl:apply-templates>
+					</xsl:call-template>
 				</p>
 			</blockquote>
 		</div>
@@ -368,9 +368,9 @@
 
 <xsl:template match="block">
 	<p>
-		<xsl:apply-templates>
+		<xsl:call-template name="inline">
 			<xsl:with-param name="is-uppercase" select="uk:is-uppercase(.)" tunnel="yes" />
-		</xsl:apply-templates>
+		</xsl:call-template>
 	</p>
 </xsl:template>
 
@@ -409,7 +409,8 @@
 					<xsl:for-each select="tokenize(regex-group(1), ';')">
 						<xsl:variable name="prop" as="xs:string" select="normalize-space(substring-before(., ':'))" />
 						<xsl:if test="$prop = $inline-properties">
-							<xsl:sequence select="normalize-space(.)" />
+							<xsl:variable name="value" as="xs:string" select="normalize-space(substring-after(., ':'))" />
+							<xsl:sequence select="concat($prop, ':', $value)" />
 						</xsl:if>
 					</xsl:for-each>
 				</xsl:matching-substring>
@@ -420,17 +421,18 @@
 		<xsl:for-each select="tokenize($e/@style, ';')">
 			<xsl:variable name="prop" as="xs:string" select="normalize-space(substring-before(., ':'))" />
 			<xsl:if test="$prop = $inline-properties">
-				<xsl:sequence select="normalize-space(.)" />
+				<xsl:variable name="value" as="xs:string" select="normalize-space(substring-after(., ':'))" />
+				<xsl:sequence select="concat($prop, ':', $value)" />
 			</xsl:if>
 		</xsl:for-each>
 	</xsl:variable>
 	<xsl:variable name="style-properties" as="xs:string*">
 		<xsl:for-each select="$from-style-attr">
-			<xsl:sequence select="normalize-space(substring-before(., ':'))" />
+			<xsl:sequence select="substring-before(., ':')" />
 		</xsl:for-each>
 	</xsl:variable>
 	<xsl:for-each select="$from-class-attr">
-		<xsl:variable name="prop" as="xs:string" select="normalize-space(substring-before(., ':'))" />
+		<xsl:variable name="prop" as="xs:string" select="substring-before(., ':')" />
 		<xsl:if test="not($prop = $style-properties)">
 			<xsl:sequence select="." />
 		</xsl:if>
@@ -444,6 +446,7 @@
 	<xsl:param name="is-uppercase" as="xs:boolean" select="false()" tunnel="yes" />
 	<xsl:variable name="styles" as="xs:string*" select="$styles[not(starts-with(., 'font-size:'))]" />
 	<xsl:variable name="styles" as="xs:string*" select="$styles[not(starts-with(., 'font-family:')) or contains(., 'Symbol') or contains(., 'Wingdings')]" />
+	<xsl:variable name="styles" as="xs:string*" select="$styles[not(starts-with(., 'text-transform:'))]" />
 	<xsl:choose>
 		<xsl:when test="exists($styles[starts-with(., 'font-weight:') and not(starts-with(., 'font-weight:normal'))])">
 			<b>
@@ -625,7 +628,9 @@
 
 <xsl:template match="tocItem">
 	<p>
-		<xsl:apply-templates />
+		<xsl:call-template name="inline">
+			<xsl:with-param name="is-uppercase" select="uk:is-uppercase(.)" tunnel="yes" />
+		</xsl:call-template>
 	</p>
 </xsl:template>
 
@@ -693,7 +698,9 @@
 			<xsl:value-of select="../@marker" />
 		</sup>
 		<xsl:text> </xsl:text>
-		<xsl:apply-templates />
+		<xsl:call-template name="inline">
+			<xsl:with-param name="is-uppercase" select="uk:is-uppercase(.)" tunnel="yes" />
+		</xsl:call-template>
 	</p>
 </xsl:template>
 
