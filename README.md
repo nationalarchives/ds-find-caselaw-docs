@@ -9,40 +9,41 @@ This repository is part of the [Find Case Law](https://caselaw.nationalarchives.
 - [Background](#background)
 - [Parts of the service](#parts-of-the-service)
 - [Architecture](#architecture)
-- [Contributing](#contributing)
-- [License](#license)
-
 ## Background
 
-This is the central repository for the [Find Case Law service](https://caselaw.nationalarchives.gov.uk/). It includes [architectural decisions](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/doc/adr),[technical designs](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/doc/arch), and links to individual code repositories for the various component [microservices](doc/adr/0002-use-a-microservice-architecture.md).
+This is the central repository for the [Find Case Law service](https://caselaw.nationalarchives.gov.uk/). It includes [architectural decisions](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/doc/adr), [technical designs](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/doc/arch), and links to individual code repositories for the various component [microservices](doc/adr/0002-use-a-microservice-architecture.md).
 
-## Parts of the service
+If you are looking for documentation covering user research, design decisions or accessibility, take a look at the [Wiki](https://github.com/nationalarchives/ds-find-caselaw-docs/wiki).
 
-* [Public Access UI](https://github.com/nationalarchives/ds-caselaw-public-ui)
-* [Editorial UI](https://github.com/nationalarchives/ds-caselaw-editor-ui)
-* [Ingester](https://github.com/nationalarchives/ds-caselaw-ingester)
-* [PDF conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion)
-* [Privileged API](https://github.com/nationalarchives/ds-caselaw-privileged-api)
+## Repositories
 
-Want an overview of all our repositories? Check the [repository dashboard](/repo-dashboard.md).
+<!-- Begin list of repositories -->
+<!-- This section is automatically generated from scripts/build_repo_lists. You shouldn't edit it manually. -->
+| Repository | Description |
+| --- | --- |
+| [ds-find-caselaw-docs](https://github.com/nationalarchives/ds-find-caselaw-docs) | High-level documentation for the service, and MarkLogic configuration. |
+| [ds-caselaw-public-ui](https://github.com/nationalarchives/ds-caselaw-public-ui) | Public interface to the service. |
+| [ds-caselaw-editor-ui](https://github.com/nationalarchives/ds-caselaw-editor-ui) | Editor interface to the service. |
+| [ds-caselaw-ingester](https://github.com/nationalarchives/ds-caselaw-ingester) | Ingests cases from the Transformation Engine into MarkLogic. |
+| [ds-caselaw-pdf-conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion) | Converts a judgement to PDF. |
+| [ds-caselaw-privileged-api](https://github.com/nationalarchives/ds-caselaw-privileged-api) | The API which annotating services talk to. |
+| [ds-caselaw-custom-api-client](https://github.com/nationalarchives/ds-caselaw-custom-api-client) | API client to interface with MarkLogic. |
+| [ds-caselaw-utils](https://github.com/nationalarchives/ds-caselaw-utils) | Common utilities across codebases. |
+| [ds-caselaw-custom-pdfs](https://github.com/nationalarchives/ds-caselaw-custom-pdfs) | Custom PDFs to overwrite generated ones. |
+<!-- End list of repositories -->
 
-### Configuration
+See the [repository dashboard](/repo-dashboard.md) for an overview of things like pull requests and release versions.
+
+### Configurations
 
 For historical reasons, some parts of the service are contained in this repository.
 
 * [Marklogic database configuration](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/marklogic)
 * [OpenAPI specification](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/doc/openapi)
 
-### Shared support libraries
+### Other repositories
 
-* [API client](https://github.com/nationalarchives/ds-caselaw-custom-api-client)
-* [Utility library](https://github.com/nationalarchives/ds-caselaw-utils)
-
-### Content
-
-* [Custom PDFs](https://github.com/nationalarchives/ds-caselaw-custom-pdfs)
-
-### Prototypes
+#### Prototypes
 
 Design-phase prototype code.
 
@@ -50,7 +51,7 @@ Design-phase prototype code.
 * [Frontend Prototypes](https://github.com/nationalarchives/ds-caselaw-frontend)
 * [Marklogic Prototype](https://github.com/mangiafico/tna-judgments-website)
 
-## Related services
+#### Related services
 
 Services provide data to, or take data from, this system.
 
@@ -76,26 +77,3 @@ Services provide data to, or take data from, this system.
 
   ![Deployment Diagram](doc/arch/images/Deployment%20Diagram.png)
 </details>
-
-## Contributing
-
-### Behaviour and safety
-
-We want everybody to be safe when interacting with this project. So,
-anybody raising an issue or opening a pull request is expected to
-follow the Contributor Covenant
-[Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/).
-
-### What to expect
-
-This project is not actively seeking external contributions. If you raise an
-issue or open a pull request, we will do our best to respond to it, but we
-can’t guarantee that we will fix or merge anything.
-
-If you’re thinking about putting a lot of work into a pull request, and would
-like to get a better idea of whether we’d consider merging it, we advise that
-you first open a GitHub issue so that we can talk about it.
-
-## License
-
-[MIT](LICENSE.md) © Crown Copyright (The National Archives)
