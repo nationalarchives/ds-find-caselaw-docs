@@ -21,9 +21,10 @@ If you are looking for documentation covering user research, design decisions or
 <!-- This section is automatically generated from scripts/build_repo_lists. You shouldn't edit it manually. -->
 | Repository | Description |
 | --- | --- |
-| [ds-find-caselaw-docs](https://github.com/nationalarchives/ds-find-caselaw-docs) | High-level documentation for the service, and MarkLogic configuration. |
+| [ds-find-caselaw-docs](https://github.com/nationalarchives/ds-find-caselaw-docs) | High-level documentation for the service. |
 | [ds-caselaw-public-ui](https://github.com/nationalarchives/ds-caselaw-public-ui) | Public interface to the service. |
 | [ds-caselaw-editor-ui](https://github.com/nationalarchives/ds-caselaw-editor-ui) | Editor interface to the service. |
+| [ds-caselaw-marklogic](https://github.com/nationalarchives/ds-caselaw-marklogic) | MarkLogic database configuration. |
 | [ds-caselaw-ingester](https://github.com/nationalarchives/ds-caselaw-ingester) | Ingests cases from the Transformation Engine into MarkLogic. |
 | [ds-caselaw-pdf-conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion) | Converts a judgement to PDF. |
 | [ds-caselaw-privileged-api](https://github.com/nationalarchives/ds-caselaw-privileged-api) | The API which annotating services talk to. |
@@ -38,7 +39,6 @@ See the [repository dashboard](/repo-dashboard.md) for an overview of things lik
 
 For historical reasons, some parts of the service are contained in this repository.
 
-* [Marklogic database configuration](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/marklogic)
 * [OpenAPI specification](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/doc/openapi)
 
 ### Other repositories

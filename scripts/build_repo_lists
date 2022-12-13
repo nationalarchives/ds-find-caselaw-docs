@@ -5,7 +5,7 @@ import re
 REPOSITORIES = [
     {
         "id": "ds-find-caselaw-docs",
-        "description": "High-level documentation for the service, and MarkLogic configuration.",
+        "description": "High-level documentation for the service.",
     },
     {
         "id": "ds-caselaw-public-ui",
@@ -14,6 +14,10 @@ REPOSITORIES = [
     {
         "id": "ds-caselaw-editor-ui",
         "description": "Editor interface to the service.",
+    },
+    {
+        "id": "ds-caselaw-marklogic",
+        "description": "MarkLogic database configuration.",
     },
     {
         "id": "ds-caselaw-ingester",
