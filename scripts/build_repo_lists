@@ -30,16 +30,20 @@ REPOSITORIES = [
     {
         "id": "ds-caselaw-custom-api-client",
         "description": "API client to interface with MarkLogic.",
+        "pypi": "ds-caselaw-marklogic-api-client",
     },
     {
         "id": "ds-caselaw-utils",
         "description": "Common utilities across codebases.",
+        "pypi": "ds-caselaw-utils",
     },
     {
         "id": "ds-caselaw-custom-pdfs",
         "description": "Custom PDFs to overwrite generated ones.",
+        "hide_releases": True,
     },
 ]
+NA_STRING = "![n/a](https://img.shields.io/badge/-n%2Fa-eee)"
 
 print("Building dashboard...")
 
@@ -51,7 +55,7 @@ with open("repo-dashboard.md", "w") as f:
     )
     f.write("\n")
     f.write(
-        "| Repository | Description | Pull requests | Latest release | Latest commit (`main`) |\n"
+        "| Repository | Pull requests | Latest commit (`main`) | Latest release (GitHub) | Latest release (PyPi) |\n"
     )
     f.write("| --- | --- | --- | --- | --- |\n")
 
@@ -65,22 +69,35 @@ with open("repo-dashboard.md", "w") as f:
         f.write(f"[{repo_name}]({repo_base_url})")
 
         f.write(" | ")
-        f.write(repo_description)
-
-        f.write(" | ")
         f.write(
             f"[![Pull requests](https://img.shields.io/github/issues-pr/nationalarchives/{repo_name}?label)]({repo_base_url}/pulls)"
         )
 
         f.write(" | ")
         f.write(
-            f"[![Latest release](https://img.shields.io/github/v/release/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)"
+            f"[![Latest commit to main](https://img.shields.io/github/last-commit/nationalarchives/{repo_name}/main?label)]({repo_base_url}/commits)"
         )
 
         f.write(" | ")
-        f.write(
-            f"[![Latest commit to main](https://img.shields.io/github/last-commit/nationalarchives/{repo_name}/main?label)]({repo_base_url}/commits)"
-        )
+
+        if not "hide_releases" in repo or not repo["hide_releases"]:
+            f.write(
+                f"[![Latest release (GitHub)](https://img.shields.io/github/v/release/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)<br>"
+            )
+            f.write(
+                f"[![GitHub Release Date](https://img.shields.io/github/release-date/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)"
+            )
+        else:
+            f.write(NA_STRING)
+
+        f.write(" | ")
+        if "pypi" in repo:
+            f.write(
+                f"[![Latest release (PyPi)](https://img.shields.io/pypi/v/{repo['pypi']}?label)](https://pypi.org/project/{repo['pypi']}/)"
+            )
+        else:
+            f.write(NA_STRING)
+
         f.write(" |\n")
 
 print("Populating repository list in readme...")
