@@ -55,7 +55,7 @@ with open("repo-dashboard.md", "w") as f:
     )
     f.write("\n")
     f.write(
-        "| Repository | Pull requests | Latest release (GitHub) | Latest release (PyPi) | Latest commit (`main`) |\n"
+        "| Repository | Pull requests | Latest commit (`main`) | Latest release (GitHub) | Latest release (PyPi) |\n"
     )
     f.write("| --- | --- | --- | --- | --- |\n")
 
@@ -71,6 +71,11 @@ with open("repo-dashboard.md", "w") as f:
         f.write(" | ")
         f.write(
             f"[![Pull requests](https://img.shields.io/github/issues-pr/nationalarchives/{repo_name}?label)]({repo_base_url}/pulls)"
+        )
+
+        f.write(" | ")
+        f.write(
+            f"[![Latest commit to main](https://img.shields.io/github/last-commit/nationalarchives/{repo_name}/main?label)]({repo_base_url}/commits)"
         )
 
         f.write(" | ")
@@ -93,10 +98,6 @@ with open("repo-dashboard.md", "w") as f:
         else:
             f.write(NA_STRING)
 
-        f.write(" | ")
-        f.write(
-            f"[![Latest commit to main](https://img.shields.io/github/last-commit/nationalarchives/{repo_name}/main?label)]({repo_base_url}/commits)"
-        )
         f.write(" |\n")
 
 print("Populating repository list in readme...")
