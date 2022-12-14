@@ -1,5 +1,0 @@
-{
-  "user-name" : "caselaw-editor-ui",
-  "description" : "The Editor UI reader & writer",
-  "role" : [ "dls-admin", "rest-writer", "caselaw-unpublished-reader", "caselaw-writer" ]
-}

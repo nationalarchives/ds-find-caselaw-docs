@@ -1,5 +1,0 @@
-{
-  "role-name" : "priv-api-writer",
-  "description" : "Can view documents, including unpublished documents, and edit",
-  "role" : [ "caselaw-writer", "caselaw-unpublished-reader" ]
-}

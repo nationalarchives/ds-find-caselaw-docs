@@ -1,5 +1,0 @@
-.gradle
-.docker
-build
-gradle-*.properties
-!gradle-development.properties
