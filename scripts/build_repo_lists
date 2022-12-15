@@ -6,6 +6,7 @@ REPOSITORIES = [
     {
         "id": "ds-find-caselaw-docs",
         "description": "High-level documentation for the service.",
+        "hide_releases": True,
     },
     {
         "id": "ds-caselaw-public-ui",
