@@ -9,6 +9,7 @@ This repository is part of the [Find Case Law](https://caselaw.nationalarchives.
 - [Background](#background)
 - [Parts of the service](#parts-of-the-service)
 - [Architecture](#architecture)
+
 ## Background
 
 This is the central repository for the [Find Case Law service](https://caselaw.nationalarchives.gov.uk/). It includes [architectural decisions](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/doc/adr), [technical designs](https://github.com/nationalarchives/ds-find-caselaw-docs/tree/main/doc/arch), and links to individual code repositories for the various component [microservices](doc/adr/0002-use-a-microservice-architecture.md).
@@ -77,3 +78,7 @@ Services provide data to, or take data from, this system.
 
   ![Deployment Diagram](doc/arch/images/Deployment%20Diagram.png)
 </details>
+
+## Manual data changes
+
+Sometimes we need to [delete or restore judgments](changing-judgments/changing-judgments.md).
