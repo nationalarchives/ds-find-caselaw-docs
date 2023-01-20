@@ -47,6 +47,10 @@ REPOSITORIES = [
         "description": "Custom PDFs to overwrite generated ones.",
         "hide_releases": True,
     },
+    {   "id": "ds-caselaw-data-enrichment-service",
+        "description": "Detect and tag references to legal documents.",
+        "hide_releases": True,
+    },
 ]
 NA_STRING = "![n/a](https://img.shields.io/badge/-n%2Fa-eee)"
 
