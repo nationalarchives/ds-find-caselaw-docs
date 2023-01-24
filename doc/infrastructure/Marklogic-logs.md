@@ -1,61 +1,23 @@
-# Marklogic logs
+# MarkLogic logs
 
-Marklogic syslogs, access and error logs for both prod and staging are all
-stored in Papertrail
+The instances in the MarkLogic clusters are configured to send their logs to the
+TNA Papertrail account. Once configured we send system logs using rsyslog and
+MarkLogic logs using remote_syslog2 to Papertrail. We explicitly exclude the
+logs for the service running on port 7997 since that is only used by the load
+balancers to determine if the Marklogic server on that instance is available.
 
-## Setup syslogs
+## Setup remote logging
 
-There are two ways to set up syslogs in Papertrail
+We have to configure remote logging ourselves when a instance is created within a
+cluster. In the future we hope to have remote logging configured on creation.
 
-First method used on staging was to run their install script below after ssh
-on to the instance
+We have scripted the configuration and have added it to this repo. On a new
+instance you should run the following `wget
+https://https://raw.githubusercontent.com/nationalarchives/ds-find-caselaw-docs/main/scripts/setup-syslog.sh
+-O /tmp/setup-syslog.sh ; bash /tmp/setup-syslog.sh $LOGHOST $LOGPORT`
+where $LOGHOST and $LOGPORT are the values that papertrail provides. e.g logs7
+and 1337
 
-```
-wget -qO - --header="X-Papertrail-Token: your-token-key" \
-https://papertrailapp.com/destinations/30508421/setup.sh | sudo bash
-```
+You can test that logs are being sent by running `logger testlog; curl
+localhost:8011/testlog` and searching Papertrail for `testlog`
 
-You can amend the `setup.sh` accordingly to which port you are sending
-logs to if required.
-
-The second method used on prod is to manually configure according to
-instructions in Papertrail
-
-1. See which logger your system uses then run `ls -d /etc/*syslog*`
-1. Download root certificates
-1. Save papertrail-bundle.pem into /etc/papertrail-bundle.pem on the log sender:
-1. sudo wget -O /etc/papertrail-bundle.pem \
-   https://papertrailapp.com/tools/papertrail-bundle.pem
-
-## Setup rsyslog manually
-
-As root, edit `/etc/rsyslog.conf` with a text editor (like pico or vi).
-Paste these lines at the end:
-
-```
-$DefaultNetstreamDriverCAFile /etc/papertrail-bundle.pem
-$ActionSendStreamDriver gtls
-$ActionSendStreamDriverMode 1
-$ActionSendStreamDriverAuthMode x509/name
-$ActionSendStreamDriverPermittedPeer *.papertrailapp.com
-
-*.*    @@logs4.papertrailapp.com:port-number
-```
-
-Check that `rsyslog-gnutls` package is installed
-
-Restart rsyslog to re-read the config file:
-sudo service rsyslog restart
-
-## Setup app logs from Marklogic
-
-You need to check if `remote_syslog2` is installed on the instance and
-locate the install path as it may be located in `/usr/local/bin`
-
-```
-sudo remote_syslog \
-  -p port-number --tls \
-  -d logs4.papertrailapp.com \
-  --pid-file=/var/run/remote_syslog.pid \
-  /path-to-log-file.txt
-```
