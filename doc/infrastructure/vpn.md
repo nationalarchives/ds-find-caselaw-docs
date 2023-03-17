@@ -41,7 +41,9 @@ When someone leaves we should revoke their certificate.
   $USERNAME`
 - generate an updated CRL.
 - `docker run -it --rm -v $(pwd):/pki gcavalcante8808/easy-rsa gen-crl`
+- `dalmatian util exec` to list all VPN end points using `aws ec2 describe-client-vpn-endpoints`
 - import the CRL into the VPN endpoint
+- You may need to import your AWS session token before running the following command below
 - `aws ec2 import-client-vpn-client-certificate-revocation-list
   --certificate-revocation-list file:///mnt/efs/easy-rsa-ca/pki/crl.pem
   --client-vpn-endpoint-id $ENDPOINTID --region eu-west-2`
