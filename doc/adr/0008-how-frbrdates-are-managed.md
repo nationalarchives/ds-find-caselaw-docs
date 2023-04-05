@@ -23,7 +23,7 @@ If the concepts of Work/Expression/Manifestation/Item nomenclature are new to yo
 ### A Joint Work/Expression date
 
 We do not yet draw a distinction in the XML document between the date that a judgment was created (FRBRWork) and any later date that the judgments text was edited (FRBRExpression),
-although the content hash indicates that we do place some distinction on this. As such, we have a single date for both these tags, which is perfectly ambiguous as to whether 
+although the content hash indicates that we do place some distinction on this. As such, we have a single date for both these tags, which is perfectly ambiguous as to whether
 it reflects the initial version or any amended version.
 
 The name attribute of these field may be `judgment` or `decision`, reflecting the nature of the document (this value is also found as the `name` attribute of the `judgment` tag)
@@ -36,6 +36,10 @@ The name may also be "dummy", if the parser failed to extract a date. This is a 
 
 The FRBRManifestation section may have multiple FRBRdate tags reflecting the creation of the XML document etc. from the words of the judgment or decision. These will typically be set by
 processes under National Archives control (e.g. the transformation engine, the improvement engine); these aren't anything to do with the above.
+
+## Multiple documents
+
+Annexes may exist under `judgment/doc` which contains `meta/identification/FRBR...` tags like the primary judgment. You should use XPath expressions that include the full path from `judgment`.
 
 ## Decision
 
