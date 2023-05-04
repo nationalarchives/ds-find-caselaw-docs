@@ -82,4 +82,4 @@ Services provide data to, or take data from, this system.
 
 ## Manual data changes
 
-Sometimes we need to [delete or restore judgments](changing-judgments/changing-judgments.md).
+Sometimes we need to [delete or restore judgments](doc/changing-judgments/changing-judgments.md).
