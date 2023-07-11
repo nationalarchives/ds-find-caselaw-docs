@@ -16,7 +16,7 @@ When we refer to a document, it will have:
   - a pdf generated automatically from the original docx on ingestion
   - any image files found in the original docx.
 
-Furthermore, there can be 2 of these AWS buckets - one for unpublished documents, and one for published documents  `tna-caselaw-unpublished-assets` and `tna-caselaw-assets` respectively on production. We need to make sure we account for all of these when manually modifying any document.
+Furthermore, there can be 2 of these AWS buckets - one for unpublished documents, and one for published documents `tna-caselaw-unpublished-assets` and `tna-caselaw-assets` respectively on production. We need to make sure we account for all of these when manually modifying any document.
 
 ## Deleting a document
 
@@ -54,11 +54,11 @@ Note: deleting the XML document will delete any associated metadata as well, sin
 
 Assets are copied from the unpublished bucket to the public bucket when the document is published.
 
-We need to delete the folders in these buckets for the document in question. The structure of the 
+We need to delete the folders in these buckets for the document in question. The structure of the
 
 1. Log into the production environment AWS console
 2. Navigate to each of the 2 buckets, and delete them.
-![](s3.png)
+   ![](s3.png)
 
 ## Restoring an older version of a document
 

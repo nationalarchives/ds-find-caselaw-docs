@@ -39,5 +39,6 @@ than later.
 ## Future decisions
 
 We might choose to:
-* only send things that have not yet been vCite enriched yet
-* reparse documents so that new parser improvements apply to existing documents
+
+- only send things that have not yet been vCite enriched yet
+- reparse documents so that new parser improvements apply to existing documents

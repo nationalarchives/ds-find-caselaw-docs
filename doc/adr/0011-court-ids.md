@@ -20,7 +20,7 @@ as the Queen's or King's Bench Division
 
 [2022] EWHC 2832 (Admin) is a Divisional Court judgment, but the court is indistinguishable by
 Neutral Citation from the Administrative Court judgment [2022] EWHC 2882 (Admin).
-(It might be possible to distinguish because Divisional Courts are held by  two people, one of
+(It might be possible to distinguish because Divisional Courts are held by two people, one of
 whom is very senior)
 
 There are two different types of Family Court, one far more senior than the other.
@@ -63,6 +63,6 @@ We do not understand enough about the Family Court problems, so we shall ignore 
 
 ## Consequences
 
-* Clarity on approach for enrichment in the short-term
-* Pushing thorny problems down the road until there's more clarity in the use-cases for Court UID identifiers
-* We will need to listen to feedback about how our model impacts people's ability to find judgments
+- Clarity on approach for enrichment in the short-term
+- Pushing thorny problems down the road until there's more clarity in the use-cases for Court UID identifiers
+- We will need to listen to feedback about how our model impacts people's ability to find judgments

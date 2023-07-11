@@ -1,18 +1,18 @@
-openapi: '3.0.2'
+openapi: "3.0.2"
 
 info:
   title: Case Law Privileged API
   description: National Archives Caselaw Privileged API
-  version: '0.1.2'
+  version: "0.1.2"
 
 servers:
-- url: https://{environment}.caselaw.nationalarchives.gov.uk/v1
-  variables:
-    environment:
-      default: api
-      enum:
-        - api         # Production
-        - api.staging # Staging
+  - url: https://{environment}.caselaw.nationalarchives.gov.uk/v1
+    variables:
+      environment:
+        default: api
+        enum:
+          - api # Production
+          - api.staging # Staging
 
 tags:
   - name: Status
@@ -74,9 +74,9 @@ paths:
       tags:
         - Status
       responses:
-        '200':
+        "200":
           description: The service is available, and if authentication was provided, the authentication is valid.
-        '401':
+        "401":
           description: The service is available, but the provided authentication was not valid.
       security:
         - {}
@@ -91,12 +91,12 @@ paths:
       parameters:
         - $ref: "#/components/parameters/judgmentUri"
       responses:
-        '200':
+        "200":
           $ref: "#/components/responses/judgment"
       security:
         - basic:
-          - read_documents
-          - read_unpublished_documents
+            - read_documents
+            - read_unpublished_documents
 
     put:
       summary: Update a judgment
@@ -112,12 +112,11 @@ paths:
           application/xml:
             schema:
               xml:
-                name:
-                  akomaNtoso
+                name: akomaNtoso
               type: object
 
       responses:
-        '204':
+        "204":
           description: The document was updated successfully and any client lock released
           headers:
             ETag:
@@ -125,20 +124,20 @@ paths:
               schema:
                 type: string
 
-        '400':
+        "400":
           description: The request was malformed, and the document was not modified
-        '403':
+        "403":
           description: The request was not updated, as the document is locked by another user
           headers:
             locking_user:
               description: The user who has locked the document
               schema:
                 type: string
-        '412':
+        "412":
           description: The document was not updated, as it has changed since the version number specified If-Match. To avoid this, the client should lock the document before making any changes to it.
       security:
         - basic:
-          - write_documents
+            - write_documents
 
   /{judgmentUri}/lock:
     get:
@@ -148,7 +147,7 @@ paths:
       parameters:
         - $ref: "#/components/parameters/judgmentUri"
       responses:
-        '204':
+        "204":
           description: Lock state included in header
           headers:
             X-Lock-State:
@@ -157,7 +156,7 @@ paths:
                 type: boolean
       security:
         - basic:
-          - write_documents
+            - write_documents
 
     put:
       summary: Lock access to a document
@@ -167,9 +166,9 @@ paths:
       parameters:
         - $ref: "#/components/parameters/judgmentUri"
       responses:
-        '201':
+        "201":
           "$ref": "#/components/responses/judgment"
-        '403':
+        "403":
           description: The document was already locked by another client
           headers:
             X-Lock-State:
@@ -178,7 +177,7 @@ paths:
                 type: boolean
       security:
         - basic:
-          - write_documents
+            - write_documents
 
   /{judgmentUri}/metadata:
     get:
@@ -189,12 +188,12 @@ paths:
       parameters:
         - $ref: "#/components/parameters/judgmentUri"
       responses:
-        '200':
+        "200":
           description: OK
       security:
         - basic:
-          - read_documents
-          - read_unpublished_documents
+            - read_documents
+            - read_unpublished_documents
     patch:
       summary: Set document metadata [not implemented]
       tags:
@@ -202,8 +201,8 @@ paths:
       parameters:
         - $ref: "#/components/parameters/judgmentUri"
       responses:
-        '200':
+        "200":
           description: OK
       security:
         - basic:
-          - write_documents
+            - write_documents
