@@ -30,10 +30,10 @@ We will take a historical approach: documents remain within the MarkLogic histor
 
 ## Consequences
 
-* We SHOULD NOT expose older versions to the public without careful thoughts about the ramifications --
+- We SHOULD NOT expose older versions to the public without careful thoughts about the ramifications --
   there may be unrelated documents in there
-* We SHOULD NOT routinely delete incorrect versions, although there may be technical reasons to do so, and
+- We SHOULD NOT routinely delete incorrect versions, although there may be technical reasons to do so, and
   we should recognise deletions have occurred in the past. (example: moving a document currently requires the URI
   to not contain an existing document, but that is likely to change soon.)
-* We are able to understand more about the history of the URI by looking at the MarkLogic versions, with no omissions
-* Some maintenance tasks will likely be easier since we do not need to worry about deleting versions.
+- We are able to understand more about the history of the URI by looking at the MarkLogic versions, with no omissions
+- Some maintenance tasks will likely be easier since we do not need to worry about deleting versions.

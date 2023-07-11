@@ -10,9 +10,9 @@ Accepted
 
 Judgment documents contain metadata such as title, court, date, etc, as well as the body of the judgment. However, we also need to store service-specific metadata, such as:
 
-* Transfer Digital Records consignment number
-* Is the judgment publicly available?
-* When was the judgment last enriched?
+- Transfer Digital Records consignment number
+- Is the judgment publicly available?
+- When was the judgment last enriched?
 
 Marklogic documents (and directories) have associated [Property Documents](https://docs.marklogic.com/guide/app-dev/properties). These documents can store arbitrary properties alongside the judgment documents themselves. These properties can be any XML element, and are searchable and queryable.
 

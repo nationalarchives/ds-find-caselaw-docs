@@ -10,13 +10,13 @@ Accepted
 
 The Court Judgments service is made up of a number of components, some of which already exist in research form, and some of which are to be created as part of the development process towards a live service. These use a variety of technologies and platforms. It also interacts with some existing services within TNA.
 
-* Email lists: judgments are received from courts via email
-* Transfer Digital Records: TNA tool for uploading documents to the archive, will be used by courts in future
-* Document parser: built in C#, responsible for converting .DOCX files into LegalDocML format
-* Validation engine: schematron validator to ensure correct XML
-* Judgment database: currently using Marklogic, an XML-oriented document database
-* Administration interface: a new application to review, approve, and edit judgments
-* Public access site: a new application to display judgments on the public Internet
+- Email lists: judgments are received from courts via email
+- Transfer Digital Records: TNA tool for uploading documents to the archive, will be used by courts in future
+- Document parser: built in C#, responsible for converting .DOCX files into LegalDocML format
+- Validation engine: schematron validator to ensure correct XML
+- Judgment database: currently using Marklogic, an XML-oriented document database
+- Administration interface: a new application to review, approve, and edit judgments
+- Public access site: a new application to display judgments on the public Internet
 
 There are also other services which will update judgments, such as the Enrichment service.
 

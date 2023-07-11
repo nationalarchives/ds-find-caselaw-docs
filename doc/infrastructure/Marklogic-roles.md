@@ -5,6 +5,7 @@ All users added to Marklogic should use one or more of these roles. No users (as
 `caselaw-prod-marklogic` and `caselaw-staging-marklogic`) should have `admin` privileges in Marklogic.
 
 Helpful Marklogic links:
+
 - [Execute privileges](https://docs.marklogic.com/guide/admin/exec_privs)
 - [Pre-defined roles](https://docs.marklogic.com/guide/admin/pre_def_roles)
 
@@ -20,8 +21,9 @@ It inherits the `security` role to check the user's execute privileges.
 
 It inherits `dls-*` roles in order to be able to read document properties.
 
-It requires two execute privileges, `xdbc-eval` and `xdbc-invoke`. 
-- `xdbc-eval` is required by Marklogic to call the `eval` endpoint, which is used for the XSLT transformation. 
+It requires two execute privileges, `xdbc-eval` and `xdbc-invoke`.
+
+- `xdbc-eval` is required by Marklogic to call the `eval` endpoint, which is used for the XSLT transformation.
 - `xdbc-invoke` is required by Marklogic to call the `invoke` endpoint, which is used for search.
 
 ## caselaw-unpublished-reader
@@ -36,7 +38,7 @@ as well as allowing the user to write documents via the `rest-writer` pre-define
 
 ## caselaw-priv-api-writer
 
-This role inherits everything from `caselaw-writer` and  `caselaw-unpublished-reader` and is intended for users who
+This role inherits everything from `caselaw-writer` and `caselaw-unpublished-reader` and is intended for users who
 only need to access the privileged API.
 
 ## caselaw-admin

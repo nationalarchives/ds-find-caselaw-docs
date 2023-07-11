@@ -13,10 +13,10 @@ a corpus of LegalDocML documents.
 
 Various microservices need to work with the data in this form, including:
 
-* Public Access UI (read-only)
-* Administration UI (read-write)
-* Validation engine (read-write)
-* Enrichment engine (read-write)
+- Public Access UI (read-only)
+- Administration UI (read-write)
+- Validation engine (read-write)
+- Enrichment engine (read-write)
 
 ## Decision
 

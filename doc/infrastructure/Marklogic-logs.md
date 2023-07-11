@@ -12,12 +12,8 @@ We have to configure remote logging ourselves when a instance is created within 
 cluster. In the future we hope to have remote logging configured on creation.
 
 We have scripted the configuration and have added it to this repo. On a new
-instance you should run the following `wget
-https://https://raw.githubusercontent.com/nationalarchives/ds-find-caselaw-docs/main/scripts/setup-syslog.sh
--O /tmp/setup-syslog.sh ; bash /tmp/setup-syslog.sh $LOGHOST $LOGPORT`
+instance you should run the following `wget https://https://raw.githubusercontent.com/nationalarchives/ds-find-caselaw-docs/main/scripts/setup-syslog.sh -O /tmp/setup-syslog.sh ; bash /tmp/setup-syslog.sh $LOGHOST $LOGPORT`
 where $LOGHOST and $LOGPORT are the values that papertrail provides. e.g logs7
 and 1337
 
-You can test that logs are being sent by running `logger testlog; curl
-localhost:8011/testlog` and searching Papertrail for `testlog`
-
+You can test that logs are being sent by running `logger testlog; curl localhost:8011/testlog` and searching Papertrail for `testlog`

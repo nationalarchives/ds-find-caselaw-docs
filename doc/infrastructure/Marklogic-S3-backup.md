@@ -3,7 +3,7 @@
 1. Go to the web ui for the marklogic cluster, which will ask for basic auth you'll find username and password in 1password.
 2. In Configure > Databases > caselaw-content click on the Backup/Restore tab in Marklogic for your the `caselaw-content`, initiate a backup, using the following as the
    "Back up to directory": `s3://example-prod-bucket/path/to/backup`.
-3. Confirm that you want to back up the following forests to  caselaw-content to directory s3://example-prod-bucket/path/to/backup by selecting `ok` at bottom of page
+3. Confirm that you want to back up the following forests to caselaw-content to directory s3://example-prod-bucket/path/to/backup by selecting `ok` at bottom of page
 
 ### Schedule a Database Backup
 

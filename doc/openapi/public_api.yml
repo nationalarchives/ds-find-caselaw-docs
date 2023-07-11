@@ -1,19 +1,18 @@
-openapi: '3.0.3'
+openapi: "3.0.3"
 
 info:
   title: Case Law Public API
-  version: '0.1.3'
+  version: "0.1.3"
   description: National Archives Caselaw Public API
-  version: '0.1.2'
 
 servers:
-- url: https://{environment}.nationalarchives.gov.uk/
-  variables:
-    environment:
-      default: caselaw
-      enum:
-        - caselaw         # Production
-        - staging.caselaw # Staging
+  - url: https://{environment}.nationalarchives.gov.uk/
+    variables:
+      environment:
+        default: caselaw
+        enum:
+          - caselaw # Production
+          - staging.caselaw # Staging
 
 tags:
   - name: Reading
@@ -98,7 +97,7 @@ paths:
             type: integer
             default: 1
       responses:
-        '200':
+        "200":
           $ref: "#/components/responses/judgmentFeed"
 
   # /judgments/advanced_search:
@@ -145,5 +144,5 @@ paths:
       parameters:
         - $ref: "#/components/parameters/judgmentUri"
       responses:
-        '200':
+        "200":
           $ref: "#/components/responses/judgment"

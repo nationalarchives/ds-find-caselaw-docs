@@ -13,13 +13,12 @@ the [AWS client VPN software](https://aws.amazon.com/vpn/client-vpn-download/).
 
 ## generating a new certificate for the AWS VPN
 
-- connect to an ec2 instance in the staging ecs cluster `dalmatian ecs
-  ec2-access`
+- connect to an ec2 instance in the staging ecs cluster `dalmatian ecs ec2-access`
 - `cd /mnt/efs/easy-rsa-ca/`
 - create a new client certificate
 - `docker run -it --rm -v $(pwd):/pki gcavalcante8808/easy-rsa build-client-full $USERNAME nopass`
 - the CA passphrase is in the TNA vault in 1password
-- create a new  ovpn config file and store it in 1password so you can share it
+- create a new ovpn config file and store it in 1password so you can share it
   with the user
 - take an old one and replace the certificate and key in the `<cert>` and `<key>` sections with the one for the user found in `/mnt/efs/easy-rsa-ca/pki/{issued,private}`
 
@@ -33,23 +32,18 @@ the [AWS client VPN software](https://aws.amazon.com/vpn/client-vpn-download/).
 
 When someone leaves we should revoke their certificate.
 
-- connect to an ec2 instance in the staging ecs cluster `dalmatian ecs
-  ec2-access`
+- connect to an ec2 instance in the staging ecs cluster `dalmatian ecs ec2-access`
 - `cd /mnt/efs/easy-rsa-ca/`
 - revoke certificate
-- `docker run -it --rm -v $(pwd):/pki gcavalcante8808/easy-rsa revoke
-  $USERNAME`
+- `docker run -it --rm -v $(pwd):/pki gcavalcante8808/easy-rsa revoke $USERNAME`
 - generate an updated CRL.
 - `docker run -it --rm -v $(pwd):/pki gcavalcante8808/easy-rsa gen-crl`
 - `dalmatian util exec` to list all VPN end points using `aws ec2 describe-client-vpn-endpoints`
 - import the CRL into the VPN endpoint
 - You may need to import your AWS session token before running the following command below
-- `aws ec2 import-client-vpn-client-certificate-revocation-list
-  --certificate-revocation-list file:///mnt/efs/easy-rsa-ca/pki/crl.pem
-  --client-vpn-endpoint-id $ENDPOINTID --region eu-west-2`
+- `aws ec2 import-client-vpn-client-certificate-revocation-list --certificate-revocation-list file:///mnt/efs/easy-rsa-ca/pki/crl.pem --client-vpn-endpoint-id $ENDPOINTID --region eu-west-2`
 
 ## creating a CA for the VPN
-
 
 ```
 mkdir -p /mnt/efs/easy-rsa-ca
@@ -60,6 +54,7 @@ docker run -it --rm -v $(pwd):/pki gcavalcante8808/easy-rsa build-server-full vp
 ```
 
 ## setting up a client vpn end point
+
 rough notes for setting up a client vpn endpoint.
 
 ```
