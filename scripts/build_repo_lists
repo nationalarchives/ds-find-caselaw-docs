@@ -11,10 +11,12 @@ REPOSITORIES = [
     {
         "id": "ds-caselaw-public-ui",
         "description": "Public interface to the service.",
+        "renovate_dashboard_issue_id": "819",
     },
     {
         "id": "ds-caselaw-editor-ui",
         "description": "Editor interface to the service.",
+        "renovate_dashboard_issue_id": "1051",
     },
     {
         "id": "ds-caselaw-marklogic",
@@ -31,23 +33,27 @@ REPOSITORIES = [
     {
         "id": "ds-caselaw-privileged-api",
         "description": "The API which annotating services talk to.",
+        "renovate_dashboard_issue_id": "182",
     },
     {
         "id": "ds-caselaw-custom-api-client",
         "description": "API client to interface with MarkLogic.",
         "pypi": "ds-caselaw-marklogic-api-client",
+        "renovate_dashboard_issue_id": "283",
     },
     {
         "id": "ds-caselaw-utils",
         "description": "Common utilities across codebases.",
         "pypi": "ds-caselaw-utils",
+        "renovate_dashboard_issue_id": "56",
     },
     {
         "id": "ds-caselaw-custom-pdfs",
         "description": "Custom PDFs to overwrite generated ones.",
         "hide_releases": True,
     },
-    {   "id": "ds-caselaw-data-enrichment-service",
+    {
+        "id": "ds-caselaw-data-enrichment-service",
         "description": "Detect and tag references to legal documents.",
         "hide_releases": True,
     },
@@ -64,12 +70,11 @@ with open("repo-dashboard.md", "w") as f:
     )
     f.write("\n")
     f.write(
-        "| Repository | Pull requests | Latest commit (`main`) | Latest release (GitHub) | Latest release (PyPi) |\n"
+        "| Repository | Pull requests | Renovate dashboard | Latest commit (`main`) | Latest release (GitHub) | Latest release (PyPi) |\n"
     )
-    f.write("| --- | --- | --- | --- | --- |\n")
+    f.write("| --- | --- | --- | --- | --- | --- |\n")
 
     for repo in REPOSITORIES:
-
         repo_name = repo["id"]
         repo_base_url = f"https://github.com/nationalarchives/{repo_name}"
         repo_description = repo["description"] if "description" in repo else "-"
@@ -81,6 +86,14 @@ with open("repo-dashboard.md", "w") as f:
         f.write(
             f"[![Pull requests](https://img.shields.io/github/issues-pr/nationalarchives/{repo_name}?label)]({repo_base_url}/pulls)"
         )
+
+        f.write(" | ")
+        if "renovate_dashboard_issue_id" in repo:
+            f.write(
+                f"[![Dashboard](https://img.shields.io/badge/-Dashboard-445)]({repo_base_url}/issues/{repo['renovate_dashboard_issue_id']})"
+            )
+        else:
+            f.write(NA_STRING)
 
         f.write(" | ")
         f.write(
@@ -122,7 +135,6 @@ replacement = """<!-- Begin list of repositories -->
 | --- | --- |"""
 
 for repo in REPOSITORIES:
-
     repo_name = repo["id"]
     repo_base_url = f"https://github.com/nationalarchives/{repo_name}"
     repo_description = repo["description"] if "description" in repo else "-"
