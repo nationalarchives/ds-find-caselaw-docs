@@ -48,6 +48,11 @@ REPOSITORIES = [
         "renovate_dashboard_issue_id": "56",
     },
     {
+        "id": "ds-caselaw-frontend",
+        "description": "Shared styles used across the Find Caselaw service.",
+        "renovate_dashboard_issue_id": "3",
+    },
+    {
         "id": "ds-caselaw-custom-pdfs",
         "description": "Custom PDFs to overwrite generated ones.",
         "hide_releases": True,
