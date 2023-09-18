@@ -11,6 +11,7 @@
     ":dependencyDashboard",
     ":enablePreCommit"
   ],
+  "timezone": "Europe/London",
   "platformAutomerge": true,
   "minimumReleaseAge": "2 days",
   "packageRules": [
