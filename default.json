@@ -23,5 +23,6 @@
       "matchDatasources": ["npm"],
       "minimumReleaseAge": "3 days"
     }
-  ]
+  ],
+  "labels": ["dependencies"]
 }
