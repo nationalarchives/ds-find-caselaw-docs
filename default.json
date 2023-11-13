@@ -8,7 +8,7 @@
     ":automergePr",
     ":automergeRequireAllStatusChecks",
     ":automergeTesters",
-    ":lockFileMaintenance",
+    ":maintainLockFilesWeekly",
     ":dependencyDashboard",
     ":enablePreCommit"
   ],
