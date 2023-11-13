@@ -25,10 +25,12 @@ REPOSITORIES = [
     {
         "id": "ds-caselaw-ingester",
         "description": "Ingests cases from the Transformation Engine into MarkLogic.",
+        "renovate_dashboard_issue_id": "82",
     },
     {
         "id": "ds-caselaw-pdf-conversion",
         "description": "Converts a judgement to PDF.",
+        "renovate_dashboard_issue_id": "31",
     },
     {
         "id": "ds-caselaw-privileged-api",
@@ -61,6 +63,7 @@ REPOSITORIES = [
         "id": "ds-caselaw-data-enrichment-service",
         "description": "Detect and tag references to legal documents.",
         "hide_releases": True,
+        "renovate_dashboard_issue_id": "235",
     },
 ]
 NA_STRING = "![n/a](https://img.shields.io/badge/-n%2Fa-eee)"
