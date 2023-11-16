@@ -11,8 +11,8 @@ sequenceDiagram
   participant TRE
   participant Parser
   participant Ingester
-  participant EUI
   actor Editor
+  participant EUI
   participant PUI
 
   loop Until ready for publication
@@ -21,8 +21,12 @@ sequenceDiagram
     TRE->>Parser: Sends document bundle to parse
     Parser->>TRE: Returns parsed document bundle
     TRE->>Ingester: Sends bundle to FCL
-    Ingester->>EUI: Ready for review
-    EUI->>Editor: Review
+    par Notify editors
+      Ingester->>Editor: Email notification that document is ready for review
+    and Upload document
+      Ingester->>EUI: Upload document and assets
+    end
+    Editor->>Editor: Reviews
     alt Document passes review
       Editor->>EUI: Approves for publication
     else Document needs amendments
