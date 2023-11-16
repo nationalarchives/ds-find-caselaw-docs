@@ -27,11 +27,10 @@ sequenceDiagram
       Ingester->>EUI: Upload document and assets
     end
     Editor->>Editor: Reviews
-    alt Document passes review
-      Editor->>EUI: Approves for publication
-    else Document needs amendments
+    opt Document needs amendments
       Editor-->>Clerk: Return for amendments
     end
   end
+  Editor->>EUI: Approves for publication
   EUI->>PUI: Publishes
 ```
