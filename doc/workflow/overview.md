@@ -2,7 +2,7 @@
 
 This is a high-level overview of the workflow a document goes through from submission to publication
 
-``` mermaid
+```mermaid
 sequenceDiagram
   autonumber
 
