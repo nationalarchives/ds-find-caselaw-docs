@@ -18,11 +18,11 @@ sequenceDiagram
   loop Until ready for publication
     Clerk->>TDR: Submits document
     TDR->>TRE: Processes submission
-    TRE->>Parser: Sends document bundle to parse
-    Parser->>TRE: Returns parsed document bundle
+    TRE->>Parser: Sends bundle to be parsed
+    Parser->>TRE: Returns parsed bundle
     TRE->>Ingester: Sends bundle to FCL
     par Notify editors
-      Ingester->>Editor: Email notification that document is ready for review
+      Ingester->>Editor: Email "new document" notification
     and Upload document
       Ingester->>EUI: Upload document and assets
     end
