@@ -1,4 +1,4 @@
-New courts should be added to ds-caselaw-utils' [court_names.yaml](https://github.com/nationalarchives/ds-caselaw-utils/blob/main/src/ds_caselaw_utils/data/court_names.yaml)
+New courts should be added to ds-caselaw-utils' [court_names.yaml](https://github.com/nationalarchives/ds-caselaw-utils/blob/main/src/ds_caselaw_utils/data/court_names.yaml) and [neutral_citation_regex.yaml](https://github.com/nationalarchives/ds-caselaw-utils/blob/main/src/ds_caselaw_utils/data/neutral_citation_regex.yaml)
 
 If you have an old court, ensure that the new court has an `extra_params` with the URL of the old court
 and that there is an old court entry with both selectable and listable set to `false`.
