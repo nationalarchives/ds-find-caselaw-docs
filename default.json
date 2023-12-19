@@ -22,7 +22,7 @@
       "minimumReleaseAge": "3 days"
     }
     {
-      "packagePatterns": ["boto"],
+      "matchPackagePatterns": ["boto"],
       "groupName": "boto packages"
     }
   ],
