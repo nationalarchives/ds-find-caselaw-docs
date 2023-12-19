@@ -21,6 +21,10 @@
       "matchDatasources": ["npm"],
       "minimumReleaseAge": "3 days"
     }
+    {
+      "packagePatterns": ["boto"],
+      "groupName": "boto packages"
+    }
   ],
   "labels": ["dependencies"]
 }
