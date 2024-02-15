@@ -2,6 +2,12 @@
 
 This repository is part of the [Find Case Law](https://caselaw.nationalarchives.gov.uk/) project at [The National Archives](https://www.nationalarchives.gov.uk/).
 
+> [!WARNING]
+> You need to [apply for a licence to do computational analysis](https://caselaw.nationalarchives.gov.uk/computational-licence-form) of Find Case Law records. Other use is licenced under the [Open Justice Licence](https://caselaw.nationalarchives.gov.uk/about-this-service#section-licences).
+
+> [!NOTE]
+> The National Archives want to understand how we can improve the experience for people applying for a licence. We are working with an independent research organisation to conduct a brief round of research on the 7th and 12th March 2024. If you would like to take part in the research please register your interest by completing [this short survey](https://survey.alchemer.com/s3/7698805/BF4982-National-Archives-Case-Law-Research).
+
 # Project Documentation
 
 ## Table of Contents
