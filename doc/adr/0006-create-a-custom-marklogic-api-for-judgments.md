@@ -34,7 +34,7 @@ We will design that API to use the URI scheme defined in ADR 0004 as closely as 
 All clients will communicate with Marklogic via the extended REST API, in line with ADR 0003.
 
 The API will be documented with an [OpenAPI](https://swagger.io/specification/) specification, which will define available endpoints, authentication schemes and so on. The canonical
-version of that specification can be found [in this repository](../openapi/caselaw.yml), and will be iterated based on client needs.
+version of that specification can be found [in this repository](../openapi/), and will be iterated based on client needs.
 
 We will continue to use the default REST API for read-only actions and search, at least for the short term. The new API endpoints will
 only be used for write operations. The OpenAPI specification will include the standard endpoints as well, for completeness.
