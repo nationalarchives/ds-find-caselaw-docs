@@ -18,7 +18,7 @@ state of what dates we are using and how we use them.
 
 The discussion of this data and what it means which lead to this ADR are [on slack](https://dxw.slack.com/archives/C02TP2L2Z0F/p1659962075490729)
 
-If the concepts of Work/Expression/Manifestation/Item nomenclature are new to you, there is [an excellent presentation](https://www.railslibraries.info/system/files/Anyone/mtg/2018/2018-08-20/152953/Updated%20Slides%20for%20WEMI%20webinar.pdf). FRBR, WEMI are both good search terms.
+If the concepts of Work/Expression/Manifestation/Item nomenclature are new to you, there is [an excellent presentation](https://railslibraries.org/education/archives/101250). FRBR, WEMI are both good search terms.
 
 ### A Joint Work/Expression date
 
