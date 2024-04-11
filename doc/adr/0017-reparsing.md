@@ -76,7 +76,7 @@ Reference is the TDR reference of the original document or BULK-33333 if they ca
 
 `null` (or an absent field) in `parserInstructions` means that we should not presume that value and allow the parser to decide. The URI is particularly important since the ingester will then ensure it puts the finished document back in the same place it originally got it, and should probably always be set.
 
-If `published` is true we autopublish the document – there are open questions about the implications of this if upstream was evil. We set this if the document was already published when the document was sent. Email notifications won’t be sent to editors if this flag is set.
+If `published` is true we autopublish the document – there are open questions about the implications of this if upstream was evil. We set this if the document was already published when the document was sent. Email notifications won’t be sent to editors if this flag is set. [Further details of the logic.](../arch/include/ingester_decision.md)
 
 The `s3Bucket` in which the DOCX is found needs to be set up with a AWS KMS encryption key which TRE can access. Old documents won't be readable because those weren’t encrypted with the new key so everything will need overwriting with a version with the new KMS key. We use the unpublished asset bucket so that it doesn’t matter whether the documents have been published or not; the assets in the public bucket that are not DOCX will be overwritten when it's published (or immediately if autopublishing is set.)
 
@@ -95,6 +95,10 @@ There were intentions for a delay on the reparse button; these have been shelved
 
 ## Consequences
 
+### Publication risks if TRE is compromised
+
+It was flagged up that an attacker could publish a document without human review.
+
 ### Enrichment is destroyed (temporarily)
 
 The XML document will be completely rewritten by the parser (except for those fields specified above) and therefore all enrichment will be destroyed. The document will need to be re-enriched but should be picked up by the automatic enrichment process (assuming that it’s working and turned on.)
@@ -102,9 +106,13 @@ The XML document will be completely rewritten by the parser (except for those fi
 ### tar.gz files overwritten with versions without DOCX
 
 TDR don't send the docx back to us when reparsing because we've already got it; we intend to use the same TDR reference to refer to the document as before meaning that the targz file we get back is named the same, meaning it'll get stored in exactly the same place in S3 as the original, overwriting it.
+
 In the event of the word document being overwritten by a splatting judgment, we won't be able to get the word document back in quite the same way we do now. If we don't make any changes, we should be able to fetch the docx from S3's version history which is a little bit more faff than now.
 Other options include:
-don't save the incoming TDR targz file. That makes debugging hard
-save it under a different name? We could get a lot of different versions (and we're probably still paying for storage whether it's in the versioned history of a new name. Having a single 'TDR-2023-1-REPARSE.tar.gz' could help with that.
 
-see https://github.com/nationalarchives/ds-find-caselaw-docs/pull/157/files?short_path=f00d5bc#diff-f00d5bc9df504d47fa2955efe5640b97aaff1d3fc625aba067464e814d3ec9aa
+- don't save the incoming TDR targz file. That makes debugging hard
+- save it under a different name? We could get a lot of different versions (and we're probably still paying for storage whether it's in the versioned history of a new name. Having a single 'TDR-2023-1-REPARSE.tar.gz' could help with that.
+
+#### We should change the ingester to save tar.gz files without docx to a different filename
+
+This will mean automated tools might not be able to query the tar.gz, but there are none.
