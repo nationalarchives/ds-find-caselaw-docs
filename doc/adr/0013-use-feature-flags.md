@@ -35,3 +35,50 @@ We will implement feature flagging in Public UI and Editor UI, which will allow 
 - Additional work may be needed to support both old and new behaviours concurrently
 - It will be necessary to remove old feature flags once features have reached full adoption
 - Team members running testing will need training on how to opt users into features
+
+## Documentation on use in practice
+
+(12 April 2024)
+
+### Availability
+
+We use [Django Waffle](https://waffle.readthedocs.io/en/stable/) for feature flags. They’re available in the Public and Editor UIs.
+
+### Creating and modifying flags
+
+Log into the admin interface – /django for the PUI, or /admin for the EUI. In the admin interface you’ll see a subsection named ‘django-waffle’. Pick ‘flags’ to edit an existing flag, or the + icon next to ‘flags’ to make a new one.
+
+Pick a name – the convention is to use ‘snake_case’. Ensure “testing” is on. You can set “Everyone” if you want to ensure no-one/everyone sees the flag. Hit ‘save’.
+
+The options are generally well explained in the interface.
+
+### Activating a testing flag
+
+Visit any URL with a parameter of `?dwft_history_timeline=1` to turn testing on for that user; `=0` to turn it off.
+
+### Using flags in HTML templates
+
+[Documentation](https://waffle.readthedocs.io/en/stable/usage/templates.html)
+
+This is the only way we’ve used flags so far.
+
+```
+{% load waffle_tags %}
+{% flag "flag_name" %}
+    flag_name is active!
+{% else %}
+    flag_name is inactive
+{% endflag %}
+```
+
+### Using flags in Python views:
+
+[Documentation](https://waffle.readthedocs.io/en/stable/usage/views.html)
+
+Inside a view, you can access the flag status via `waffle.flag_is_active(request, 'flag_name')`
+
+### Labs
+
+The Editor interface has a way to turn on features for yourself at [/labs](https://editor.staging.caselaw.nationalarchives.gov.uk/labs).
+
+(judgments/views/labs.py)[https://github.com/nationalarchives/ds-caselaw-editor-ui/blob/main/judgments/views/labs.py] has a list of the current experiments.
