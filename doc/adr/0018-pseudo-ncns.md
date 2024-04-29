@@ -32,7 +32,7 @@ As well as any court issued true NCN they may come with, we will aim to issue al
 
 Citation `[{year}] {court code} {namespace}.{id}`
 
-As with a true NCN, the court code and year come first, but the ordinal number is replaced with a combination of a namespace followed by a unique alphabetical ID.
+As with a true NCN, year and the court code come first, but the ordinal number is replaced with a combination of a namespace followed by a unique alphabetical ID.
 
 For the first piece of work the court code and year are not optional. The ids are unique per year and court as with normal NCN ordinals.
 
@@ -53,8 +53,6 @@ The SQID will be four characters long, all letters, no vowels (a,e,i,o,u,y) and 
 The format of the namespace and ID is chosen specifically for compatibility with ECLI, which allows "ordinal” numbers which are alphanumeric and can contain dots.
 
 ## Examples of pseudo-NCN citations
-
-URL `ukhl/1932/tna.xkcd`
 
 Citation `[1932] UKHL tna.xkcd`
 
@@ -96,7 +94,7 @@ In future work where we want to use TNA ids to identify documents as they come i
 
 - [x] Catherine/Jim/John/Nicki: decide on namespace prefix - TNA has been decided on
 
-- [/] Commit ADR to GitHub repo - in progress
+- [X] Commit ADR to GitHub repo - in progress
 
 - [ ] Devs: Generate sqid for each sequential document when an editor pushes the 'sqid' button, and thence generate a pseudo-NCN for every incoming document with no NCN.
 
@@ -104,6 +102,6 @@ In future work where we want to use TNA ids to identify documents as they come i
 
 - [ ] UR/UX Decide if/how these are displayed on the Public UI - will they be displayed where court issued NCN's appear?
 
-- [ out of scope for MVP] Devs: Find an alternate way to generate sqid without duplicates for documents which Jim will auto-publish from the backlog
+- [ out of scope for MVP] Devs: Find an alternate way to generate sqid without duplicates for documents which Jim will auto-publish from the backlog (5 ch sqid for autopublish?)
 
 - [out of scope for MVP] Jim: extend judgment XML schema to allow multiple identifiers so that we can embed our identifiers as well as the official NCN. Probably involves putting the `<uk:xxx>` tags into a container tag which can be repeated, but Jim is the expert here.
