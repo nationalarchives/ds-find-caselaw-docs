@@ -94,7 +94,7 @@ In future work where we want to use TNA ids to identify documents as they come i
 
 - [x] Catherine/Jim/John/Nicki: decide on namespace prefix - TNA has been decided on
 
-- [X] Commit ADR to GitHub repo - in progress
+- [x] Commit ADR to GitHub repo - in progress
 
 - [ ] Devs: Generate sqid for each sequential document when an editor pushes the 'sqid' button, and thence generate a pseudo-NCN for every incoming document with no NCN.
 
