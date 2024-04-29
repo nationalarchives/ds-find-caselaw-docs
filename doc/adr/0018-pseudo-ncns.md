@@ -48,7 +48,7 @@ The ids will be issued sequentially as numbers and converted to a string of cons
 
 This will allow us to ensure we do not duplicate ids (the ordinal progression) however users will not confuse our id for an NCN nor look for items missing in a sequence because they will appear as letters.
 
-The SQID will be four characters long, all letters, no vowels (a,e,i,o,u,y) and no upper case. This will give us up to 160,000 ids per court per year. If we need more than this we can add an fifth character to the SQID.
+The SQID will be four characters long, all letters, no vowels (a,e,i,o,u,y) and no upper case. This will give us up to 160,000 ids per court per year. If we need more than this we can add a fifth character to the SQID.
 
 The format of the namespace and ID is chosen specifically for compatibility with ECLI, which allows "ordinal” numbers which are alphanumeric and can contain dots.
 
