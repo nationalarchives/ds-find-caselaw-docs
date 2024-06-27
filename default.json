@@ -26,5 +26,8 @@
       "groupName": "boto packages"
     }
   ],
-  "labels": ["dependencies"]
+  "labels": ["dependencies"],
+  "vulnerabilityAlerts": {
+    "addLabels": ["security"]
+  }
 }
