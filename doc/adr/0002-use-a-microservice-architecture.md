@@ -35,5 +35,7 @@ Starting from scratch with a microservice architecture is often not the right ap
 Microservice architectures can become overly complex. We should be careful only to split out services where really appropriate, and keep interfaces well-defined and well-documented. Data should be held centrally to avoid synchronisation problems across services.
 
 [^microservices]: [Microservices Guide](https://www.martinfowler.com/microservices/), Martin Fowler
+
 [^rest]: [REST APIs](https://en.wikipedia.org/wiki/Representational_state_transfer)
+
 [^monolith-first]: [Monolith First](https://www.martinfowler.com/bliki/MonolithFirst.html), Martin Fowler
