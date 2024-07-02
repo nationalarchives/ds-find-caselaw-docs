@@ -21,6 +21,7 @@ REPOSITORIES = [
     {
         "id": "ds-caselaw-marklogic",
         "description": "MarkLogic database configuration.",
+        "renovate_dashboard_issue_id": "74",
     },
     {
         "id": "ds-caselaw-ingester",
