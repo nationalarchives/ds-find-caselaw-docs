@@ -1,0 +1,27 @@
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+ignore = ["E501", "G004", "PLR2004", "RUF005", "RUF012", "UP040", "INP001"]  # long lines, fstrings in logs, magic values, consider not concat, mutable classbits, type instead of TypeAlias, packages missing __init__.py
+extend-select = ["W", "B", "Q", "C90", "I", "UP", "YTT", "ASYNC", "S", "BLE", "A", "COM", "C4", "DTZ", "T10", "DJ", "EM", "EXE", "FA",
+                 "ISC", "ICN", "G", "INP", "PIE", "T20", "PYI", "PT", "Q", "RSE", "RET", "SLF", "SLOT", "SIM", "TID", "TCH", "INT", "PTH",
+                 "FIX", "PGH", "PL", "TRY", "FLY", "PERF", "RUF"]
+unfixable = ["ERA"]
+
+# things skipped:
+# N: naming, possibly good
+# D: docstrings missing throughout
+# ANN: annotations missing throughout
+# FBT: not convinced boolean trap worth auto-banning.
+# CPY: copyright at top of each file
+# G: logging warnings -- fstrings bad?
+# ARG: sometimes you need to accept arguments.
+# TD: somewhat finicky details about formatting TODOs
+# FIX: flags todos: possible to add -- skipped for now
+# ERA: lots of false positives, not a good autofix
+# PD, NPY, AIR: ignored, panda / numpy / airflow specific
+# FURB: not yet out of preview
+
+[tool.ruff.lint.extend-per-file-ignores]
+"utilities/run-xquery.py" = ["T201"]  # We're happy using print in utility scripts
+"scripts/build_repo_lists" = ["T201"]  # We're happy using print in utility scripts
