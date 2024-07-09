@@ -4,11 +4,13 @@
 
 2. update [neutral_citation_regex.yaml](https://github.com/nationalarchives/ds-caselaw-utils/blob/main/src/ds_caselaw_utils/data/neutral_citation_regex.yaml) (utils)
 
-3. add the URL chunks (courts, subcourts) to the [editor ui converters](https://github.com/nationalarchives/ds-caselaw-editor-ui/blob/main/judgments/converters.py)
+3. add a test to [test_neutral.py]'s `good_neutral_urls` (https://github.com/nationalarchives/ds-caselaw-utils/blob/main/src/ds_caselaw_utils/test_neutral.py) (utils), test with `poetry run pytest`
 
-4. add the URL chunks (courts, subcourts) to the [public ui converters](https://github.com/nationalarchives/ds-caselaw-public-ui/blob/main/judgments/converters.py)
+4. add the URL chunks (courts, subcourts) to the [editor ui judgments/converters.py](https://github.com/nationalarchives/ds-caselaw-editor-ui/blob/main/judgments/converters.py)
 
-5. deploy all the things (utils, editor, public), not forgetting to bump
+5. add the URL chunks (courts, subcourts) to the [public ui judgments/converters.py](https://github.com/nationalarchives/ds-caselaw-public-ui/blob/main/judgments/converters.py)
+
+6. deploy all the things (utils, editor, public), not forgetting to bump
    the version of utils in all those things.
 
 #### if you're adding a new name for an old court
