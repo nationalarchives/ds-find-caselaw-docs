@@ -19,8 +19,8 @@ The “internal” metadata fields show the metadata values the parser had ident
 “main” mean it’s a judgment (0 means it’s an associated document)
 “docx” means I was able to generate a .docx from the original
 “bad_internal_cite” means the NCN in the document is not correct
-“xml” means the parser was able to complete
-“website” means I uploaded it to my prototype MarkLogic (from which James eventually took the judgments)
+“xml” means the parser was able to complete parsing
+“website” means it was uploaded it to the prototype MarkLogic (from which the judgments were eventually taken)
 filename: original bailii filename
 tna_id: our ID
 
