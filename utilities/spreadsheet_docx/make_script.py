@@ -1,21 +1,31 @@
-# ruff: noqa: T201
+# ruff: noqa: T201 (print)
+# ruff: noqa: S603 (untrusted subprocess input)
+# ruff: noqa: PYI024 (typing.NamedTuple instead of collections)
+
 
 # """Make a bash script to copy the files across to S3"""
 
 import csv
 import re
-from collections import Counter
+import subprocess
+import sys
+from collections import Counter, namedtuple
 from pathlib import Path
-from typing import namedtuple
 
-SOURCE_REPO = "bailii-docx"
-TARGET_REPO = "tna-caselaw-unpublished-assets"
+import requests
+
+SOURCE_BUCKET = "bailii-docx"
+UNPUBLISHED_BUCKET = "tna-caselaw-unpublished-assets"
+PUBLISHED_BUCKET = "tna-caselaw-assets"
 DRY_RUN = "--dryrun"
+# DRY_RUN = False
 DALMATIAN_INFRASTRUCTURE = "caselaw"
+ASSETS_BASE = "https://tna-caselaw-assets.s3.amazonaws.com/"
 
 SPREADSHEET = "bailii_files.csv"
 
 # NOTE THIS MUST BE RUN AS A V2 DALMATIAN
+# Run `dalmatian version -v 2` first
 
 
 class UnexpectedExtension(Exception):
@@ -28,7 +38,60 @@ with Path.open(SPREADSHEET) as f:
 
 headers = raw_data[0]
 
-Row = namedtuple("Row", headers)
+BaseRow = namedtuple("Row", headers)
+
+
+class Row(BaseRow):
+    def source_key(self):
+        extension_match = re.search(r"^(.*)\.([a-z]*)$", self.filename)
+        root, extension = extension_match.groups()
+        if extension not in ["rtf", "pdf", "doc", "docx"]:
+            raise UnexpectedExtension
+        return f"{extension}/{root}.docx"
+
+    def target_key(self):
+        path = self.tna_id
+        filename = self.tna_id.replace("/", "_") + ".docx"
+        return f"{path}/{filename}"
+
+    def has_docx_in_s3(self):
+        response = requests.head(f"{ASSETS_BASE}/{self.target_key()}", timeout=30)
+        return response.status_code == 200
+
+    def copy_command(self, target_bucket):
+        if target_bucket == UNPUBLISHED_BUCKET:
+            public_bonus = []
+        elif target_bucket == PUBLISHED_BUCKET:
+            public_bonus = [
+                "--acl",
+                "public-read",
+            ]
+        else:
+            raise RuntimeError
+
+        dryrun_bonus = [DRY_RUN] if DRY_RUN else []
+
+        command = [
+            "dalmatian",
+            "aws-sso",
+            "run-command",
+            "-i",
+            DALMATIAN_INFRASTRUCTURE,
+            "-e",
+            "staging",
+            "s3",
+            "cp",
+            f"s3://{SOURCE_BUCKET}/{doc.source_key()}",
+            f"s3://{target_bucket}/{doc.target_key()}",
+            "--acl",
+            "bucket-owner-full-control",
+        ]
+
+        command.extend(public_bonus)
+        command.extend(dryrun_bonus)
+        return command
+
+
 columns = {}
 for header in headers:
     columns[header] = Counter()
@@ -45,6 +108,7 @@ for x in columns:
 
 
 def clean_rows(nice_data):
+    """drop data that doesn't have tna id's etc, report on number left"""
     print(len(nice_data))
     nice_data = [doc for doc in nice_data if doc.tna_id]
     print(len(nice_data), "have tna_id")
@@ -52,7 +116,7 @@ def clean_rows(nice_data):
     print(len(nice_data), "not deleted")
     nice_data = [doc for doc in nice_data if doc.main == "1"]
     print(len(nice_data), "main")
-    # There is one that didn't have a docx, but pdf/UKFTT-TC/2018/TC06353.docx exist just fine
+    # There is one that didn't have a docx, but pdf/UKFTT-TC/2018/TC06353.docx exists just fine
     # print ([doc for doc in nice_data if doc.docx == "0"])
     # nice_data = [doc for doc in nice_data if doc.docx == "1"]
     # print (len(nice_data), "docx")
@@ -66,26 +130,29 @@ def clean_rows(nice_data):
     return nice_data
 
 
-def source_key(doc):
-    extension_match = re.search(r"^(.*)\.([a-z]*)$", doc.filename)
-    root, extension = extension_match.groups()
-    if extension not in ["rtf", "pdf", "doc", "docx"]:
-        raise UnexpectedExtension
-    return f"{extension}/{root}.docx"
-
-
-def target_key(doc):
-    path = doc.tna_id
-    filename = doc.tna_id.replace("/", "_") + ".docx"
-    return f"{path}/{filename}"
-
-
 nice_data = clean_rows(nice_data)
 print(len(nice_data))
 
 for doc in nice_data:
-    print(source_key(doc), target_key(doc))
-    print(
-        f"dalmatian aws-sso run-command -i {DALMATIAN_INFRASTRUCTURE} -e staging s3 cp 's3://{SOURCE_REPO}/{source_key(doc)}' 's3://{TARGET_REPO}/{target_key(doc)}' {DRY_RUN}",
-    )
-    # curl https://assets.caselaw.nationalarchives.gov.uk/uksc/2024/1/uksc_2024_1.docx --head -f
+    if doc.has_docx_in_s3():
+        print(f"Skipping {doc.target_key()}, exists")
+        continue
+
+    print(f"Writing {doc.source_key()} to {doc.target_key()}...")
+
+    command = doc.copy_command(UNPUBLISHED_BUCKET)
+    print(command)
+    retcode = subprocess.run(command, check=False).returncode
+
+    if retcode != 0:
+        raise RuntimeError
+
+    command = doc.copy_command(PUBLISHED_BUCKET)
+    print(command)
+    retcode = subprocess.run(command, check=False).returncode
+
+    if retcode != 0:
+        raise RuntimeError
+
+    # remove this when we run for real
+    sys.exit()
