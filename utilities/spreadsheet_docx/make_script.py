@@ -6,6 +6,7 @@
 # """Make a bash script to copy the files across to S3"""
 
 import csv
+import json
 import re
 import subprocess
 import sys
@@ -155,6 +156,8 @@ for doc in nice_data:
 
     if not doc.is_published():
         print(f"Skipping public upload of {doc.target_key()}, not published")
+        with Path.open("not_published.jsonl", "a") as f:
+            f.write(json.dumps([doc.source_key(), doc.target_key()]) + "\n")
         continue
 
     command = doc.copy_command(PUBLISHED_BUCKET)
