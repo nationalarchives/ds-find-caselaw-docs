@@ -20,7 +20,8 @@ PUBLISHED_BUCKET = "tna-caselaw-assets"
 DRY_RUN = "--dryrun"
 # DRY_RUN = False
 DALMATIAN_INFRASTRUCTURE = "caselaw"
-ASSETS_BASE = "https://tna-caselaw-assets.s3.amazonaws.com/"
+ASSETS_BASE = "https://tna-caselaw-assets.s3.amazonaws.com"
+CASELAW_BASE = "https://caselaw.nationalarchives.gov.uk"
 
 SPREADSHEET = "bailii_files.csv"
 
@@ -56,6 +57,11 @@ class Row(BaseRow):
 
     def has_docx_in_s3(self):
         response = requests.head(f"{ASSETS_BASE}/{self.target_key()}", timeout=30)
+        return response.status_code == 200
+
+    def is_published(self):
+        response = requests.head(f"{CASELAW_BASE}/{self.tna_id}", timeout=30)
+        print(response)
         return response.status_code == 200
 
     def copy_command(self, target_bucket):
@@ -146,6 +152,10 @@ for doc in nice_data:
 
     if retcode != 0:
         raise RuntimeError
+
+    if not doc.is_published():
+        print(f"Skipping public upload of {doc.target_key()}, not published")
+        continue
 
     command = doc.copy_command(PUBLISHED_BUCKET)
     print(command)
