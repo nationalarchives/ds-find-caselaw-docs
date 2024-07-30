@@ -1,0 +1,32 @@
+name: Generate API docs and deploy to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  generate-api-docs:
+    name: Generate API Documentation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate API docs and deploy to GitHub Pages
+        uses: msayson/openapi-github-pages-action@v2.0.0
+        with:
+          api-configs: |-
+            [
+              {
+                "openapi-json-filepath": "doc/openapi/public_api.yml",
+                "api-doc-filepath": "public.html"
+              },
+              {
+                "openapi-json-filepath": "doc/openapi/privileged_api.yml",
+                "api-doc-filepath": "privileged.html"
+              }
+            ]
+          api-docs-dir: doc/api-generated
