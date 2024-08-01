@@ -18,13 +18,14 @@ import requests
 SOURCE_BUCKET = "bailii-docx"
 UNPUBLISHED_BUCKET = "tna-caselaw-unpublished-assets"
 PUBLISHED_BUCKET = "tna-caselaw-assets"
-DRY_RUN = "--dryrun"
-# DRY_RUN = False
 DALMATIAN_INFRASTRUCTURE = "caselaw"
 ASSETS_BASE = "https://tna-caselaw-assets.s3.amazonaws.com"
 CASELAW_BASE = "https://caselaw.nationalarchives.gov.uk"
 
 SPREADSHEET = "bailii_files.csv"
+DRY_RUN = "--for-real" not in sys.argv[1:]
+if not DRY_RUN:
+    print("Running for real...")
 
 # NOTE THIS MUST BE RUN AS A V2 DALMATIAN
 # Run `dalmatian version -v 2` first
@@ -76,7 +77,7 @@ class Row(BaseRow):
         else:
             raise RuntimeError
 
-        dryrun_bonus = [DRY_RUN] if DRY_RUN else []
+        dryrun_bonus = ["--dryrun"] if DRY_RUN else []
 
         command = [
             "dalmatian",
