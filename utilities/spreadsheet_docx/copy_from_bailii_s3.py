@@ -34,7 +34,7 @@ class UnexpectedExtension(Exception):
     pass
 
 
-with Path.open(SPREADSHEET) as f:
+with Path(SPREADSHEET).open() as f:
     csv_reader = csv.reader(f)
     raw_data = list(csv_reader)
 
@@ -156,7 +156,7 @@ for doc in nice_data:
 
     if not doc.is_published():
         print(f"Skipping public upload of {doc.target_key()}, not published")
-        with Path.open("not_published.jsonl", "a") as f:
+        with Path("not_published.jsonl").open("a") as f:
             f.write(json.dumps([doc.source_key(), doc.target_key()]) + "\n")
         continue
 
