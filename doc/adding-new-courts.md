@@ -10,8 +10,10 @@
 
 5. add the URL chunks (courts, subcourts) to the [public ui judgments/converters.py](https://github.com/nationalarchives/ds-caselaw-public-ui/blob/main/judgments/converters.py)
 
-6. deploy all the things (utils, editor, public), not forgetting to bump
-   the version of utils in all those things.
+6. add the regex to the [Marklogic search helper](https://github.com/nationalarchives/ds-find-caselaw-docs/blob/main/doc/adding-new-courts.md)
+
+7. deploy all the things (utils, marklogic, editor, public), not forgetting to bump
+   the version of utils in the last two.
 
 #### if you're adding a new name for an old court
 
