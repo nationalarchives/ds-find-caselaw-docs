@@ -63,7 +63,6 @@ class Row(BaseRow):
 
     def is_published(self):
         response = requests.head(f"{CASELAW_BASE}/{self.tna_id}", timeout=30)
-        print(response)
         return response.status_code == 200
 
     def copy_command(self, target_bucket):
@@ -91,6 +90,8 @@ class Row(BaseRow):
             "cp",
             f"s3://{SOURCE_BUCKET}/{doc.source_key()}",
             f"s3://{target_bucket}/{doc.target_key()}",
+            "--copy-props",
+            "none",
             "--acl",
             "bucket-owner-full-control",
         ]
@@ -145,6 +146,10 @@ nice_data = clean_rows(nice_data)
 print(len(nice_data))
 
 for row_num, doc in enumerate(nice_data):
+
+    if row_num < 33959:
+        continue
+    
     if doc.has_docx_in_s3():
         print(f"Skipping #{row_num} {doc.target_key()}, exists")
         continue
