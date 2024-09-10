@@ -2,7 +2,15 @@ openapi: 3.1.0
 info:
   title: "National Archives Find Case Law: Public API"
   version: 0.1.3
-  description: "An API for interacting with and retrieving data from the [Find Case Law service](https://caselaw.nationalarchives.gov.uk/), operated by the National Archives."
+  description: |-
+    Our API provides access to judgments and decisions held by Find Case Law that have been converted from Microsoft Word documents into XML. These have been automatically marked up according to the [international data standard, LegalDocML](https://groups.oasis-open.org/communities/tc-community-home2?CommunityKey=3425f20f-b704-4076-9fab-018dc7d3efbe), and validated by our legal editorial team. This data includes:
+
+    - Neutral Citation
+    - Court / Chamber
+    - Date
+    - Case Name
+    - Party Names
+    - Judges Names
   termsOfService: "https://caselaw.nationalarchives.gov.uk/terms-of-use"
   contact:
     email: caselaw@nationalarchives.gov.uk
@@ -11,6 +19,7 @@ info:
   license:
     name: Open Justice Licence
     url: "https://caselaw.nationalarchives.gov.uk/open-justice-licence"
+  summary: "The Find Case Law API allows you to access court judgments and tribunal decisions held in the [Find Case Law service](https://caselaw.nationalarchives.gov.uk/), operated by the National Archives."
 servers:
   - url: "https://caselaw.nationalarchives.gov.uk"
     description: ""
