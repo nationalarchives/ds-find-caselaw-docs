@@ -50,24 +50,6 @@ paths:
       tags:
         - Reading
       parameters:
-        - name: court
-          required: true
-          in: path
-          example: ewca
-          schema:
-            type: string
-        - name: subdivision
-          required: true
-          in: path
-          example: pat
-          schema:
-            type: string
-        - name: year
-          required: true
-          in: path
-          example: 2022
-          schema:
-            type: integer
         - name: order
           required: false
           in: query
@@ -90,14 +72,33 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/judgmentFeed"
+    parameters:
+      - name: court
+        required: true
+        in: path
+        example: ewca
+        schema:
+          type: string
+      - name: subdivision
+        required: true
+        in: path
+        example: pat
+        schema:
+          type: string
+      - name: year
+        required: true
+        in: path
+        example: 2022
+        schema:
+          type: integer
   "/{judgmentUri}/data.xml":
     get:
       summary: "Read a published judgment or decision, given its URI"
       operationId: getDocumentByUri
       tags:
         - Reading
-      parameters:
-        - $ref: "#/components/parameters/judgmentUri"
       responses:
         "200":
           $ref: "#/components/responses/judgment"
+    parameters:
+      - $ref: "#/components/parameters/judgmentUri"
