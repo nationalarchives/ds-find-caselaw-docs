@@ -1,23 +1,22 @@
-openapi: "3.0.3"
-
+openapi: 3.0.3
 info:
-  title: Case Law Public API
-  version: "0.1.3"
-  description: National Archives Caselaw Public API
-
+  title: "National Archives Find Case Law: Public API"
+  version: 0.1.3
+  description: "An API for interacting with and retrieving data from the [Find Case Law service](https://caselaw.nationalarchives.gov.uk/), operated by the National Archives."
+  termsOfService: "https://caselaw.nationalarchives.gov.uk/terms-of-use"
+  contact:
+    email: caselaw@nationalarchives.gov.uk
+    url: "https://caselaw.nationalarchives.gov.uk/how-to-use-this-service#section-contact"
+    name: Find Case Law
+  license:
+    name: Open Justice Licence
+    url: "https://caselaw.nationalarchives.gov.uk/open-justice-licence"
 servers:
-  - url: https://{environment}.nationalarchives.gov.uk/
-    variables:
-      environment:
-        default: caselaw
-        enum:
-          - caselaw # Production
-          - staging.caselaw # Staging
-
+  - url: "https://caselaw.nationalarchives.gov.uk"
+    description: ""
 tags:
   - name: Reading
     description: Operations for reading document content and metadata
-
 components:
   parameters:
     judgmentUri:
@@ -31,30 +30,22 @@ components:
     judgmentFeed:
       description: An Atom feed of recently published judgments
       content:
-        "application/atom+xml":
+        application/atom+xml:
           schema:
             description: List in Atom
-    # judgmentList:
-    #   description: An OData collection of judgment entities
-    #   content:
-    #     "application/xml":
-    #       schema:
-    #         description: An OData collection of judgment entities
     judgment:
-      description: A single judgment document, in Akoma Ntoso XML
+      description: "A single judgment document, in Akoma Ntoso XML"
       content:
-        "application/akn+xml":
+        application/akn+xml:
           schema:
             description: Akoma Ntoso
-
+  securitySchemes: {}
 paths:
-  /{court}/{subdivision}/{year}/atom.xml:
+  "/{court}/{subdivision}/{year}/atom.xml":
     get:
       summary: Get recently published or updated judgments
-      description: >
-        Less specific feeds can be gained by omitting the components
-        e.g. /, /2022/, /ewhc/ and /ewhc/ch/ are all valid prefixes to atom.xml
-        Note that a {court} is required if there is a {subdivision}
+      description: |
+        Less specific feeds can be gained by omitting the components e.g. /, /2022/, /ewhc/ and /ewhc/ch/ are all valid prefixes to atom.xml Note that a {court} is required if there is a {subdivision}
       operationId: listJudgments
       tags:
         - Reading
@@ -84,12 +75,12 @@ paths:
             type: string
             enum:
               - date
-              - -date
+              - "-date"
               - updated
-              - -updated
+              - "-updated"
               - transformation
-              - -transformation
-            default: -date
+              - "-transformation"
+            default: "-date"
         - name: page
           required: false
           in: query
@@ -99,45 +90,9 @@ paths:
       responses:
         "200":
           $ref: "#/components/responses/judgmentFeed"
-
-  # /judgments/advanced_search:
-  #   get:
-  #     summary: List published judgments
-  #     operationId: searchJudgments
-  #     tags:
-  #       - Reading
-  #     parameters:
-  #       - name: query
-  #         in: query
-  #         description: Free-text search term. Can include neutral citations
-  #         example: "[2021] EWCA Crim 1785"
-  #       - name: party
-  #         in: query
-  #         description: search in party name fields
-  #         example: John Doe
-  #       - name: judge
-  #         in: query
-  #         description: search for judge name
-  #         example: Lord Justice Smith
-  #       - name: court
-  #         in: query
-  #         description: search for judgments made by a specific court
-  #         example: ewhc/pat
-  #       - name: from
-  #         in: query
-  #         description: find judgments on or after the specified date
-  #         example: 1987-12-01
-  #       - name: to
-  #         in: query
-  #         description: find judgments on or before the specified date
-  #         example: 2022-04-14
-  #     responses:
-  #       '200':
-  #         $ref: "#/components/responses/judgmentList"
-
-  /{judgmentUri}/data.xml:
+  "/{judgmentUri}/data.xml":
     get:
-      summary: Read a published judgment or decision, given its URI
+      summary: "Read a published judgment or decision, given its URI"
       operationId: getDocumentByUri
       tags:
         - Reading
