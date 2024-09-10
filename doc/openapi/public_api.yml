@@ -10,11 +10,11 @@ info:
     - Date
     - Case Name
     - Party Names
-    - Judges Names
+    - Judges' Names
   termsOfService: "https://caselaw.nationalarchives.gov.uk/terms-of-use"
   contact:
     email: caselaw@nationalarchives.gov.uk
-    url: "https://caselaw.nationalarchives.gov.uk/how-to-use-this-service#section-contact"
+    url: "https://caselaw.nationalarchives.gov.uk/"
     name: Find Case Law
   license:
     name: Open Justice Licence
