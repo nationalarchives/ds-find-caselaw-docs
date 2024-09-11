@@ -1,82 +1,77 @@
-openapi: "3.0.3"
-
+openapi: 3.1.0
 info:
-  title: Case Law Public API
-  version: "0.1.3"
-  description: National Archives Caselaw Public API
+  title: "National Archives Find Case Law: Public API"
+  version: 0.1.3
+  description: |-
+    Our API provides access to judgments and decisions held by Find Case Law that have been converted from Microsoft Word documents into XML. These have been automatically marked up according to the [international data standard, LegalDocML](https://groups.oasis-open.org/communities/tc-community-home2?CommunityKey=3425f20f-b704-4076-9fab-018dc7d3efbe), and validated by our legal editorial team. This data includes:
 
+    - Neutral Citation
+    - Court / Chamber
+    - Date
+    - Case Name
+    - Party Names
+    - Judges' Names
+
+    ## Open Justice Licence
+
+    The National Archives, has worked in collaboration with The Ministry of Justice and the Judicial Executive Board to design a new licensing framework for the reuse of case law as data. The [Open Justice licence](https://caselaw.nationalarchives.gov.uk/open-justice-licence) is designed to protect the personal data within the records while supporting the principles of Open Justice.
+
+    The Open Justice licence allows you to copy, publish, distribute and transmit case law data. It permits you to use the data commercially, for example, by combining it with other information, or by including it in your own product or application. There are certain conditions that apply under this licence.
+
+    You do not need to apply to re-use Find Case Law records if your re-use complies with the terms and conditions of the Open Justice Licence.
+
+    **The Open Justice licence does not permit computational analysis.** If you intend to do any programmatic searching in bulk across the Find Case Law records to identify, extract or enrich contents within the records you will need to [apply to perform computational analysis](https://caselaw.nationalarchives.gov.uk/re-use-find-case-law-records/licence-application-process). There are no application charges.
+
+    ## Give us your feedback
+
+    We are still actively developing Find Case Law based on user feedback. This includes improving the experience of how data re-users can access the data.
+
+    You can provide feedback by using our [feedback form](https://corexmsnp4n42lf2kht3.qualtrics.com/jfe/form/SV_0lyyYAzfv9bGcyW).
+  termsOfService: "https://caselaw.nationalarchives.gov.uk/terms-of-use"
+  contact:
+    email: caselaw@nationalarchives.gov.uk
+    url: "https://caselaw.nationalarchives.gov.uk/"
+    name: Find Case Law
+  license:
+    name: Open Justice Licence
+    url: "https://caselaw.nationalarchives.gov.uk/open-justice-licence"
+  summary: "The Find Case Law API allows you to access court judgments and tribunal decisions held in the [Find Case Law service](https://caselaw.nationalarchives.gov.uk/), operated by the National Archives."
 servers:
-  - url: https://{environment}.nationalarchives.gov.uk/
-    variables:
-      environment:
-        default: caselaw
-        enum:
-          - caselaw # Production
-          - staging.caselaw # Staging
-
-tags:
-  - name: Reading
-    description: Operations for reading document content and metadata
-
+  - url: "https://caselaw.nationalarchives.gov.uk"
+    description: ""
 components:
   parameters:
-    judgmentUri:
-      name: judgmentUri
+    documentUri:
+      name: document_uri
       in: path
       required: true
       schema:
         type: string
       example: ewhc/tcc/2022/42
+      description: The unique identifier for this document within Find Case Law.
   responses:
     judgmentFeed:
       description: An Atom feed of recently published judgments
       content:
-        "application/atom+xml":
+        application/atom+xml:
           schema:
             description: List in Atom
-    # judgmentList:
-    #   description: An OData collection of judgment entities
-    #   content:
-    #     "application/xml":
-    #       schema:
-    #         description: An OData collection of judgment entities
     judgment:
-      description: A single judgment document, in Akoma Ntoso XML
+      description: "The contents of a single document, as [Akoma Ntoso XML](https://www.oasis-open.org/standard/akn-v1-0/)."
       content:
-        "application/akn+xml":
+        application/akn+xml:
           schema:
             description: Akoma Ntoso
-
 paths:
-  /{court}/{subdivision}/{year}/atom.xml:
+  "/{court}/{subdivision}/{year}/atom.xml":
     get:
-      summary: Get recently published or updated judgments
-      description: >
-        Less specific feeds can be gained by omitting the components
-        e.g. /, /2022/, /ewhc/ and /ewhc/ch/ are all valid prefixes to atom.xml
-        Note that a {court} is required if there is a {subdivision}
+      summary: Get a list of recently published or updated documents
+      description: |
+        Less specific feeds can be gained by omitting the components e.g. `/`, `/2022/`, `/ewhc/` and `/ewhc/ch/` are all valid prefixes to `atom.xml`.
+
+        Note that a `{court}` is required if there is a `{subdivision}`.
       operationId: listJudgments
-      tags:
-        - Reading
       parameters:
-        - name: court
-          required: true
-          in: path
-          example: ewca
-          schema:
-            type: string
-        - name: subdivision
-          required: true
-          in: path
-          example: pat
-          schema:
-            type: string
-        - name: year
-          required: true
-          in: path
-          example: 2022
-          schema:
-            type: integer
         - name: order
           required: false
           in: query
@@ -84,65 +79,70 @@ paths:
             type: string
             enum:
               - date
-              - -date
+              - "-date"
               - updated
-              - -updated
+              - "-updated"
               - transformation
-              - -transformation
-            default: -date
+              - "-transformation"
+            default: "-date"
+          description: |
+            Which of the dates within the document to use for ordering. Prepend a `-` to sort by newest first.
+
+            - `date`: The date the document was first published by the court
+            - `updated`: The last date the document was updated in the Find Case Law system, including changes to its metadata
+            - `transformation`: The date the body of the document was last modified, including changes to either the body text, XML markup, or both
         - name: page
           required: false
           in: query
           schema:
             type: integer
             default: 1
+            minimum: 1
+          description: "Where results are across multiple pages, the page of results to return."
       responses:
         "200":
           $ref: "#/components/responses/judgmentFeed"
-
-  # /judgments/advanced_search:
-  #   get:
-  #     summary: List published judgments
-  #     operationId: searchJudgments
-  #     tags:
-  #       - Reading
-  #     parameters:
-  #       - name: query
-  #         in: query
-  #         description: Free-text search term. Can include neutral citations
-  #         example: "[2021] EWCA Crim 1785"
-  #       - name: party
-  #         in: query
-  #         description: search in party name fields
-  #         example: John Doe
-  #       - name: judge
-  #         in: query
-  #         description: search for judge name
-  #         example: Lord Justice Smith
-  #       - name: court
-  #         in: query
-  #         description: search for judgments made by a specific court
-  #         example: ewhc/pat
-  #       - name: from
-  #         in: query
-  #         description: find judgments on or after the specified date
-  #         example: 1987-12-01
-  #       - name: to
-  #         in: query
-  #         description: find judgments on or before the specified date
-  #         example: 2022-04-14
-  #     responses:
-  #       '200':
-  #         $ref: "#/components/responses/judgmentList"
-
-  /{judgmentUri}/data.xml:
-    get:
-      summary: Read a published judgment or decision, given its URI
-      operationId: getDocumentByUri
       tags:
-        - Reading
-      parameters:
-        - $ref: "#/components/parameters/judgmentUri"
+        - Reading documents
+    parameters:
+      - name: court
+        required: true
+        in: path
+        example: ewca
+        schema:
+          type: string
+        description: The court code to return results for.
+      - name: subdivision
+        required: true
+        in: path
+        example: pat
+        schema:
+          type: string
+        description: The court subdivision code to return results for.
+      - name: year
+        required: true
+        in: path
+        example: 2022
+        schema:
+          type: integer
+        description: The year to return results for.
+  "/{document_uri}/data.xml":
+    get:
+      summary: Get a single document
+      operationId: getDocumentByUri
       responses:
         "200":
           $ref: "#/components/responses/judgment"
+      tags:
+        - Reading documents
+      description: Retrieve the XML of a single document based on its identifier.
+    parameters:
+      - $ref: "#/components/parameters/documentUri"
+tags:
+  - name: Reading documents
+    description: |
+      ## Detecting content changes
+
+      Whenever a judgment gets changed it appears in the recently published list. This includes minor updates such as when we enrich the document with hyperlinks to other legal citations, as well as more significant changes such as revisions we have received from the courts.
+
+      Both the Atom feed and the judgment XML include a content hash so that you can check if the text of the document has changed.
