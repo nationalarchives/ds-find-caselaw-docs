@@ -49,24 +49,86 @@ components:
         type: string
       example: ewhc/tcc/2022/42
       description: The unique identifier for this document within Find Case Law.
+    searchQueryParameter:
+      name: query
+      in: query
+      required: false
+      schema:
+        type: string
+      description: "The identifier, word or phrase to search for"
   responses:
-    judgmentFeed:
-      description: An Atom feed of recently published judgments
+    documentFeed:
+      description: An Atom feed of documents, sorted by one of the dates within the document.
       content:
         application/atom+xml:
           schema:
             description: List in Atom
-    judgment:
+    document:
       description: "The contents of a single document, as [Akoma Ntoso XML](https://www.oasis-open.org/standard/akn-v1-0/)."
       content:
         application/akn+xml:
           schema:
             description: Akoma Ntoso
 paths:
-  "/{court}/{subdivision}/{year}/atom.xml":
+  /atom.xml:
     get:
       summary: Get a list of recently published or updated documents
       description: |
+        Return an Atom feed of documents ordered by one of the dates within the document. Optionally, restrict the feed to documents which match a search query.
+      operationId: listDocumentsAsAtomFeed
+      parameters:
+        - name: order
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - date
+              - "-date"
+              - updated
+              - "-updated"
+              - transformation
+              - "-transformation"
+            default: "-date"
+          description: |
+            Which of the dates within the document to use for ordering. Prepend a `-` to sort by newest first.
+
+            - `date`: The date the document was first published by the court
+            - `updated`: The last date the document was updated in the Find Case Law system, including changes to its metadata
+            - `transformation`: The date the body of the document was last modified, including changes to either the body text, XML markup, or both
+        - name: page
+          required: false
+          in: query
+          schema:
+            type: integer
+            default: 1
+            minimum: 1
+          description: "Where results are across multiple pages, the page of results to return."
+        - $ref: "#/components/parameters/searchQueryParameter"
+      responses:
+        "200":
+          $ref: "#/components/responses/documentFeed"
+      tags:
+        - Reading documents
+    parameters: []
+  "/{document_uri}/data.xml":
+    parameters:
+      - $ref: "#/components/parameters/documentUri"
+    get:
+      summary: Get a single document
+      operationId: getDocumentByUri
+      responses:
+        "200":
+          $ref: "#/components/responses/document"
+      tags:
+        - Reading documents
+      description: Retrieve the XML of a single document based on its identifier.
+  "/{court}/{subdivision}/{year}/atom.xml_copy":
+    get:
+      summary: Get a list of recently published or updated documents
+      description: |
+        **Path-based queries for getting an Atom feed for a specific court or year have been deprecated in favour of passing query parameters to `/atom.xml`. This endpoint will now return a `HTTP 301` redirect.**
+
         Less specific feeds can be gained by omitting the components e.g. `/`, `/2022/`, `/ewhc/` and `/ewhc/ch/` are all valid prefixes to `atom.xml`.
 
         Note that a `{court}` is required if there is a `{subdivision}`.
@@ -100,10 +162,16 @@ paths:
             minimum: 1
           description: "Where results are across multiple pages, the page of results to return."
       responses:
-        "200":
-          $ref: "#/components/responses/judgmentFeed"
+        "301":
+          description: Moved Permanently
+          headers:
+            location:
+              schema:
+                type: string
+              description: "https://caselaw.nationalarchives.gov.uk/atom.xml?court={court}/{subdivision}&year={year}&order=-date&page=1"
       tags:
         - Reading documents
+      deprecated: true
     parameters:
       - name: court
         required: true
@@ -126,18 +194,6 @@ paths:
         schema:
           type: integer
         description: The year to return results for.
-  "/{document_uri}/data.xml":
-    get:
-      summary: Get a single document
-      operationId: getDocumentByUri
-      responses:
-        "200":
-          $ref: "#/components/responses/judgment"
-      tags:
-        - Reading documents
-      description: Retrieve the XML of a single document based on its identifier.
-    parameters:
-      - $ref: "#/components/parameters/documentUri"
 tags:
   - name: Reading documents
     description: |
