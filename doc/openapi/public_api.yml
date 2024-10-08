@@ -38,7 +38,7 @@ info:
   summary: "The Find Case Law API allows you to access court judgments and tribunal decisions held in the [Find Case Law service](https://caselaw.nationalarchives.gov.uk/), operated by the National Archives."
 servers:
   - url: "https://caselaw.nationalarchives.gov.uk"
-    description: "Find Case Law"
+    description: Find Case Law
 components:
   parameters:
     documentUri:
@@ -64,7 +64,7 @@ components:
           schema:
             description: Akoma Ntoso
 paths:
-  "/atom.xml":
+  /atom.xml:
     get:
       summary: Get a Atom feed of documents
       description: |
@@ -80,7 +80,6 @@ paths:
         * `<tna:contenthash>`: A hash of the text in the judgment, with whitespace removed. Can be used to determine if the underlying judgment text has changed.
         * `<link type="application/akn+xml">`: A link to the XML of the judgment
         * `<link type="application/pdf">`: A link to the PDF of the judgment
-
       operationId: atomFeed
       parameters:
         - name: query
@@ -164,7 +163,18 @@ paths:
           $ref: "#/components/responses/documentFeed"
       tags:
         - Reading documents
-
+  "/{document_uri}/data.xml":
+    get:
+      summary: Get a single document
+      operationId: getDocumentByUri
+      responses:
+        "200":
+          $ref: "#/components/responses/document"
+      tags:
+        - Reading documents
+      description: Retrieve the XML of a single document based on its identifier.
+    parameters:
+      - $ref: "#/components/parameters/documentUri"
   "/{court}/{subdivision}/{year}/atom.xml":
     get:
       summary: Get a list of recently published or updated documents
@@ -236,18 +246,6 @@ paths:
         schema:
           type: integer
         description: The year to return results for.
-  "/{document_uri}/data.xml":
-    get:
-      summary: Get a single document
-      operationId: getDocumentByUri
-      responses:
-        "200":
-          $ref: "#/components/responses/document"
-      tags:
-        - Reading documents
-      description: Retrieve the XML of a single document based on its identifier.
-    parameters:
-      - $ref: "#/components/parameters/documentUri"
 tags:
   - name: Reading documents
     description: |
