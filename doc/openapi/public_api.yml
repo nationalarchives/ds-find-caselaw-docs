@@ -179,7 +179,7 @@ paths:
     get:
       summary: Get a list of recently published or updated documents
       description: |
-        Deprecated -- will now redirect to /atom.xml with relevant parameters
+        Deprecated -- will now redirect to `/atom.xml` with relevant parameters
 
         Less specific feeds can be gained by omitting the components e.g. `/`, `/2022/`, `/ewhc/` and `/ewhc/ch/` are all valid prefixes to `atom.xml`.
 
