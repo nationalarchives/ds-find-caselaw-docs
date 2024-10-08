@@ -1,0 +1,1 @@
+npx @redocly/cli preview-docs doc/openapi/privileged_api.yml
