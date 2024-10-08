@@ -37,7 +37,7 @@ info:
     url: "https://caselaw.nationalarchives.gov.uk/open-justice-licence"
   summary: "The Find Case Law API allows you to access court judgments and tribunal decisions held in the [Find Case Law service](https://caselaw.nationalarchives.gov.uk/), operated by the National Archives."
 servers:
-  - url: "https://caselaw.nationalarchives.gov.uk/"
+  - url: "https://caselaw.nationalarchives.gov.uk"
     description: "Find Case Law"
 components:
   parameters:
