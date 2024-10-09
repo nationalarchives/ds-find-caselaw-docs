@@ -14,7 +14,7 @@ info:
 
     ## Open Justice Licence
 
-    The National Archives, has worked in collaboration with The Ministry of Justice and the Judicial Executive Board to design a new licensing framework for the reuse of case law as data. The [Open Justice licence](https://caselaw.nationalarchives.gov.uk/open-justice-licence) is designed to protect the personal data within the records while supporting the principles of Open Justice.
+    The National Archives has worked in collaboration with The Ministry of Justice and the Judicial Executive Board to design a new licensing framework for the reuse of case law as data. The [Open Justice licence](https://caselaw.nationalarchives.gov.uk/open-justice-licence) is designed to protect the personal data within the records while supporting the principles of Open Justice.
 
     The Open Justice licence allows you to copy, publish, distribute and transmit case law data. It permits you to use the data commercially, for example, by combining it with other information, or by including it in your own product or application. There are certain conditions that apply under this licence.
 
@@ -37,8 +37,8 @@ info:
     url: "https://caselaw.nationalarchives.gov.uk/open-justice-licence"
   summary: "The Find Case Law API allows you to access court judgments and tribunal decisions held in the [Find Case Law service](https://caselaw.nationalarchives.gov.uk/), operated by the National Archives."
 servers:
-  - url: "https://caselaw.nationalarchives.gov.uk/"
-    description: "Find Case Law"
+  - url: "https://caselaw.nationalarchives.gov.uk"
+    description: Find Case Law
 components:
   parameters:
     documentUri:
@@ -64,7 +64,7 @@ components:
           schema:
             description: Akoma Ntoso
 paths:
-  "/atom.xml":
+  /atom.xml:
     get:
       summary: Get a Atom feed of documents
       description: |
@@ -80,7 +80,6 @@ paths:
         * `<tna:contenthash>`: A hash of the text in the judgment, with whitespace removed. Can be used to determine if the underlying judgment text has changed.
         * `<link type="application/akn+xml">`: A link to the XML of the judgment
         * `<link type="application/pdf">`: A link to the PDF of the judgment
-
       operationId: atomFeed
       parameters:
         - name: query
@@ -164,12 +163,23 @@ paths:
           $ref: "#/components/responses/documentFeed"
       tags:
         - Reading documents
-
+  "/{document_uri}/data.xml":
+    get:
+      summary: Get a single document
+      operationId: getDocumentByUri
+      responses:
+        "200":
+          $ref: "#/components/responses/document"
+      tags:
+        - Reading documents
+      description: Retrieve the XML of a single document based on its identifier.
+    parameters:
+      - $ref: "#/components/parameters/documentUri"
   "/{court}/{subdivision}/{year}/atom.xml":
     get:
       summary: Get a list of recently published or updated documents
       description: |
-        Deprecated -- will now redirect to /atom.xml with relevant parameters
+        Deprecated -- will now redirect to `/atom.xml` with relevant parameters
 
         Less specific feeds can be gained by omitting the components e.g. `/`, `/2022/`, `/ewhc/` and `/ewhc/ch/` are all valid prefixes to `atom.xml`.
 
@@ -236,18 +246,6 @@ paths:
         schema:
           type: integer
         description: The year to return results for.
-  "/{document_uri}/data.xml":
-    get:
-      summary: Get a single document
-      operationId: getDocumentByUri
-      responses:
-        "200":
-          $ref: "#/components/responses/document"
-      tags:
-        - Reading documents
-      description: Retrieve the XML of a single document based on its identifier.
-    parameters:
-      - $ref: "#/components/parameters/documentUri"
 tags:
   - name: Reading documents
     description: |
