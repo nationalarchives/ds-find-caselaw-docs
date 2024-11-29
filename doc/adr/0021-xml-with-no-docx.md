@@ -1,4 +1,4 @@
-# 21. XML with no docx
+# 21. XML format for documents where source text cannot be extracted by the parser
 
 Date: 2024-11-20
 
@@ -8,7 +8,7 @@ Draft
 
 ## Context
 
-We need to support documents which do not have a source DOCX. They will typically be PDF-only, although we're imagining there might be other formats (zip files full of jpegs).
+We need to support documents where the structured contents of the document cannot necessarily be extracted by the parser. They will typically be PDF-only, although we're imagining there might be other formats (such as zip files full of jpegs).
 
 These documents might not have neutral ciation numbers -- this is outside the scope of this document.
 
@@ -24,43 +24,52 @@ The emitted XML will validate against our modified AkomaNtoso schema
 
 Metadata is provided to the parser via spreadsheets. We will want to preserve some of this data.
 
-The existing tag names (see the appendix) will be used inside a `uk:external-metadata` tag in the `proprietary` tag to allow this metadata to be searched at the same time as other documents that have these tags in the running body of the judgment. Values MUST NOT be deliberately replicated across `external-metadata` and other places, but MAY be replicated if the text body is successfully parsed and the string appeared in externally provided data sources.
+The existing tag names (see the appendix) will be used inside a `uk:external-metadata` tag in the `proprietary` tag to allow this metadata to be searched at the same time as other documents that have these tags in the running body of the judgment; however, `akn:` namespaced tags are forbidden, so the `uk:` namespace MUST be used instead.
 
-Editors SHOULD be able to edit the external metadata and the Editor UI have affordances to do so.
+Values MUST NOT be deliberately replicated across `external-metadata` and other places, but MAY be replicated if the text body is successfully parsed and the string appeared in externally provided data sources.
+
+Editors SHOULD be able to edit these metadata values within the `proprietary` tag and the Editor UI have affordances to do so.
 
 ### Marked as Low Quality
 
-The `proprietary` tag will contain a `uk:source-document` tag, with attributes:
+The `proprietary` tag will contain a `uk:source-document` tag, containing two fractional attributes:
 
-TODO: I think this part wants tearing apart carefully.
-
-Each of these metrics defaults to `1`: we have no reason to doubt the quality of the document. Values of `0` imply a complete lack of quality, or an absence of that feature. Values below `0.5` should be considered poor, and mitigations applied. Values above `1` might be signs of additional verification.
+Each of these numerical metrics defaults to `1.0`: we have no reason to doubt the quality of the document. Values of `0.0` imply a complete lack of quality, or an absence of that feature. Values below `0.5` should be considered poor, and mitigations applied. Values above `1.0` might be signs of additional verification.
 
 - `uk:markup-quality-score`: Is the body of the document marked up well with appropriate HTML and AkomaNtoso tags?
 
 - `uk:text-quality-score`: Are all the words believed to be in the right order, with appropriate interword spacing? (Linebreaks optional)
 
-- `uk:parsed-format`: default `docx`, even if the docx isn't original. `pdf` an obvious value.
+There is also:
 
-The tag SHALL contain human-readable text warning that the XML is low quality and should not be relied upon.
+- `uk:source-document-format`: the MIME type of the document from which this XML was generated. For Rich Text
+  documents, and others where the document was converted to docx first, the mime type still will be `application/vnd.openxmlformats-officedocument.wordprocessingml.document`;
+
+- `uk:markup-human-reviewed`: boolean -- An editor has reviewed the document. This will not be added by any parser, but may be added in the EUI.
+
+- `uk:quality-warning`: Human readable text warning that the XML is low quality and should not be relied upon.
 
 ### Purposes for Low Quality Marks
 
-#### Deprioritised in Search
-
-Since the risk of documents having bad search experiences due to broken OCR / text flow issues, documents with low quality scores should be deprioritised in search.
-
 #### Rejected for Impossible Tasks
 
-Documents with no DOCX cannot be reparsed, so SHOULD be excluded from the list of reparse candidates, SHOULD not be reparsable in the UI and MUST not be sent for reparsing.
+Documents with no DOCX cannot be reparsed via the existing framework, so SHOULD be excluded from the list of reparse candidates, SHOULD NOT be reparsable in the UI and MUST not be sent for reparsing.
+
+Documents without text SHOULD NOT be sent to enrichment.
 
 #### Hidden Information
 
-The Public UI WILL NOT reveal the body of the XML, including HTML transforms, to users who have not opted in to recieving a poor quality document. It may reveal suitable subsections.
+The Atom Feed MAY allow searching for only documents with sufficient quality scores.
+
+The Public UI SHOULD NOT attempt to display XML or HTML transforms of XML to users where the text and/or markup quality scores are insufficient. (0.5 is probably the threshold)
+
+XML representations MAY be available to users who explicitly request them but SHOULD NOT be routinely displayed
+in the PUI.
 
 #### Warning the user
 
-The PUI MAY flag that a document exists only as a PDF so they are not surprised by the absence of a HTML version.
+The Public UI SHOULD indicate to users that a document is not available as HTML and instead is only available
+as the original source document (or other compiled artifact in the future)
 
 ### Mediocre-Effort Text
 
