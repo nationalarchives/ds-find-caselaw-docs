@@ -35,7 +35,7 @@ This ADR proposed a naming convention that:
 
 - Promotes reuse of colour variables
 - Improves consistency across the codebase
-- Aligns with industry standards
+- Aligns with standards
 
 ### Options considered
 
@@ -72,7 +72,7 @@ This ADR proposed a naming convention that:
 **Ant Design**
 
 - **Naming convention:** Organised by semantic colour name and shade, e.g. `primary-1`, `secondary-5`
-- **Props:**
+- **Pros:**
   - Semantic colours indicate where a colour should be used
   - Numbering system gives flexibility on tones
 - **Cons:**
@@ -82,7 +82,7 @@ This ADR proposed a naming convention that:
 **Chakra UI**
 
 - **Naming convention:** Organised by name and shade, split by a period, i.e. `blue.50`, `blue.500`
-- **Props:**
+- **Pros:**
   - Clear hierarchical naming structure
   - Shades are organised by a numeric scale making it easy to choose the appropriate lightness/darkness
   - Easily maintainable/ease to add new colours
@@ -90,25 +90,30 @@ This ADR proposed a naming convention that:
   - Fixed naming means if similar shades of colours are added, variables may need to be adjusted to accomodate
   - Doesn't necessarily indicate how a colour should be used
 
+**TNA Design system**
+
+- **Naming convention:** Organised by expected usage
+- **Pros:**
+  - Colours indicate where a colour should be used
+  - Matches rest of TNA
+  - Tested for accesibility
+- **Cons:**
+  - Limits flexibility where a semantic name is used in a place that doesn't make sense
+  - Limited by TNA set of colours
+
 ## Decision
 
 ### Proposed solution
 
-Adopt a solution most similar to Tailwind naming convention for colour variables, using the format `$color-colorName-shade`, e.g. `$color-blue-50`, `$color-blue-500`.
+Use TNA Design system colours.
 
 ### Justification
 
-This naming convention was chosen due the following:
-
-- Clear hierarchical naming structure
-- Easy to maintain and add new colours to
-- Aligns with industry standards
-- All our other variables use a hyphen to split the various parts of the variable
-- To help with readability, we will prepend the word `color` to the variables to be explicit the variable is a colour
+This choice was made to ensure colours are consistent across TNA, that the colours will be accessible and will require minimal maintenance.
 
 ## Consequences
 
 - Increased maintainability of colour variables
 - Consistency and readability of code, allowing developers to quickly identify colours
-- Consistency for users, with a standard colour scheme being used throughout the app
+- Consistency for users, with a standard colour scheme being used throughout TNA
 - Single colour language means quick and easy handoff from design to development - can refer to existing colour names instead of hex codes
