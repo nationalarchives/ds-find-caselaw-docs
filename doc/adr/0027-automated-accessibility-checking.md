@@ -30,13 +30,14 @@ Accessibility testing is currently a manual process with no standardised approac
 
 ### Solution
 
-Integrate **Axe-Playwright** into the existing automated test suite to perform accessibility checks on all pages covered by end-to-end tests.
+Integrate Axe-Playwright into the existing automated test suite to perform accessibility checks on all pages covered by end-to-end tests.
 
 ### Justification
 
 - Seamlessly integrates with the existing Playwright-based testing setup.
 - Provides standardised accessibility checks aligned with industry best practices.
 - Works within the CI/CD pipeline, enabling continuous accessibility monitoring.
+- Runs an [extensive number of accessibility checks](https://github.com/dequelabs/axe-core/blob/develop/doc/rule-descriptions.md)
 
 ## Consequences
 
