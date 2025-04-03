@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
+    "config:best-practices",
     ":approveMajorUpdates",
     ":automergeLinters",
     ":automergePatch",
@@ -9,7 +9,6 @@
     ":automergeRequireAllStatusChecks",
     ":automergeTesters",
     ":maintainLockFilesWeekly",
-    ":dependencyDashboard",
     ":enablePreCommit"
   ],
   "timezone": "Europe/London",
