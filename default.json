@@ -23,6 +23,14 @@
     {
       "matchPackagePatterns": ["boto"],
       "groupName": "boto packages"
+    },
+    {
+      "matchPackageNames": [
+        "ds-caselaw-utils",
+        "ds-caselaw-custom-api-client",
+        "ds-caselaw-frontend"
+      ],
+      "minimumReleaseAge": "0 days"
     }
   ],
   "labels": ["dependencies"],
