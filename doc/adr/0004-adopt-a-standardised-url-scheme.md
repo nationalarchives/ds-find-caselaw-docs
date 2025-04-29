@@ -4,7 +4,7 @@ Date: 2022-02-21
 
 ## Status
 
-Accepted
+Superseded by [ADR 47](0047-uncouple-document-uris-and-ncns.md)
 
 ## Context
 
