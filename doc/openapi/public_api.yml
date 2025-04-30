@@ -71,6 +71,41 @@ components:
         application/xml:
           schema:
             description: List in Atom
+          examples:
+            list:
+              description: An example of a complete response, with only one `entry`.
+              value: |
+                <?xml version="1.0" encoding="utf-8"?>
+                <?xml-stylesheet href="/static/atom.xsl" type="text/xsl" ?>
+                <feed xml:lang="en-us" xmlns="http://www.w3.org/2005/Atom" xmlns:tna="https://caselaw.nationalarchives.gov.uk">
+                    <title>Latest documents, sorted by date the document was first published by the court (newest first)</title>
+                    <link href="https://caselaw.nationalarchives.gov.uk/atom.xml" rel="alternate"/>
+                    <link href="https://caselaw.nationalarchives.gov.uk/atom.xml" rel="self"/>
+                    <id>https://caselaw.nationalarchives.gov.uk/atom.xml</id>
+                    <updated>2025-04-30T15:00:00+00:00</updated>
+                    <author>
+                        <name>The National Archives</name>
+                    </author>
+                    <rights>https://caselaw.nationalarchives.gov.uk/open-justice-licence</rights>
+                    <link href="https://caselaw.nationalarchives.gov.uk/atom.xml?page=1" rel="first"/>
+                    <link href="https://caselaw.nationalarchives.gov.uk/atom.xml?page=6675" rel="last"/>
+                    <link href="https://caselaw.nationalarchives.gov.uk/atom.xml?page=2" rel="next"/>
+                    <entry>
+                        <title>Jarndyce v. Jarndyce</title>
+                        <link href="https://caselaw.nationalarchives.gov.uk/uksc/2024/123" rel="alternate"/>
+                        <published>2025-04-30T00:00:00+00:00</published>
+                        <updated>2025-04-30T09:54:24+00:00</updated>
+                        <author>
+                            <name>Upper Tribunal (Lands Chamber)</name>
+                        </author>
+                        <id>https://caselaw.nationalarchives.gov.uk/id/d-9b51d493-65ba-471f-8f08-c369ec66e3f8</id>
+                        <summary type="html"/>
+                        <tna:contenthash>d1b2a59fbea7e20077af9f91b27e95e865061b270be03ff539ab3b73587882e8</tna:contenthash>
+                        <link href="https://caselaw.nationalarchives.gov.uk/uksc/2024/123/data.xml" rel="alternate" type="application/akn+xml"/>
+                        <tna:uri>d-9b51d493-65ba-471f-8f08-c369ec66e3f8</tna:uri>
+                        <link href="https://assets.caselaw.nationalarchives.gov.uk/d-9b51d493-65ba-471f-8f08-c369ec66e3f8/d-9b51d493-65ba-471f-8f08-c369ec66e3f8.pdf" rel="alternate" type="application/pdf"/>
+                    </entry>
+                </feed>
     document:
       description: "The contents of a single document, as [Akoma Ntoso XML](https://www.oasis-open.org/standard/akn-v1-0/)."
       content:
