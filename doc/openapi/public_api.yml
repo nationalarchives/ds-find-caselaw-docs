@@ -168,7 +168,6 @@ paths:
 
         Notable tags include:
         * `<link rel="alternate">`: A link to the document's page on Find Case Law (with HTML representation, where one exists)
-        * `<link rel="alternate" type="application/pdf">`: A link to a PDF representation of the document
         * `<link rel="alternate" type="application/akn+xml">`: A link to an XML representation of the document
         * `<link rel="alternate" type="application/pdf">`: A link to a PDF representation of the document
         * `<tna:uri>`: The document's [unique identifier](#document-uri) in Find Case Law.
