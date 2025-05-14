@@ -156,20 +156,20 @@ paths:
       description: |
         Return a list of documents in Find Case Law, ordered by date.
 
-        Without any parameters, this will order by the most recently handed down judgments and documents first. The parameters used are identical to
-        those used for the advanced search at https://caselaw.nationalarchives.gov.uk/judgments/search: a link to the feed mirroring those
-        search results is available on each search result.
+        Without any parameters, this will order by the most recently handed down judgments and documents first. The parameters used are identical to those used for the advanced search at https://caselaw.nationalarchives.gov.uk/judgments/search: a link to the feed mirroring those search results is available on each search result.
 
         Each differently named parameter filters out documents that do not match it.
 
         The feed has multiple pages (see the `link` tag with a `rel` attribute of `next` for the next page).
 
-        Each `entry` tag contains a different document's metadata. Not all documents will contain all tags.
+        Each `entry` element contains a different document's metadata. Not all documents will contain all tags.
 
-        Notable tags include:
-        * `<link rel="alternate">`: A link to the document's page on Find Case Law (with HTML representation, where one exists)
-        * `<link rel="alternate" type="application/akn+xml">`: A link to an XML representation of the document
-        * `<link rel="alternate" type="application/pdf">`: A link to a PDF representation of the document
+        Notable tags and elements include:
+        * `<published>`: The date the document was first published by the court (for judgments, the 'handed down' date)
+        * `<updated>`: The date the XML of the document was last updated in Find Case Law. This may include not only changes to the text, but also minor changes to markup such as formatting or annotations.
+        * `<link rel="alternate"/>`: A link to the document's page on Find Case Law (with HTML representation, where one exists)
+        * `<link rel="alternate" type="application/akn+xml"/>`: A link to an XML representation of the document
+        * `<link rel="alternate" type="application/pdf"/>`: A link to a PDF representation of the document
         * `<tna:uri>`: The document's [unique identifier](#document-uri) in Find Case Law.
         * `<tna:contenthash>`: A hash of the text in the document. See [Content Hash](#content-hash) for more.
 
