@@ -58,13 +58,13 @@ info:
 
     In addition to the Document URI, all documents will also have one or more "identifiers" which exist under different schemes. This currently includes Find Case Law Identifiers (for all documents) and Neutral Citation Numbers (for judgments which have them), but may be extended in future.
 
-    Each identifier will have – as a minimum – a `schema` (aka the type of identifier), a `value` and a `slug` which can be turned into a human-facing URL by appending it to `https://caselaw.nationalarchives.gov.uk`.
+    Each identifier will have – as a minimum – a `type`, a `value` and a `slug` which can be turned into a human-facing URL by appending it to `https://caselaw.nationalarchives.gov.uk`.
 
     Identifiers are _not_ guaranteed to be unique to a single document.
 
     #### Examples
 
-    | Type                     | `schema` | Example `value`   | Example `slug`  |
+    | Type                     | `type`   | Example `value`   | Example `slug`  |
     | ------------------------ | -------- | ----------------- | ----------------|
     | Find Case Law Identifier | `fclid`  | `cw7s3kws`        | `tna.cw7s3kws`  |
     | Neutral Citation Number  | `ukncn`  | `[2024] UKSC 123` | `uksc/2024/123` |
