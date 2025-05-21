@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: "National Archives Find Case Law: Public API"
-  version: 0.3.0
+  version: 0.4.0
   description: |-
     Our API provides access to judgments and other documents held by The National Archives and published via the Find Case Law service.
 
@@ -140,6 +140,8 @@ components:
                         <tna:contenthash>d1b2a59fbea7e20077af9f91b27e95e865061b270be03ff539ab3b73587882e8</tna:contenthash>
                         <link href="https://caselaw.nationalarchives.gov.uk/uksc/2024/123/data.xml" rel="alternate" type="application/akn+xml"/>
                         <tna:uri>d-9b51d493-65ba-471f-8f08-c369ec66e3f8</tna:uri>
+                        <tna:identifier slug="uksc/2024/123" type="ukncn">[2024] UKSC 123</tna:identifier>
+                        <tna:identifier slug="tna.r8d6ps87" type="fclid">r8d6ps87</tna:identifier>
                         <link href="https://assets.caselaw.nationalarchives.gov.uk/d-9b51d493-65ba-471f-8f08-c369ec66e3f8/d-9b51d493-65ba-471f-8f08-c369ec66e3f8.pdf" rel="alternate" type="application/pdf"/>
                     </entry>
                 </feed>
@@ -170,7 +172,8 @@ paths:
         * `<link rel="alternate"/>`: A link to the document's page on Find Case Law (with HTML representation, where one exists)
         * `<link rel="alternate" type="application/akn+xml"/>`: A link to an XML representation of the document
         * `<link rel="alternate" type="application/pdf"/>`: A link to a PDF representation of the document
-        * `<tna:uri>`: The document's [unique identifier](#document-uri) in Find Case Law.
+        * `<tna:uri>`: The [Document URI](#document-uri) in Find Case Law.
+        * `<tna:identifier>`: One element per [identifier](#document-identifiers) known to relate to this document.
         * `<tna:contenthash>`: A hash of the text in the document. See [Content Hash](#content-hash) for more.
 
       operationId: atomFeed
