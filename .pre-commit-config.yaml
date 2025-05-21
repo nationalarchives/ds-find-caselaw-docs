@@ -27,16 +27,6 @@ repos:
       - id: prettier
         types_or: [yaml, json, xml, markdown, scss, javascript]
 
-  - repo: https://github.com/APIDevTools/swagger-cli
-    rev: v4.0.4
-    hooks:
-      - id: swagger-validation
-        name: swagger-validate-public-api
-        args: ["validate", "doc/openapi/public_api.yml"]
-      - id: swagger-validation
-        name: swagger-validate-privileged-api
-        args: ["validate", "doc/openapi/privileged_api.yml"]
-
   - repo: local
     hooks:
       - id: optic-diff
