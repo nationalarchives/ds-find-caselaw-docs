@@ -27,15 +27,16 @@ repos:
       - id: prettier
         types_or: [yaml, json, xml, markdown, scss, javascript]
 
-  - repo: https://github.com/APIDevTools/swagger-cli
-    rev: v4.0.4
+  - repo: local
     hooks:
-      - id: swagger-validation
-        name: swagger-validate-public-api
-        args: ["validate", "doc/openapi/public_api.yml"]
-      - id: swagger-validation
-        name: swagger-validate-privileged-api
-        args: ["validate", "doc/openapi/privileged_api.yml"]
+      - id: optic-diff
+        name: Optic
+        entry: bash -c 'set -e; for x in "$@"; do optic diff "$x"; done' --
+        language: node
+        require_serial: true
+        additional_dependencies:
+          - "@useoptic/optic"
+        files: ^doc/openapi/.*\.yml
 
   - repo: https://github.com/woodruffw/zizmor-pre-commit
     rev: v1.5.1
