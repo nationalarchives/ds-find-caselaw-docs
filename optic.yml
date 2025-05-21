@@ -1,0 +1,26 @@
+ruleset:
+  - "breaking-changes":
+      exclude_operations_with_extension: "x-draft"
+  - documentation:
+      required_on: added
+      exclude_operations_with_extension: x-draft
+      require_property_descriptions: true
+      require_operation_summary: true
+      require_operation_description: true
+      require_operation_id: true
+      severity: "warn"
+  - naming:
+      required_on: added
+      requestHeaders: case-insensitive-param-case
+      responseHeaders: case-insensitive-param-case
+      properties: snake_case
+      cookieParameters: snake_case
+      queryParameters: snake_case
+      operationId: camelCase
+  - examples:
+      required_on: added
+      exclude_operations_with_extension: x-draft
+      require_request_examples: true
+      require_response_examples: true
+      require_parameter_examples: true
+      severity: "warn"

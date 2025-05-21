@@ -37,6 +37,17 @@ repos:
         name: swagger-validate-privileged-api
         args: ["validate", "doc/openapi/privileged_api.yml"]
 
+  - repo: local
+    hooks:
+      - id: optic-diff
+        name: Optic
+        entry: bash -c 'set -e; for x in "$@"; do optic diff "$x"; done' --
+        language: node
+        require_serial: true
+        additional_dependencies:
+          - "@useoptic/optic"
+        files: ^doc/openapi/.*\.yml
+
   - repo: https://github.com/woodruffw/zizmor-pre-commit
     rev: v1.5.1
     hooks:
