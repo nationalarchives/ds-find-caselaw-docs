@@ -67,7 +67,7 @@ The following elements have been in use for some time:
 
 - **uk:parser** - The version of the parser used to generate the XML. Example: `<uk:parser>0.22.1</uk:parser>`. Should always be present.
 
-- **uk:hash** - The hash of the document's contents. Example: `<uk:hash>addee6a43d69dee4e62c9ccbf27df98874b4967a385397bed610cc414ee45c84</uk:hash>`. The SHA-256 hash of the document text, with all whitespace removed.
+- **uk:hash** - The hash of the document's contents. Example: `<uk:hash>addee6a43d69dee4e62c9ccbf27df98874b4967a385397bed610cc414ee45c84</uk:hash>`. The SHA-256 hash of the document text with all whitespace removed.
 
 - **uk:tna-enrichment-engine** - The version of the enrichment engine used to identify references within the body of the XML.
 
