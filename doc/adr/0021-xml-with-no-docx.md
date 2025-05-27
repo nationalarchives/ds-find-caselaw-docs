@@ -55,9 +55,9 @@ The following elements have been in use for some time:
 
 - **uk:year** - The year as defined in the judgment's NCN, where extracted. Example: `<uk:year>2025</uk:year>` where the NCN is `[2025] UKSC 1`. Can be missing if NCN not extracted. If present, its value will be a four-digit integer. Note this is not always the same year as the judgment's handed-down date. Rarely, in the early days of January, a judgment will be numbered based on the prior year. Extracted for efficient search indexing.
 
-- **uk:number** - The number of the judgment, assigned by the court. Unique within a court and year. Used for sorting. Example: `<uk:number>1</uk:number>`. Can be missing if unknown. If present, its value will be an integer. A component of the judgment's Neutral Citation Number; extracted here for efficient search indexing.
+- **uk:number** - The number of the judgment, assigned by the court. Unique within a court and year. Used for sorting. Example: `<uk:number>1</uk:number>`. Can be missing if there's no NCN. If present, its value will be an integer. A component of the judgment's Neutral Citation Number; extracted here for efficient search indexing.
 
-- **uk:cite** - The Neutral Citation Number of the judgment or decision, assigned by the court. Example: `<uk:cite>[2025] UKSC 1</uk:cite>`. Can be missing if unknown. Although this is also marked up in the body of the text, we duplicate it here because occasionally there are punctuation errors in the body, and we want a normalized form here.
+- **uk:cite** - The Neutral Citation Number of the judgment or decision, assigned by the court. Example: `<uk:cite>[2025] UKSC 1</uk:cite>`. Can be missing if there's no NCN. Although this is also marked up in the body of the text, we duplicate it here because occasionally there are punctuation errors in the body, and we want a normalized form here.
 
 - **uk:summaryOf** - The URI of the judgment summarized by this press summary. Example: `<uk:summaryOf>https://caselaw.nationalarchives.gov.uk/id/uksc/2025/18</uk:summaryOf>`. Only present in press summaries. Can be missing if not known.
 
@@ -77,20 +77,22 @@ We will introduce the following additional elements for backlog documents:
 
 - **uk:caseNumber** - A case number assigned by the court. Example: `<uk:caseNumber>2001/2/RTR</uk:caseNumber>`. Can be missing. There can also be more than one, as some judgments relate to more than one case.
 
-- **uk:party** - A name of one of the parties in the case, and optionally the role played. Example: `<uk:party role="Claimant">Rosecal &amp; Co Law Firm</uk:party>`. May be none if unknown. May be more than one.
+- **uk:party** - A name of one of the parties in the case, and optionally the role played. Example: `<uk:party role="Claimant">Rosecal &amp; Co Law Firm</uk:party>`. May not exist if not extracted. May be more than one.
 
-- **uk:category** - The name of a category, assigned by the court, and optionally the name of a parent category, if the category is a subcategory. Example: `<uk:category parent="Some Parent">Refusal to register</uk:category>`. May be none if unknown. The `parent` attribute is optional.
+- **uk:category** - The name of a category, assigned by the court, and optionally the name of a parent category, if the category is a subcategory. Example: `<uk:category parent="Some Parent">Refusal to register</uk:category>`. May be none, many courts don't have categories. The `parent` attribute is optional.
 
 - **uk:sourceFormat** - The MIME type of the source document. Example: `<uk:sourceFormat>application/vnd.openxmlformats-officedocument.wordprocessingml.document</uk:sourceFormat>`. Currently added only for backlog judgments.
 
 ### Element Usage Notes for each Type of Document
 
 1. **New documents in Word format (no external metadata)**
+
    - Contain the original proprietary fields, if the parser can identify them
    - Do not contain `<uk:caseNumber/>`, `<uk:party/>`, `<uk:category>` or `<uk:sourceFormat/>`
    - Party names and case numbers are marked up in the body text only
 
 2. **Old documents in PDF format (with external metadata)**
+
    - May contain some or all of the proprietary fields, if the information was provided in external metadata
    - No body text markup will be present
 
