@@ -89,7 +89,7 @@ We will introduce the following additional elements for backlog documents:
 
    - Contain the original proprietary fields, if the parser can identify them
    - Do not contain `<uk:caseNumber/>`, `<uk:party/>`, `<uk:category>` or `<uk:sourceFormat/>`
-   - Party names and case numbers are marked up in the body text only
+   - Party names (`<party>`) and case numbers (`<docketNumber>`) are marked up in the body text only
 
 2. **Old documents in PDF format (with external metadata)**
 
