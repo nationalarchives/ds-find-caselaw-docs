@@ -51,7 +51,7 @@ Elements MUST appear in the order listed above. Some elements may be omitted if 
 
 The following elements have been in use for some time:
 
-- **uk:court** - A code designating the court that issued the judgment or decision. Example: `<uk:court>UKSC</uk:court>`. Can be missing if the court is unknown. If present, its value will be one of a list of enumerated values. This code was created by us; it does not appear in the text.
+- **uk:court** - A code designating the court that issued the judgment or decision. Example: `<uk:court>UKFTT-GRC</uk:court>`. Can be missing if the court is unknown. If present, its value will be one of a list of enumerated values. This code was created by us; it does not appear in the text.
 
 - **uk:year** - The year as defined in the judgment's NCN, where extracted. Example: `<uk:year>2025</uk:year>` where the NCN is `[2025] UKSC 1`. Can be missing if NCN not extracted. If present, its value will be a four-digit integer. Note this is not always the same year as the judgment's handed-down date. Rarely, in the early days of January, a judgment will be numbered based on the prior year. Extracted for efficient search indexing.
 
