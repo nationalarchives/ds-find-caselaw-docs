@@ -4,7 +4,7 @@
     "config:best-practices",
     ":approveMajorUpdates",
     ":automergeLinters",
-    ":automergePatch",
+    ":automergeMinor",
     ":automergePr",
     ":automergeRequireAllStatusChecks",
     ":automergeTesters",
