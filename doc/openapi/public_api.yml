@@ -75,9 +75,11 @@ info:
 
     ## Give us your feedback
 
-    We are still actively developing Find Case Law based on user feedback. This includes improving the experience of how data re-users can access the data.
+    We are still actively developing the Find Case Law service. This includes improving how you can access our data programmatically.
 
-    You can provide feedback by using our [feedback form](https://www.smartsurvey.co.uk/s/CaseLaw-research/).
+    If you have suggestions, comments or queries about the API or the data it provides, please email them to [caselaw@nationalarchives.gov.uk](mailto:caselaw@nationalarchives.gov.uk).
+
+    If you'd be interested in taking part in user research to help improve the service, please [sign up](https://www.smartsurvey.co.uk/s/CaseLaw-research/).
   termsOfService: "https://caselaw.nationalarchives.gov.uk/terms-of-use"
   contact:
     email: caselaw@nationalarchives.gov.uk

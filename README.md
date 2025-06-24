@@ -2,6 +2,8 @@
 
 This repository is part of the [Find Case Law](https://caselaw.nationalarchives.gov.uk/) project at [The National Archives](https://www.nationalarchives.gov.uk/).
 
+If you're wanting to get data from Find Case Law, please check our [API documentation](https://nationalarchives.github.io/ds-find-caselaw-docs/public).
+
 > [!WARNING]
 > You need to [apply for a licence to do computational analysis](https://caselaw.nationalarchives.gov.uk/computational-licence-form) of Find Case Law records. Other use is licenced under the [Open Justice Licence](https://caselaw.nationalarchives.gov.uk/about-this-service#section-licences).
 

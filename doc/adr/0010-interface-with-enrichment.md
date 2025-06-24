@@ -16,7 +16,6 @@ and presented our decisions to a meeting on the 27th September.
 
 - Find Case Law (dxw) will place a notification onto an SNS topic that it manages when an document is edited. If there is a need to be able to retry the lambda, it is possible for Enrichment to subscribe an SQS queue to the topic so they have visibility and control.
 - That notification will contain a JSON dictionary, with at least the following keys:
-
   - `uri_reference`: the document that is being notified about, e.g. `ewhc/fam/2022/2134`, which can be appended to API endpoints like `api.caselaw.nationalarchives.gov.uk/lock/ewhc/fam/2022/2134`
   - `status`: currently the status of the document when edited: `published` implies the document has previously or just now been published; `not published` implies the document has never been published or has been unpublished.
     In total this may look like: `{"uri_reference": "ewhc/fam/2022/2134", "status": "published"}`
