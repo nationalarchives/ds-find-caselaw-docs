@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: "National Archives Find Case Law: Public API"
-  version: 0.4.0
+  version: 0.5.0
   description: |-
     Our API provides access to judgments and other documents held by The National Archives and published via the Find Case Law service.
 
@@ -191,22 +191,31 @@ paths:
         # todo: from_ and to_date_0, _1, _2, 2 is year
         - name: court
           required: false
-          # can be multiple
           in: query
           schema:
-            type: string
+            type: array
+            items:
+              type: string
+          explode: true
           description: |
             A court code. Currently there are two forms of court code, one used in the URL structure (`ewhc/fam`) and one used in the XML
             court tag `EWHC-Family`. Either can be searched for. If multiple courts or tribunals are given, results from all those courts
             may be returned.
+          example:
+            - uksc
+            - ukpc
         - name: tribunal
           required: false
-          # can be multiple
           in: query
           schema:
-            type: string
+            type: array
+            items:
+              type: string
+          explode: true
           description: |
-            A tribunal. Identical to the court codes above.
+            An alias for the `court` parameter.
+          example:
+            - eat
         - name: party
           required: false
           in: query
