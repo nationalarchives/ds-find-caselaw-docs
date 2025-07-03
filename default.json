@@ -31,6 +31,10 @@
         "ds-caselaw-frontend"
       ],
       "minimumReleaseAge": "0 days"
+    },
+    {
+      "matchPackageNames": ["nationalarchives/tdr-github-actions"],
+      "automerge": true
     }
   ],
   "labels": ["dependencies"],
