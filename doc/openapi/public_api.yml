@@ -177,6 +177,7 @@ paths:
         * `<tna:uri>`: The [Document URI](#document-uri) in Find Case Law.
         * `<tna:identifier>`: One element per [identifier](#document-identifiers) known to relate to this document.
         * `<tna:contenthash>`: A hash of the text in the document. See [Content Hash](#content-hash) for more.
+        * `<tna:assets_base>`: The location of any images in the XML (e.g. `image1.png`) can be prefixed with this to download those images. Please do not hotlink: the URL here is not guaranteed to be stable.
 
       operationId: atomFeed
       parameters:
