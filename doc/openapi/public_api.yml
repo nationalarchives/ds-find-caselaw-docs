@@ -263,7 +263,16 @@ paths:
           $ref: "#/components/responses/document"
       tags:
         - Document contents
-      description: Retrieve the XML of a single document based on its identifier.
+      description: |
+        Retrieve the XML of a single document based on its identifier.
+
+        ## A note on images
+
+        Where a document contains images, the XML will _not_ provide an absolute URL where the image can be found. Instead, all image locations in the XML are relative to an arbitrary root location.
+
+        To find the root location for a document's assets you will need to find the document's `assets_base` value. At the moment, this is only available via the [Atom feed](#operation/atomFeed).
+
+        We *strongly* recommend against storing an `assets_base` for the purposes of hotlinking, as these are not guaranteed to be stable.
     parameters:
       - $ref: "#/components/parameters/documentUri"
   "/{court}/{subdivision}/{year}/atom.xml":
