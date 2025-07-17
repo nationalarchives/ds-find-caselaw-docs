@@ -15,29 +15,6 @@ info:
 
     **The Open Justice licence does not permit computational analysis.** If you intend to do any programmatic searching in bulk across the Find Case Law records to identify, extract or enrich contents within the records you will need to [apply to perform computational analysis](https://caselaw.nationalarchives.gov.uk/re-use-find-case-law-records/licence-application-process). There are no application charges.
 
-    ## Document formats
-
-    Documents within Find Case Law are predominantly available as XML (and by extension HTML), although some are only available as PDFs.
-
-    ### XML
-
-    Where documents exist as XML, these have been submitted for publication by the courts as a Microsoft Word document. This has then been automatically converted to XML, marked up according to the [international data standard (LegalDocML)](https://groups.oasis-open.org/communities/tc-community-home2?CommunityKey=3425f20f-b704-4076-9fab-018dc7d3efbe). This data includes:
-
-    - Neutral Citation
-    - Court / Chamber
-    - Date
-    - Case Name
-    - Party Names
-    - Judges' Names
-
-    XML documents are then automatically converted to HTML for publication on the Find Case Law website.
-
-    For documents which have been submitted directly to the National Archives our legal editorial team have checked data for consistency and accuracy. However, older documents have not always been checked in this way and you may discover inconsistencies in the metadata If you do, you can report data errors to [caselaw@nationalarchives.gov.uk](mailto:caselaw@nationalarchives.gov.uk).
-
-    ### PDF
-
-    Some documents, particularly historic documents, may only exist as PDFs. In these cases we will provide as much metadata regarding the document as we are able, although this may not be as complete as in an XML document.
-
     ## Identifying documents
 
     Documents in Find Case Law are identified in two different ways, one which is better for machines and one which is better for humans:
@@ -270,16 +247,16 @@ paths:
         "200":
           $ref: "#/components/responses/documentFeed"
       tags:
-        - Reading documents
+        - Document metadata
   "/{document_uri}/data.xml":
     get:
-      summary: Get a single document
+      summary: Get document XML
       operationId: getDocumentByUri
       responses:
         "200":
           $ref: "#/components/responses/document"
       tags:
-        - Reading documents
+        - Document contents
       description: Retrieve the XML of a single document based on its identifier.
     parameters:
       - $ref: "#/components/parameters/documentUri"
@@ -330,7 +307,7 @@ paths:
                 type: string
               description: "https://caselaw.nationalarchives.gov.uk/atom.xml?court={court}/{subdivision}&year={year}&order=-date&page=1"
       tags:
-        - Reading documents
+        - Document metadata
       deprecated: true
     parameters:
       - name: court
@@ -355,7 +332,7 @@ paths:
           type: integer
         description: The year to return results for.
 tags:
-  - name: Reading documents
+  - name: Document metadata
     description: |
       ## Detecting content changes
 
@@ -384,3 +361,27 @@ tags:
       - The `<tna:contenthash>` element of an `<entry>` in the Atom feed
 
       By storing the content hash when you first retrieve a document you can then compare it in future to detect if the text has changed.
+  - name: Document contents
+    description: |
+      ## Document formats
+
+      Documents within Find Case Law are mostly available as structured XML, although some older documents are only available as PDFs.
+
+      ### XML
+
+      Where documents exist as XML, these have been submitted for publication by the courts as a Microsoft Word document. This has then been automatically converted to XML, marked up according to the [international data standard (LegalDocML)](https://groups.oasis-open.org/communities/tc-community-home2?CommunityKey=3425f20f-b704-4076-9fab-018dc7d3efbe). This data includes:
+
+      - Neutral Citation
+      - Court / Chamber
+      - Date
+      - Case Name
+      - Party Names
+      - Judges' Names
+
+      XML documents are then automatically converted to HTML for publication on the Find Case Law website.
+
+      For documents which have been submitted directly to the National Archives our legal editorial team have checked data for consistency and accuracy. However, older documents have not always been checked in this way and you may discover inconsistencies in the metadata If you do, you can report data errors to [caselaw@nationalarchives.gov.uk](mailto:caselaw@nationalarchives.gov.uk).
+
+      ### PDF
+
+      Some documents, particularly historic documents, may only exist as PDFs. In these cases we will provide as much metadata regarding the document as we are able, although this may not be as complete as in an XML document.
