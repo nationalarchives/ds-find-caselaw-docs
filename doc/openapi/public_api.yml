@@ -77,7 +77,13 @@ components:
       required: true
       schema:
         type: string
-      example: ewhc/tcc/2022/42
+      examples:
+        ncn-based:
+          value: uksc/2024/123
+          summary: An older Neutral Citation Number-based document URI
+        uuid-based:
+          value: d-f11e093f-8a53-4e43-8dd8-1531b5d8f018
+          summary: A newer document URI
       description: The unique identifier for this document within Find Case Law.
   responses:
     documentFeed:
