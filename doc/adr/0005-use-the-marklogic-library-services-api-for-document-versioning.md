@@ -4,7 +4,7 @@ Date: 2022-02-21
 
 ## Status
 
-Accepted
+Superseded by [ADR 50](0050-update-data-structure.md)
 
 ## Context
 
