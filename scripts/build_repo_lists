@@ -72,6 +72,11 @@ REPOSITORIES = [
         "hide_releases": True,
         "renovate_dashboard_issue_id": "235",
     },
+    {
+        "id": "ds-caselaw-judiciary-guidance",
+        "description": "Support material for people submitting documents to the service.",
+        "hide_releases": True,
+    },
 ]
 NA_STRING = "![n/a](https://img.shields.io/badge/-n%2Fa-eee)"
 
