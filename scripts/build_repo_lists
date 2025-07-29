@@ -25,6 +25,11 @@ REPOSITORIES = [
         "renovate_dashboard_issue_id": "74",
     },
     {
+        "id": "tna-judgments-parser",
+        "description": "Convert incoming docx files into structured LegalDocML.",
+        "renovate_dashboard_issue_id": "80",
+    },
+    {
         "id": "ds-caselaw-ingester",
         "description": "Ingests cases from the Transformation Engine into MarkLogic.",
         "renovate_dashboard_issue_id": "82",
