@@ -15,7 +15,7 @@ info:
 
     **The Open Justice licence does not permit computational analysis.** If you intend to do any programmatic searching in bulk across the Find Case Law records to identify, extract or enrich contents within the records you will need to [apply to perform computational analysis](https://caselaw.nationalarchives.gov.uk/re-use-find-case-law-records/licence-application-process). There are no application charges.
 
-    ## Identifying documents
+    ## Document identifiers
 
     Documents in Find Case Law are identified in two different ways, one which is better for machines and one which is better for humans:
 
@@ -31,9 +31,9 @@ info:
 
     Documents submitted to the National Archives from April 2025 onwards will usually have a URI which looks something like `d-f11e093f-8a53-4e43-8dd8-1531b5d8f018`. These will always begin with a `d-`.
 
-    ### Document identifiers
+    ### Structured identifiers
 
-    In addition to the Document URI, all documents will also have one or more "identifiers" which exist under different schemes. This currently includes Find Case Law Identifiers (for all documents) and Neutral Citation Numbers (for judgments which have them), but may be extended in future.
+    In addition to the Document URI, all documents will also have one or more "structured identifiers" representing ways which humans can refer to a document. This currently includes Find Case Law Identifiers (for all documents) and Neutral Citation Numbers (for judgments which have them), but may be extended in future.
 
     Each identifier will have – as a minimum – a `type`, a `value` and a `slug` which can be turned into a human-facing URL by appending it to `https://caselaw.nationalarchives.gov.uk`.
 
