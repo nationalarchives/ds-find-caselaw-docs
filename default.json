@@ -27,7 +27,7 @@
     {
       "matchPackageNames": [
         "ds-caselaw-utils",
-        "ds-caselaw-custom-api-client",
+        "ds-caselaw-marklogic-api-client",
         "ds-caselaw-frontend"
       ],
       "minimumReleaseAge": "0 days"
