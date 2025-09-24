@@ -40,6 +40,10 @@ REPOSITORIES = [
         "renovate_dashboard_issue_id": "31",
     },
     {
+        "id": "ds-caselaw-document-processing",
+        "description": "Code to handle intermediate document processing such as stripping unwanted metadata.",
+    },
+    {
         "id": "ds-caselaw-privileged-api",
         "description": "The API which annotating services talk to.",
         "renovate_dashboard_issue_id": "182",
