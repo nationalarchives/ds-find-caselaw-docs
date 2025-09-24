@@ -39,7 +39,6 @@ If you are looking for documentation covering user research, design decisions or
 | [ds-caselaw-custom-api-client](https://github.com/nationalarchives/ds-caselaw-custom-api-client)             | API client to interface with MarkLogic.                          |
 | [ds-caselaw-utils](https://github.com/nationalarchives/ds-caselaw-utils)                                     | Common utilities across codebases.                               |
 | [ds-caselaw-frontend](https://github.com/nationalarchives/ds-caselaw-frontend)                               | Shared styles used across the Find Caselaw service.              |
-| [ds-caselaw-custom-pdfs](https://github.com/nationalarchives/ds-caselaw-custom-pdfs)                         | Custom PDFs to overwrite generated ones.                         |
 | [ds-caselaw-data-enrichment-service](https://github.com/nationalarchives/ds-caselaw-data-enrichment-service) | Detect and tag references to legal documents.                    |
 | [ds-caselaw-judiciary-guidance](https://github.com/nationalarchives/ds-caselaw-judiciary-guidance)           | Support material for people submitting documents to the service. |
 
