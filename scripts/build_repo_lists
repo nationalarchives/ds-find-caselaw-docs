@@ -62,11 +62,6 @@ REPOSITORIES = [
         "renovate_dashboard_issue_id": "3",
     },
     {
-        "id": "ds-caselaw-custom-pdfs",
-        "description": "Custom PDFs to overwrite generated ones.",
-        "hide_releases": True,
-    },
-    {
         "id": "ds-caselaw-data-enrichment-service",
         "description": "Detect and tag references to legal documents.",
         "hide_releases": True,
