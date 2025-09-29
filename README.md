@@ -35,6 +35,7 @@ If you are looking for documentation covering user research, design decisions or
 | [tna-judgments-parser](https://github.com/nationalarchives/tna-judgments-parser)                             | Convert incoming docx files into structured LegalDocML.          |
 | [ds-caselaw-ingester](https://github.com/nationalarchives/ds-caselaw-ingester)                               | Ingests cases from the Transformation Engine into MarkLogic.     |
 | [ds-caselaw-pdf-conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion)                   | Converts a judgement to PDF.                                     |
+| [da-caselaw-document-processing](https://github.com/nationalarchives/da-caselaw-document-processing)         | Process document assets (e.g. metadata removal)                  |
 | [ds-caselaw-privileged-api](https://github.com/nationalarchives/ds-caselaw-privileged-api)                   | The API which annotating services talk to.                       |
 | [ds-caselaw-custom-api-client](https://github.com/nationalarchives/ds-caselaw-custom-api-client)             | API client to interface with MarkLogic.                          |
 | [ds-caselaw-utils](https://github.com/nationalarchives/ds-caselaw-utils)                                     | Common utilities across codebases.                               |
