@@ -70,6 +70,8 @@ Services provide data to, or take data from, this system.
 
 - [Transformation Engine](https://github.com/nationalarchives/da-transform-dev-documentation/blob/develop/editorial-system-integration/README.md)
 - [Enrichment Service](https://github.com/nationalarchives/ds-caselaw-data-enrichment-service)
+- The ingester uses [GOV.UK Notify](https://www.notifications.service.gov.uk) for email; the
+  [templates for emails to editors](https://www.notifications.service.gov.uk/services/4ac80667-b810-47a7-8249-1ade4fa65f0d/templates/all/folders/a9e967a9-4648-409b-aefb-8cc9b437cd11) are stored there.
 
 ## Architecture
 
