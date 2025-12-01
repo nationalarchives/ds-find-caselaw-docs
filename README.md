@@ -33,6 +33,7 @@ If you are looking for documentation covering user research, design decisions or
 | [ds-caselaw-editor-ui](https://github.com/nationalarchives/ds-caselaw-editor-ui)                             | Editor interface to the service.                                                               |
 | [ds-caselaw-marklogic](https://github.com/nationalarchives/ds-caselaw-marklogic)                             | MarkLogic database configuration.                                                              |
 | [tna-judgments-parser](https://github.com/nationalarchives/tna-judgments-parser)                             | Convert incoming docx files into structured LegalDocML.                                        |
+| [da-tre-terraform-environments](https://github.com/nationalarchives/da-tre-terraform-environments)           | Deploy the parser to TRE. (currently owned by TDR not AYR)                                     |
 | [ds-caselaw-ingester](https://github.com/nationalarchives/ds-caselaw-ingester)                               | Ingests cases from the Transformation Engine into MarkLogic.                                   |
 | [ds-caselaw-pdf-conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion)                   | Converts a judgement to PDF.                                                                   |
 | [da-caselaw-document-processing](https://github.com/nationalarchives/da-caselaw-document-processing)         | Process document assets (e.g. metadata removal)                                                |
