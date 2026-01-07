@@ -66,25 +66,42 @@ Steps to do this:
 
 ### 1. Restoring the XML from MarkLogic
 
-In the MarkLogic console, we can copy-paste the text from the previous version we want to restore to the `latest` version (e.g from `/ewca/2022/99_xml_versions/2-99.xml` to `/ewca/2022/99.xml` will restore version 2 of `/ewca/2022/99.xml`). In addition to restoring the `latest` version, this will automatically generate a new version in the `_xml_versions` folder. In the example above, if the ost recent numbered version was `/ewca/2022/99_xml_versions/3-99.xml`, then `/ewca/2022/99_xml_versions/4-99.xml` will be created.
+In the MarkLogic console, we can restore the text from the version we want to restore to the `latest` version (e.g from `/ewca/2022/99_xml_versions/2-99.xml` to `/ewca/2022/99.xml` will restore version 2 of `/ewca/2022/99.xml`) by running the following xml in console:
 
-More automatic approaches using the console probably exist.
+```
+(: This script restores the dls latest version of a document with the dls version of that document you want to restore the latest version to. :)
+(: Note it creates a new version for this and keeps all version history. :)
+(: It sets an annotation on this latest version explaining that it was restored from the specified version  :)
 
-### 2. Restoring the metadata from MarkLogic
+xquery version "1.0-ml";
 
-Whilst it's possible to copy-paste the metadata XML in a similar way, it's not clear when that's appropriate.
+import module namespace dls = "http://marklogic.com/xdmp/dls" at "/MarkLogic/dls.xqy";
 
-It's not clear at this point what we should be doing with this: this might need carefully thinking about.
-![Image showing (properties) in the file viewer, associated with each file](properties.png)
+let $uri := "" (: Set the uri of the document you to update :)
+let $version-number :=  (: Set the dls version of the document you want to restore the latest version to  :)
 
-### 3. Restoring the assets from S3
+let $version-content := dls:document-version($uri, $version-number)
+
+return dls:document-checkout-update-checkin(
+  $uri,           (: lates document version URI :)
+  $version-content, (: content of version to restore :)
+  "Restored from version " || $version-number,   (: comment :)
+  fn:true()        (: retain history :)
+)
+```
+
+In addition to restoring the `latest` version, this will automatically generate a new version in the `_xml_versions` folder. In the example above, if the most recent numbered version was `/ewca/2022/99_xml_versions/3-99.xml`, then `/ewca/2022/99_xml_versions/4-99.xml` will be created.
+The properties on this latest version will be automatically created as per new dls versions but will include the annotation explaining that this is restored from the specified previous version.
+
+### 2. Restoring the assets from S3
 
 1. Log into the production environment AWS console
 2. For each bucket `tna-caselaw-unpublished-assets` and `tna-caselaw-assets` that a folder exists for this document:
    1. Access the s3 folder `$bucket-name/$document-name/`, which should have all the TDR archives of all versions present (e.g. `TDR-2022-SN3.tar.gz`) as well as the latest version's pdf and doc
    1. Download and unpack the archive of the TDR package we want to restore from
-   1. Upload these files back to the bucket. (This may overwrite the current latest version being used.)
+   1. Rename the docx file to match the existing docx file name (based off the uri of the document) in s3 as when first unpacked it will hold the filename as uploaded to TDR.
+   1. Upload the docx, parser.log and image files back to the bucket. (This may overwrite the current latest version being used.)
 
 Note: Whenever a `.docx` file is added to the S3 bucket, a PDF file will automatically be created by the [pdf-conversion](https://github.com/nationalarchives/ds-caselaw-pdf-conversion) lambda function. Most of the time the `.docx` file will have been overwritten too (which provoked the overwriting of the PDF) but deleting the PDF and reuploading the docx should trigger PDF creation.
 
-Note: We are hoping to get S3 versioned buckets on production so that restoring older assets on s3 will be much more simple.
+Alternatively you could utilise object versioning in the s3 bucket.
