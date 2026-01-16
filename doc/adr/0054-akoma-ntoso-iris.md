@@ -10,7 +10,7 @@ Accepted
 
 TODO: ensure all links are to the 2019 document not 2016.
 
-The AkomaNtoso IRI of a [Work](https://docs.oasis-open.org/legaldocml/akn-nc/v1.0/csprd02/akn-nc-v1.0-csprd02.html#_Toc447637027), [Expression](https://docs.oasis-open.org/legaldocml/akn-nc/v1.0/csprd02/akn-nc-v1.0-csprd02.html#_Toc447637028) or [Manifestation](https://docs.oasis-open.org/legaldocml/akn-nc/v1.0/csprd02/akn-nc-v1.0-csprd02.html#_Toc447637031) should be used within the XML markup, these are in sections 4.4-4.6
+The AkomaNtoso IRI of a [Work](https://docs.oasis-open.org/legaldocml/akn-nc/v1.0/os/akn-nc-v1.0-os.html#_Toc531692270), [Expression](https://docs.oasis-open.org/legaldocml/akn-nc/v1.0/os/akn-nc-v1.0-os.html#_Toc531692271) or [Manifestation](https://docs.oasis-open.org/legaldocml/akn-nc/v1.0/os/akn-nc-v1.0-os.html#_Toc531692274) should be used within the XML markup, these are in sections 4.4-4.6
 
 The AkomaNtoso IRIs of Works, Expressions and Manifestations are specified in sections 4.4-4.6 of the Akoma Ntoso Naming Convention 1.0.
 
@@ -46,7 +46,9 @@ We should omit this section for judgments, as it is inappropriate. We should inc
 
 The `FRBRWork/FRBRauthor` refers by reference (such as `href='#uksc'`) to a `TLCOrganization` with a matching `eId='uksc'` attribute. It has a `href` attribute pointing to the website and a human readable name in the `showAs` attribute.
 
-Note that for more complicated courts, the identifier used currently in the XML is formatted like `#ewhc-kbd-tcc`. This does not agree with the Neutral Citation. ⚠️ This might need resolving.
+Note that for more complicated courts, the identifier used currently in the XML is formatted like `#ewhc-kbd-tcc`. This does not agree with the Neutral Citation.
+
+⚠️ We may need to make a decision about whether using the code (vs the param) make sense here. Params will need to have their slashes munged.
 
 ⚠️ It is not clear what 'correspond' means in this context.
 
@@ -70,39 +72,6 @@ https://caselaw.nationalarchives.gov.uk/akn/gb/judgment/uksc/2024/1
 https://caselaw.nationalarchives.gov.uk/akn/gb/doc/pressSummary/uksc/2024/1
 https://caselaw.nationalarchives.gov.uk/akn/gb/judgment/uksc/2024/tna.htg4pyr2
 
-### Expression
-
-TODO TODO TODO
-
-### Manifestations
-
-TODO TODO TODO
-
-> Different Manifestations of the same Expression generated in different data formats will have different IRI references. All of them are all immediately derived from the baseline, which is the IRI for the Expression.
-
-> The IRI for the Manifestation as a whole consists of the following pieces:
->
-> - The IRI of the corresponding Expression as a whole
-> - The markup authoring information (optional). [T]his value MUST correspond to the content of element <FRBRauthor> in the <FRBRManifestation> section of the metadata.
-> - Any relevant markup-specific date (optional). [T]his value MUST correspond to the content of element <FRBRdate> in the <FRBRManifestation> section of the metadata.
-> - Any additional markup-related annotation (e.g., the existence of multiple versions or of annotations.) (optional)
-> - The character “`.`” (required)
-> - A unique three or four letter extension signifying the data format in which the Manifestation is drafted (required). [e.g. “pdf”, “doc”, “docx”, “htm”/“html”;] “xml” for an XML Manifestation, or “akn” for the package of all documents including XML versions of the main document(s) according to the Akoma Ntoso vocabulary. For an Akoma Ntoso XML representation, this value MUST correspond to the content of element <FRBRformat> in the <FRBRManifestation> section of the metadata.
-
-Some examples:
-
-– [http://www.authority.org]/akn/dz/debaterecord/2004-12-21/fra@.doc
-Word version of the Algerian parliamentary debate record, 21st December 2004, Original French version
-
-– [http://www.authority.org]/akn/sl/act/2004-02-13/2/eng.pdf
-PDF version of the Sierra Leone act number 2 of 2004, English version, current version (as accessed today)
-
-– [http://www.authority.org]/akn/sl/act/2004-02-13/2/eng@2004-07-21.akn
-Package of all documents in Akoma Ntoso XML of the Sierra Leone act number 2 of 2004. English version, as amended in July 7th 2004.
-
-– [http://www.authority.org]/akn/sl/act/2004-02-13/2/eng@2004-07-21/CIRSFID/2011-07-15.akn
-Package of all documents including XML versions of the Sierra Leone enacted Legislation. Act number 2 of 2004. English version, as amended in July 2004. Rendered in Akoma Ntoso by CIRSFID on 15 July 2011.
-
 ### Courts
 
 [Section 4.10 of the Naming Convention](https://docs.oasis-open.org/legaldocml/akn-nc/v1.0/os/akn-nc-v1.0-os.html#_Toc531692286) specifies (edited):
@@ -122,11 +91,21 @@ Use `Organization`, note spelling.
 
 > - - Any number (including none) of slash-separated subclasses of the TLC, as long as they all refer to correct properties of the corresponding instance
 
-We could use `court` or `tribunal`. But
+We could use `court` or `tribunal`. But:
 
 > the naming of entities should not depend on the presence or absence of a given class except for TLC. This means that it is necessary that each instance of each TLC is provided with an ID string that is guaranteed to be unique within the TLC.
 
-The examples below don't describe the entities in further details, we shall emulate that behaviour.
+Categorising things is hard (especially sub-court entities), and we can save significant complexity by omitting further optional categories. Note that the [XML Vocabulary](https://docs.oasis-open.org/legaldocml/akn-core/v1.0/akn-core-v1.0-part1-vocabulary.html) gives three examples:
+
+```
+<TLCOrganization href="/akn/us/ontology/organization/interAmericanCommercialArbitationCommission" showAs="Inter-American Commercial Arbitration Commission"/>
+
+<TLCOrganization eId="house" href="/akn/us/ontology/organization/house" showAs="U.S. House of Representatives"/>
+
+<TLCOrganization eId="olrc" href="/akn/us/ontology/organization/olrc" showAs="Office of the Law Revision Counsel"/>
+```
+
+which have no additional subclasses; we shall copy this behaviour and use zero additional subclasses.
 
 > - - The ID of the instance, guaranteed to be unique within the TLC.
 
@@ -140,11 +119,31 @@ The [XML Vocabulary](https://docs.oasis-open.org/legaldocml/akn-core/v1.0/akn-co
 <TLCOrganization eId="olrc" href="/akn/us/ontology/organization/olrc" showAs="Office of the Law Revision Counsel"/>
 ```
 
-We use a prefix `akn/gb/ontology/organisation/` and then strings like `uksc`, `ewhc-kbd-tcc`, `ewhc`, `ewhc-kbd`. We note that we cannot easily use NCN derived identifiers.
+We use a prefix `akn/ontology/organisation/` and then strings like `uksc`.
+
+For more complicated cases where the codes and params diverge (e.g. `ewhc-kbd-tcc` vs `ewhc/tcc`), if we used the param we would need to munge the `/`. If we're happy using the codes then that means we don't need to change the identifier at all.
+
+`ewhc` would also be valid. The identifier doesn't explicitly encode the heirarchical nature of our naming, but that's okay.
 
 ## Decision
 
-The change that we're proposing or have agreed to implement.
+Use IRIs of the form:
+
+```
+https://caselaw.nationalarchives.gov.uk/akn/gb/judgment/uksc/2024/1
+https://caselaw.nationalarchives.gov.uk/akn/gb/doc/pressSummary/uksc/2024/1
+https://caselaw.nationalarchives.gov.uk/akn/gb/judgment/uksc/2024/tna.htg4pyr2
+```
+
+for works.
+
+Use identifiers of the form
+
+```
+https://caselaw.nationalarchives.gov.uk/akn/ontology/organisation/ewhc-kbd-tcc
+```
+
+for courts, where the last segment is a court code.
 
 ## Consequences
 
