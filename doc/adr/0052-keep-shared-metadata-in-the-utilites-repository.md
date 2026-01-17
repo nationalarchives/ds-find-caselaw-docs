@@ -8,7 +8,7 @@ Accepted
 
 ## Context
 
-[ADR 51](0052-keep-shared-metadata-in-the-utilites-repository.md) introduces a new JSON Schema file which defines the shape of the metadata JSON output by the parser. This is the latest in a line of files which define common standards for data across the Find Case Law service, including the database XML schema and courts data. Instead of these files being scattered around various repositories, they should be kept in one location to simplify referencing them.
+[ADR 51](0051-capture-additional-provenance-data-via-parser-metadata-file.md) introduces a new JSON Schema file which defines the shape of the metadata JSON output by the parser. This is the latest in a line of files which define common standards for data across the Find Case Law service, including the database XML schema and courts data. Instead of these files being scattered around various repositories, they should be kept in one location to simplify referencing them.
 
 ## Decision
 
