@@ -81,6 +81,7 @@ REPOSITORIES = [
         "id": "ds-caselaw-semantic-shift",
         "description": "Research project mapping the semantic shift between language of case law and everyday English.",
         "hide_releases": True,
+        "renovate_dashboard_issue_id": "13",
     },
 ]
 NA_STRING = "![n/a](https://img.shields.io/badge/-n%2Fa-eee)"
