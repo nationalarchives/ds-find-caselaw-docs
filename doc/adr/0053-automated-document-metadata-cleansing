@@ -1,0 +1,100 @@
+# Automated Document Metadata Cleansing Infrastructure
+
+Date: 2026-02-02
+
+## Status
+
+Accepted
+
+## Context
+
+Legal judgments received by The National Archives contain personally identifiable information (PII) in document metadata—author names, editor details, comment authorship, track changes, and image EXIF data (GPS coordinates, device information). This metadata must be removed before documents are publicly accessible through Find Case Law to comply with data protection requirements and protect civil servant privacy.
+
+The cleansing applies to DOCX, PDF, PNG, and JPEG files in S3 buckets, processing only metadata while preserving document content, formatting, and visual presentation. Visual regression validation ensures no content loss during processing.
+
+Before this decision, documents were ingested with metadata intact, creating privacy risks. Manual cleansing is infeasible at scale. The system must integrate with existing services: TDR (document transfer), Parser (DOCX to LegalDocML conversion), PDF Generator (creates PDF renditions), Ingester (stores in MarkLogic), and Editor UI (for direct PDF uploads from courts without DOCX capability).
+
+Key constraints: S3 event-driven architecture, microservice pattern (ADR 0002), MarkLogic coordination (ADR 0003), VPC isolation without internet access, and documents split between unpublished (working) and published (public) S3 buckets with versioning enabled.
+
+## Decision
+
+We will implement an **event-driven document metadata cleansing pipeline** using AWS Lambda, triggered by S3 events via SNS fan-out to SQS, with format-specific cleaners and visual validation.
+
+Each cleansed document is written back to S3 with a `DOCUMENT_PROCESSOR_VERSION` tag, set to the version specified in the cleanser code at runtime. The cleanser checks this tag: if the document's tag matches the current major version, cleansing is skipped; if the tag is behind, the document is re-cleansed. The PDF generator only processes documents that have been cleansed (i.e., have the tag), but does not require a specific version.
+
+### Architecture
+
+```mermaid
+flowchart TD
+    S3[S3 Bucket<br/>unpublished-assets] -->|ObjectCreated| SNS[SNS Topic]
+    SNS -->|Fan-out| SQS[SQS Queue<br/>+DLQ]
+    SNS -->|DOCX filter| PDFSQS[PDF Gen Queue]
+    SQS -->|Poll| Lambda[Cleanser Lambda]
+    Lambda -->|Read/Write| S3
+    PDFSQS -->|Trigger| PDFGen[PDF Generator]
+
+    style Lambda fill:#d4e7ff
+    style SQS fill:#ffe6d4
+```
+
+**Event Flow:**
+1. Document uploaded to unpublished S3 bucket → triggers SNS topic
+2. SNS fans out to: (a) document cleanser SQS queue (all formats), (b) PDF generator queue (DOCX only)
+3. Lambda polls SQS, processes documents with format-specific cleaners (DOCX, PDF, PNG, JPEG)
+4. Visual validation ensures content preservation before writing back:
+    - **PDF:** Render each page to PPM format (Portable Pixmap—simple uncompressed pixel data) compute SHA-256 hash of concatenated page images, and compare hashes.
+    - **DOCX:** Convert to PDF, then apply the PDF validation method.
+    - **PNG/JPEG:** Load images into memory, convert to RGB color space, perform pixel-by-pixel subtraction, and check for non-zero pixels.
+
+- **Note:** Any visual difference fails validation and prevents the cleansed document from being written.
+
+5. Cleansed document written in-place with version tag for idempotency
+    (tagged as `DOCUMENT_PROCESSOR_VERSION` for idempotency and version tracking)
+6. Failed messages retry with backoff, then move to Dead Letter Queue (DLQ) for investigation
+
+**Why SQS Buffering:**
+- Prevents message loss when Lambda unavailable (ECR issues, deployments, failures)
+- Enables automatic retries with backoff
+- DLQ captures persistent failures for investigation
+- Decouples cleansing from S3 events (can pause/resume processing)
+
+**Why VPC Isolation:**
+- Zero internet access reduces attack surface
+- All AWS service access via VPC endpoints only
+- Minimal IAM permissions (unpublished bucket access only)
+- KMS encryption for data at rest and in transit
+
+**Why Cleanse Unpublished Bucket Only:**
+- Published bucket must contain only cleansed documents for public access
+- Publication workflow verifies cleansing before copying to published bucket
+- S3 versioning preserves uncleansed originals for audit/recovery
+- Parser processes DOCX upstream (before S3), so cleansing happens after parsing—acceptable since parser doesn't read metadata
+
+**Why PDF Generator Waits:**
+PDF generator waits for the presence of the cleansing tag before processing to avoid wasted work—generating PDF from uncleansed DOCX only to regenerate after cleansing wastes compute resources. The PDF generator does not require a specific version, only that cleansing has occurred.
+
+## Consequences
+
+**What becomes easier:**
+- **Privacy compliance**: Automated PII removal from metadata without manual intervention
+- **Reliability**: SQS buffering prevents message loss during Lambda downtime; DLQ captures failures
+- **Idempotency**: Version tagging enables safe retries and bulk reprocessing
+- **Security**: VPC isolation with zero internet access; minimal IAM permissions; KMS encryption
+- **Maintainability**: Format-specific cleaners are modular and testable; Infrastructure as Code
+
+**What becomes harder:**
+- **Operational complexity**: Must monitor multiple queues (main + DLQ); VPC endpoints increase infrastructure
+- **Processing latency**: Visual validation and SQS polling add latency to document pipeline
+- **Operational dependency**: **Critical trade-off**—cleansing failures block PDF generation and publication. Essential for privacy but accepted operational risk when Lambda unavailable. SQS buffering reduces message loss during outages; DLQ alarms provide failure visibility. The publication blocking itself remains unmitigated.
+
+**Risks requiring attention:**
+- **Uncleansed documents in published bucket**: All existing published documents lack cleansing. Requires one-off bulk operation. Publication workflow must verify cleansing before copying.
+- **Visual validation false positives**: Cleansing may fail on documents with complex formatting. Version tagging allows reprocessing with improved logic.
+
+**System limitations:**
+- Cannot remove PII from document body text or embedded images (authors responsible for content-level redaction)
+- Password-protected or corrupted documents fail processing (move to DLQ)
+
+**Implementation details** in: Repository [da-caselaw-document-processing](https://github.com/nationalarchives/da-caselaw-document-processing)
+
+**Related decisions**: ADR 0002 (microservice architecture), ADR 0019 (other formats), ADR 0017 (reparsing), ADR 0050 (process for uploading pdfs)
