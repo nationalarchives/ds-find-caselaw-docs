@@ -38,33 +38,37 @@ flowchart TD
 ```
 
 **Event Flow:**
+
 1. Document uploaded to unpublished S3 bucket → triggers SNS topic
 2. SNS fans out to: (a) document cleanser SQS queue (all formats), (b) PDF generator queue (DOCX only)
 3. Lambda polls SQS, processes documents with format-specific cleaners (DOCX, PDF, PNG, JPEG)
 4. Visual validation ensures content preservation before writing back:
-    - **PDF:** Render each page to PPM format (Portable Pixmap—simple uncompressed pixel data) compute SHA-256 hash of concatenated page images, and compare hashes.
-    - **DOCX:** Convert to PDF, then apply the PDF validation method.
-    - **PNG/JPEG:** Load images into memory, convert to RGB color space, perform pixel-by-pixel subtraction, and check for non-zero pixels.
+   - **PDF:** Render each page to PPM format (Portable Pixmap—simple uncompressed pixel data) compute the SHA-256 hash of concatenated page images, before and after conversion, and compare the two.
+   - **DOCX:** Convert to PDF, then apply the PDF validation method.
+   - **PNG/JPEG:** Load images into memory, convert to RGB color space, perform pixel-by-pixel subtraction, and check for non-zero pixels.
 
 - **Note:** Any visual difference fails validation and prevents the cleansed document from being written.
 
 5. Cleansed document written in-place with version tag for idempotency
-    (tagged as `DOCUMENT_PROCESSOR_VERSION` for idempotency and version tracking)
+   (tagged as `DOCUMENT_PROCESSOR_VERSION` for idempotency and version tracking)
 6. Failed messages retry with backoff, then move to Dead Letter Queue (DLQ) for investigation
 
 **Why SQS Buffering:**
+
 - Prevents message loss when Lambda unavailable (ECR issues, deployments, failures)
 - Enables automatic retries with backoff
 - DLQ captures persistent failures for investigation
 - Decouples cleansing from S3 events (can pause/resume processing)
 
 **Why VPC Isolation:**
+
 - Zero internet access reduces attack surface
 - All AWS service access via VPC endpoints only
 - Minimal IAM permissions (unpublished bucket access only)
 - KMS encryption for data at rest and in transit
 
 **Why Cleanse Unpublished Bucket Only:**
+
 - Published bucket must contain only cleansed documents for public access
 - Publication workflow verifies cleansing before copying to published bucket
 - S3 versioning preserves uncleansed originals for audit/recovery
@@ -76,6 +80,7 @@ PDF generator waits for the presence of the cleansing tag before processing to a
 ## Consequences
 
 **What becomes easier:**
+
 - **Privacy compliance**: Automated PII removal from metadata without manual intervention
 - **Reliability**: SQS buffering prevents message loss during Lambda downtime; DLQ captures failures
 - **Idempotency**: Version tagging enables safe retries and bulk reprocessing
@@ -83,15 +88,19 @@ PDF generator waits for the presence of the cleansing tag before processing to a
 - **Maintainability**: Format-specific cleaners are modular and testable; Infrastructure as Code
 
 **What becomes harder:**
+
 - **Operational complexity**: Must monitor multiple queues (main + DLQ); VPC endpoints increase infrastructure
 - **Processing latency**: Visual validation and SQS polling add latency to document pipeline
 - **Operational dependency**: **Critical trade-off**—cleansing failures block PDF generation and publication. Essential for privacy but accepted operational risk when Lambda unavailable. SQS buffering reduces message loss during outages; DLQ alarms provide failure visibility. The publication blocking itself remains unmitigated.
 
 **Risks requiring attention:**
+
 - **Uncleansed documents in published bucket**: All existing published documents lack cleansing. Requires one-off bulk operation. Publication workflow must verify cleansing before copying.
-- **Visual validation false positives**: Cleansing may fail on documents with complex formatting. Version tagging allows reprocessing with improved logic.
+- **Visual validation false positives**: Cleansing may fail on documents with complex formatting, e.g. if a docx has tracked changes or comments. Version tagging allows reprocessing with improved logic if we ever improve these, however we need to decide on a process to get these documents published in the meantime.
+- **Autopublish workflow**: The backlog tribunal parser performs bulk ingestion of old records and allows them to be autopublished. The current solution does not handle this well: documents cannot be published at ingest time because they must be cleansed first. As a result, the autopublish process will fail to complete until cleansing is finished, and there is no automated coordination for this scenario. We will need to create a followup solution and ADR to handle this.
 
 **System limitations:**
+
 - Cannot remove PII from document body text or embedded images (authors responsible for content-level redaction)
 - Password-protected or corrupted documents fail processing (move to DLQ)
 
