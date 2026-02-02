@@ -25,17 +25,31 @@ Each cleansed document is written back to S3 with a `DOCUMENT_PROCESSOR_VERSION`
 ### Architecture
 
 ```mermaid
-flowchart TD
-    S3[S3 Bucket<br/>unpublished-assets] -->|ObjectCreated| SNS[SNS Topic]
-    SNS -->|Fan-out| SQS[SQS Queue<br/>+DLQ]
-    SNS -->|DOCX filter| PDFSQS[PDF Gen Queue]
-    SQS -->|Poll| Lambda[Cleanser Lambda]
-    Lambda -->|Read/Write| S3
-    PDFSQS -->|Trigger| PDFGen[PDF Generator]
+flowchart TB
+      S3[S3 Bucket] -->|ObjectCreated| SNS[SNS Topic]
+      SNS -->|Forward all| CleanserSQS[Cleanser Queue]
+      SNS -->|Forward DOCX only| PDFSQS[PDF Gen Queue]
+      CleanserSQS -->|Poll| Lambda[Cleanser Lambda]
+      Lambda -->|Write cleansed doc| S3
+      PDFSQS -->|Trigger| PDFGen[PDF Generator]
+      PDFGen -->|Write PDF doc| S3
 
-    style Lambda fill:#d4e7ff
-    style SQS fill:#ffe6d4
+      style SNS fill:#f7f7d4
+      style Lambda fill:#d4e7ff
+      style PDFGen fill:#d4e7ff
+      style CleanserSQS fill:#ffe6d4
+      style PDFSQS fill:#ffe6d4
 ```
+
+_Details:_
+
+- S3 bucket holds the unpublished assets (working documents).
+- "Write cleansed" means a new version of the document is written back to S3 with the `DOCUMENT_PROCESSOR_VERSION` tag.
+- PDF Generator only processes DOCX files that have been cleansed (i.e., have the version tag).
+- Both SQS queues have associated Dead Letter Queues (DLQs), not shown for clarity.
+- SNS topic fans out to both queues for parallel processing.
+- PDF Gen Queue only receives DOCX events.
+- There is no circular loop: documents already tagged with `DOCUMENT_PROCESSOR_VERSION` are not reprocessed by the pipeline.
 
 **Event Flow:**
 
