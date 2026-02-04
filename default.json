@@ -39,6 +39,11 @@
     {
       "matchPackageNames": ["nationalarchives/tdr-github-actions"],
       "automerge": true
+    },
+    {
+      "matchPackageNames": ["stylelint", "stylelint-config-standard-scss"],
+      "groupName": "Stylelint and standard SCSS config",
+      "groupSlug": "stylelint"
     }
   ],
   "labels": ["dependencies"],
