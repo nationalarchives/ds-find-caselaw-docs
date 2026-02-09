@@ -30,6 +30,10 @@ REPOSITORIES = [
         "renovate_dashboard_issue_id": "80",
     },
     {
+        "id": "da-tre-terraform-environments",
+        "description": "Deploy the parser to TRE. (currently owned by TDR not AYR)",
+    },
+    {
         "id": "ds-caselaw-ingester",
         "description": "Ingests cases from the Transformation Engine into MarkLogic.",
         "renovate_dashboard_issue_id": "82",
