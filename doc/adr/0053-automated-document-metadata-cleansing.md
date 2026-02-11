@@ -1,4 +1,4 @@
-# Automated Document Metadata Cleansing Infrastructure
+# 53. Automated Document Metadata Cleansing Infrastructure
 
 Date: 2026-02-02
 
