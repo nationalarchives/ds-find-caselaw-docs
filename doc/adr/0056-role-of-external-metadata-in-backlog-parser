@@ -1,0 +1,36 @@
+# 56. The role of "External Metadata" in the Backlog Parser
+
+Date: 2026-02-19
+
+## Status
+
+Accepted
+
+## Context
+
+The **Backlog Parser** is responsible for bulk parsing historical documents by processing data from two primary inputs: the source document (typically a `.pdf` or `.docx`) and external metadata provided to us via a CSV. When processing each file it uses the CSV data to either generate a stub xml or to override the behaviour and outputs of the normal docx parser process. After processing each file, the Backlog Parser bundles up the resulting xml with a metadata json file which informs the Ingester about which metadata was provided externally and which was extracted from the document itself.
+
+We have identified inconsistencies in how the Backlog Parser treats data from the CSV file, specifically regarding what source takes precedence when data overlaps and what is reported back to the Ingester as "external metadata". Two specific issues highlighted the lack of a clear rule:
+
+1. **NCN vs. Cite Discrepancy:**
+    - The "Neutral Citation Number" (NCN) provided to the Backlog Parser via CSV and the "Cite" found within the document text (or provided by Editors on Reparse) are conceptually the same data point but currently they follow separate code paths with no overlap.
+    - This results in the external metadata being used to create `<uk:cite>` when creating a stub xml but not being used to override the `<uk:cite>` contents when using the main parser against a word doc. It also surfaces as two distinct fields in the final metadata JSON.
+2. **"Name" Generation Conflict:**
+    - The Backlog Parser currently constructs a "Name" with simple logic using the "Party" and "Respondent" from the CSV and then treats this as external metadata which overrides the main parser's logic.
+    - This results in ambiguity around whether or not an overridden name was actually specified by an external source and a lack of consistency across parsed documents as the main parser logic attempts to extract a higher-fidelity name from the document's actual title before falling back to simple concatenation.
+
+To resolve these conflicting requirements where CSV data *should* override the document in Case 1 but *should not* override the document in Case 2, we need a strict definition of what constitutes "External Metadata" and what its role is in the backlog parser.
+
+## Decision
+
+**External Metadata** will be defined strictly as **raw data originating directly from an external source** (e.g., a value explicitly present in a CSV column accepted by the Backlog Parser). Data that meets this definition is authoritative and should be used to override values parsed from the document text.
+
+Values calculated or constructed by the Backlog Parser (such as concatenating fields) are classified as **Derived Data**, not External Metadata. Derived Data is restricted to Stub generation; it must **not** override parsed document text and must be excluded from the metadata JSON during standard document parsing.
+
+External metadata may be translated to appropriate data structures (such as to an `Enum` or `Party` object) and it may undergo basic whitespace cleanup. More complex data cleansing should occur in the CSV before it is passed to the Backlog Parser.
+
+## Consequences
+
+- NCNs provided by External metadata will override `<uk:cite>` values in all scenarios
+- Derived fields such as "Name" will only be constructed and used by the Backlog Parser when generating a stub
+- Future external metadata values will always be favoured over values parsed from the document text by the main parser
