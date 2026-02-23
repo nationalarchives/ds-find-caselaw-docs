@@ -25,12 +25,12 @@ To resolve these conflicting requirements where CSV data *should* override the d
 
 **External Metadata** will be defined strictly as **raw data originating directly from an external source** (e.g., a value explicitly present in a CSV column accepted by the Backlog Parser). Data that meets this definition is authoritative and should be used to override values parsed from the document text.
 
-Values calculated or constructed by the Backlog Parser (such as concatenating fields) are classified as **Derived Data**, not External Metadata. Derived Data is restricted to Stub generation; it must **not** override parsed document text and must be excluded from the metadata JSON during standard document parsing.
+Values calculated or constructed by the Backlog Parser (such as concatenating fields) are classified as **Derived Data**, not External Metadata. Derived Data created by the Backlog Parser is restricted to Stub generation - it must **not** override parsed document text and must be excluded from the metadata JSON during standard document parsing.
 
 External metadata may be translated to appropriate data structures (such as to an `Enum` or `Party` object) and it may undergo basic whitespace cleanup. More complex data cleansing should occur in the CSV before it is passed to the Backlog Parser.
 
 ## Consequences
 
-- NCNs provided by External metadata will override `<uk:cite>` values in all scenarios
-- Derived fields such as "Name" will only be constructed and used by the Backlog Parser when generating a stub
+- Where external metadata provides NCNs, these will take precedence over any NCNs derived from the document when populating `<uk:cite>` in the output
+- The Backlog Parser will only directly construct and use derived data such as "Name" when generating a stub. When parsing a docx file it will defer to the normal parser logic which will continue to derive values when appropriate values cannot be directly obtained from the document text.
 - Future external metadata values will always be favoured over values parsed from the document text by the main parser
