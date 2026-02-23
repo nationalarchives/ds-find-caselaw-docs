@@ -14,6 +14,17 @@
   "platformAutomerge": true,
   "automergeSchedule": ["after 10am every weekday", "before 4pm every weekday"],
   "minimumReleaseAge": "2 days",
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^Dockerfile$/"],
+      "matchStrings": [
+        "#\\s*renovate:\\s*?(suite=(?<suite>.*?))?\\s*depName=(?<depName>.*?)?\\sENV .*?_VERSION=\"(?<currentValue>.*)\""
+      ],
+      "registryUrlTemplate": "https://deb.debian.org/debian?suite={{#if suite }}{{suite}}{{else}}stable{{/if}}&components=main,contrib,non-free&binaryArch=amd64",
+      "datasourceTemplate": "deb"
+    }
+  ],
   "packageRules": [
     {
       "matchManagers": ["dockerfile"],
