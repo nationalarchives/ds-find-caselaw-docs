@@ -13,13 +13,13 @@ The **Backlog Parser** is responsible for bulk parsing historical documents by p
 We have identified inconsistencies in how the Backlog Parser treats data from the CSV file, specifically regarding what source takes precedence when data overlaps and what is reported back to the Ingester as "external metadata". Two specific issues highlighted the lack of a clear rule:
 
 1. **NCN vs. Cite Discrepancy:**
-    - The "Neutral Citation Number" (NCN) provided to the Backlog Parser via CSV and the "Cite" found within the document text (or provided by Editors on Reparse) are conceptually the same data point but currently they follow separate code paths with no overlap.
-    - This results in the external metadata being used to create `<uk:cite>` when creating a stub xml but not being used to override the `<uk:cite>` contents when using the main parser against a word doc. It also surfaces as two distinct fields in the final metadata JSON.
+   - The "Neutral Citation Number" (NCN) provided to the Backlog Parser via CSV and the "Cite" found within the document text (or provided by Editors on Reparse) are conceptually the same data point but currently they follow separate code paths with no overlap.
+   - This results in the external metadata being used to create `<uk:cite>` when creating a stub xml but not being used to override the `<uk:cite>` contents when using the main parser against a word doc. It also surfaces as two distinct fields in the final metadata JSON.
 2. **"Name" Generation Conflict:**
-    - The Backlog Parser currently constructs a "Name" with simple logic using the "Party" and "Respondent" from the CSV and then treats this as external metadata which overrides the main parser's logic.
-    - This results in ambiguity around whether or not an overridden name was actually specified by an external source and a lack of consistency across parsed documents as the main parser logic attempts to extract a higher-fidelity name from the document's actual title before falling back to simple concatenation.
+   - The Backlog Parser currently constructs a "Name" with simple logic using the "Party" and "Respondent" from the CSV and then treats this as external metadata which overrides the main parser's logic.
+   - This results in ambiguity around whether or not an overridden name was actually specified by an external source and a lack of consistency across parsed documents as the main parser logic attempts to extract a higher-fidelity name from the document's actual title before falling back to simple concatenation.
 
-To resolve these conflicting requirements where CSV data *should* override the document in Case 1 but *should not* override the document in Case 2, we need a strict definition of what constitutes "External Metadata" and what its role is in the backlog parser.
+To resolve these conflicting requirements where CSV data _should_ override the document in Case 1 but _should not_ override the document in Case 2, we need a strict definition of what constitutes "External Metadata" and what its role is in the backlog parser.
 
 ## Decision
 
