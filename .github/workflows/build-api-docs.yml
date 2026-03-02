@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Generate API docs and deploy to GitHub Pages
-        uses: msayson/openapi-github-pages-action@v2.0.0
+        uses: msayson/openapi-github-pages-action@7fbd76471de7e3a6e4738a7d131b9e74706532be # v2.0.0
         with:
           api-configs: |-
             [
