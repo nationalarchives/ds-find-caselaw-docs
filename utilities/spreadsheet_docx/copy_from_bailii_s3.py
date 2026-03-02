@@ -106,16 +106,13 @@ for header in headers:
 
 nice_data = []
 for row in raw_data[1:]:
-    row_object = Row(**dict(zip(headers, row)))
-    if len(row) != len(headers):
-        msg = "Data not rectangular"
-        raise RuntimeError(msg)
+    row_object = Row(**dict(zip(headers, row, strict=True)))
     nice_data.append(row_object)
     for header in headers:
         columns[header][row_object._asdict()[header]] += 1
 
-for x in columns:
-    print(x, columns[x].most_common(10))
+for x, value in columns.items():
+    print(x, value.most_common(10))
 
 
 def clean_rows(nice_data):
