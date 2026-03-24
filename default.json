@@ -55,6 +55,15 @@
       "matchPackageNames": ["stylelint", "stylelint-config-standard-scss"],
       "groupName": "Stylelint and standard SCSS config",
       "groupSlug": "stylelint"
+    },
+    {
+      "matchPackageNames": ["playwright"],
+      "groupName": "playwright"
+    },
+    {
+      "matchDatasources": ["docker"],
+      "matchPackageNames": ["mcr.microsoft.com/playwright/python"],
+      "groupName": "playwright"
     }
   ],
   "labels": ["dependencies"],
