@@ -57,6 +57,7 @@
       "groupSlug": "stylelint"
     },
     {
+      "matchDatasources": ["pypi"],
       "matchPackageNames": ["playwright"],
       "groupName": "playwright"
     },
