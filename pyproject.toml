@@ -25,3 +25,5 @@ unfixable = ["ERA"]
 [tool.ruff.lint.extend-per-file-ignores]
 "utilities/run-xquery.py" = ["T201"]  # We're happy using print in utility scripts
 "scripts/build_repo_lists" = ["T201"]  # We're happy using print in utility scripts
+"scripts/audit_repo_config.py" = ["T201"]  # print CLI
+"scripts/tests/**/*.py" = ["S101"]  # pytest uses assert
