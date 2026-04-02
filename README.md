@@ -24,7 +24,7 @@ If you are looking for documentation covering user research, design decisions or
 ## Repositories
 
 <!-- Begin list of repositories -->
-<!-- This section is automatically generated from scripts/build_repo_lists. You shouldn't edit it manually. -->
+<!-- Generated from scripts/build_repo_lists using scripts/repositories.json. Do not edit manually. -->
 
 | Repository                                                                                                   | Description                                                                                    |
 | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
