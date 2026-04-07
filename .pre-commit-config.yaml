@@ -35,7 +35,7 @@ repos:
         language: node
         require_serial: true
         additional_dependencies:
-          - "@useoptic/optic"
+          - "@useoptic/optic@1.0.9"
         files: ^doc/openapi/.*\.yml
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
