@@ -100,3 +100,11 @@ Services provide data to, or take data from, this system.
 ## Manual data changes
 
 Sometimes we need to [delete or restore judgments](doc/changing-judgments/changing-judgments.md).
+
+## Deployment
+
+<!-- last_review: 2026-04-08 -->
+
+### API Documentation
+
+API documentation is automatically built from the contents of `doc/openapi` and deployed to GitHub Pages on merge to `main`. For more information on this process, see the [OpenAPI spec README](doc/openapi/README.md).
