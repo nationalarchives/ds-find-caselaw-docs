@@ -1,0 +1,85 @@
+[
+  {
+    "id": "ds-find-caselaw-docs",
+    "description": "High-level documentation for the service.",
+    "hide_releases": true
+  },
+  {
+    "id": "ds-caselaw-public-ui",
+    "description": "Public interface to the service.",
+    "renovate_dashboard_issue_id": "819"
+  },
+  {
+    "id": "ds-caselaw-editor-ui",
+    "description": "Editor interface to the service.",
+    "renovate_dashboard_issue_id": "1051"
+  },
+  {
+    "id": "ds-caselaw-marklogic",
+    "description": "MarkLogic database configuration.",
+    "renovate_dashboard_issue_id": "74"
+  },
+  {
+    "id": "tna-judgments-parser",
+    "description": "Convert incoming docx files into structured LegalDocML.",
+    "renovate_dashboard_issue_id": "80"
+  },
+  {
+    "id": "da-tre-terraform-environments",
+    "description": "Deploy the parser to TRE. (currently owned by TDR not AYR)"
+  },
+  {
+    "id": "ds-caselaw-ingester",
+    "description": "Ingests cases from the Transformation Engine into MarkLogic.",
+    "renovate_dashboard_issue_id": "82"
+  },
+  {
+    "id": "ds-caselaw-pdf-conversion",
+    "description": "Converts a judgement to PDF.",
+    "renovate_dashboard_issue_id": "31"
+  },
+  {
+    "id": "da-caselaw-document-processing",
+    "description": "Process document assets (e.g. metadata removal)",
+    "renovate_dashboard_issue_id": "6"
+  },
+  {
+    "id": "ds-caselaw-privileged-api",
+    "description": "The API which annotating services talk to.",
+    "renovate_dashboard_issue_id": "182"
+  },
+  {
+    "id": "ds-caselaw-custom-api-client",
+    "description": "API client to interface with MarkLogic.",
+    "pypi": "ds-caselaw-marklogic-api-client",
+    "renovate_dashboard_issue_id": "283"
+  },
+  {
+    "id": "ds-caselaw-utils",
+    "description": "Common utilities across codebases.",
+    "pypi": "ds-caselaw-utils",
+    "renovate_dashboard_issue_id": "56"
+  },
+  {
+    "id": "ds-caselaw-frontend",
+    "description": "Shared styles used across the Find Caselaw service.",
+    "renovate_dashboard_issue_id": "3"
+  },
+  {
+    "id": "ds-caselaw-data-enrichment-service",
+    "description": "Detect and tag references to legal documents.",
+    "hide_releases": true,
+    "renovate_dashboard_issue_id": "235"
+  },
+  {
+    "id": "ds-caselaw-judiciary-guidance",
+    "description": "Support material for people submitting documents to the service.",
+    "hide_releases": true
+  },
+  {
+    "id": "ds-caselaw-semantic-shift",
+    "description": "Research project mapping the semantic shift between language of case law and everyday English.",
+    "hide_releases": true,
+    "renovate_dashboard_issue_id": "13"
+  }
+]

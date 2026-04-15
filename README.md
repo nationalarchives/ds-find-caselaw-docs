@@ -24,7 +24,7 @@ If you are looking for documentation covering user research, design decisions or
 ## Repositories
 
 <!-- Begin list of repositories -->
-<!-- This section is automatically generated from scripts/build_repo_lists. You shouldn't edit it manually. -->
+<!-- Generated from scripts/build_repo_lists using scripts/repositories.json. Do not edit manually. -->
 
 | Repository                                                                                                   | Description                                                                                    |
 | ------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------- |
@@ -100,3 +100,11 @@ Services provide data to, or take data from, this system.
 ## Manual data changes
 
 Sometimes we need to [delete or restore judgments](doc/changing-judgments/changing-judgments.md).
+
+## Deployment
+
+<!-- last_review: 2026-04-08 -->
+
+### API Documentation
+
+API documentation is automatically built from the contents of `doc/openapi` and deployed to GitHub Pages on merge to `main`. For more information on this process, see the [OpenAPI spec README](doc/openapi/README.md).
