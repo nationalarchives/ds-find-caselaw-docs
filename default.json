@@ -8,7 +8,8 @@
     ":automergeRequireAllStatusChecks",
     ":automergeTesters",
     ":maintainLockFilesWeekly",
-    ":enablePreCommit"
+    ":enablePreCommit",
+    ":pinDependencies"
   ],
   "timezone": "Europe/London",
   "platformAutomerge": true,
