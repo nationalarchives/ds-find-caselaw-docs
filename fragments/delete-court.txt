@@ -1,0 +1,18 @@
+(: This is intended as an example, not to be run as-is.
+Delete all documents from a court that are managed by dls :)
+
+xquery version "1.0-ml";
+
+import module namespace search = "http://marklogic.com/appservices/search" at "/MarkLogic/appservices/search/search.xqy";
+import module namespace dls = "http://marklogic.com/xdmp/dls" at "/MarkLogic/dls.xqy";
+
+let $court := "UKFTT-HESC"
+let $latest-query := cts:collection-query(("http://marklogic.com/collections/dls/latest-version"))
+let $court-query := cts:element-value-query(fn:QName('https://caselaw.nationalarchives.gov.uk/akn', 'court'), $court, ('case-insensitive'))
+
+let $all-queries := cts:and-query(($latest-query, $court-query))
+
+let $searchResultsInDoc := search:resolve(element x { $all-queries }/*, (), (), 9999)/search:result
+
+for $courtLineInDoc in $searchResultsInDoc
+    return dls:document-delete($courtLineInDoc/@uri,fn:false(), fn:false())
