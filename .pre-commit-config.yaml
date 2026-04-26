@@ -28,7 +28,7 @@ repos:
         types_or: [yaml, json, xml, markdown, scss, javascript]
 
   - repo: https://github.com/python-openapi/openapi-spec-validator
-    rev: 0.8.4
+    rev: 0.8.5
     hooks:
       - id: openapi-spec-validator
         files: ^doc/openapi/.*\.yml
