@@ -61,6 +61,10 @@
       "matchPackageNames": ["mcr.microsoft.com/playwright", "playwright"],
       "groupName": "Playwright",
       "groupSlug": "playwright"
+    },
+    {
+      "matchPackageNames": ["python"],
+      "rangeStrategy": "widen"
     }
   ],
   "labels": ["dependencies"],
