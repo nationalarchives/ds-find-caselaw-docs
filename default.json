@@ -58,7 +58,10 @@
       "groupSlug": "stylelint"
     },
     {
-      "matchPackageNames": ["mcr.microsoft.com/playwright", "playwright"],
+      "matchPackageNames": [
+        "mcr.microsoft.com/playwright/python",
+        "playwright"
+      ],
       "groupName": "Playwright",
       "groupSlug": "playwright"
     },
