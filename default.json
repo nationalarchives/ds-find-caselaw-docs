@@ -37,8 +37,19 @@
       "minimumReleaseAge": "3 days"
     },
     {
+      "matchPackageNames": ["/boto/"],
       "groupName": "boto packages",
-      "matchPackageNames": ["/boto/"]
+      "groupSlug": "boto-group"
+    },
+    {
+      "matchPackageNames": ["/stylelint/"],
+      "groupName": "Stylelint and standard SCSS config",
+      "groupSlug": "stylelint-group"
+    },
+    {
+      "matchPackageNames": ["/playwright/"],
+      "groupName": "Playwright",
+      "groupSlug": "playwright-group"
     },
     {
       "matchPackageNames": [
@@ -51,19 +62,6 @@
     {
       "matchPackageNames": ["nationalarchives/tdr-github-actions"],
       "automerge": true
-    },
-    {
-      "matchPackageNames": ["stylelint", "stylelint-config-standard-scss"],
-      "groupName": "Stylelint and standard SCSS config",
-      "groupSlug": "stylelint"
-    },
-    {
-      "matchPackageNames": [
-        "mcr.microsoft.com/playwright/python",
-        "playwright"
-      ],
-      "groupName": "Playwright",
-      "groupSlug": "playwright"
     },
     {
       "matchPackageNames": ["python"],
