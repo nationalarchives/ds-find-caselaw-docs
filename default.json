@@ -56,6 +56,15 @@
       "matchPackageNames": ["stylelint", "stylelint-config-standard-scss"],
       "groupName": "Stylelint and standard SCSS config",
       "groupSlug": "stylelint"
+    },
+    {
+      "matchPackageNames": ["mcr.microsoft.com/playwright", "playwright"],
+      "groupName": "Playwright",
+      "groupSlug": "playwright"
+    },
+    {
+      "matchPackageNames": ["python"],
+      "rangeStrategy": "widen"
     }
   ],
   "labels": ["dependencies"],
