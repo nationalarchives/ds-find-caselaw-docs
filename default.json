@@ -47,7 +47,12 @@
       "groupSlug": "stylelint-group"
     },
     {
-      "matchPackageNames": ["/playwright/"],
+      "matchManagers": ["pip_requirements", "dockerfile"],
+      "matchPackageNames": [
+        "playwright",
+        "pytest-playwright",
+        "mcr.microsoft.com/playwright/python"
+      ],
       "groupName": "Playwright",
       "groupSlug": "playwright-group"
     },
