@@ -47,6 +47,10 @@ with Path.open("repo-dashboard.md", "w") as f:
 
         f.write(" | ")
         f.write(
+            f"[![GitHub branch check runs](https://img.shields.io/github/check-runs/nationalarchives/{repo_name}/main?label)]({repo_base_url}/commits)",
+        )
+        f.write("<br>")
+        f.write(
             f"[![Latest commit to main](https://img.shields.io/github/last-commit/nationalarchives/{repo_name}/main?label)]({repo_base_url}/commits)",
         )
 
