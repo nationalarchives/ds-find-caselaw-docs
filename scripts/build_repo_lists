@@ -12,6 +12,86 @@ GENERATED_NOTE = (
     "<!-- Generated from scripts/build_repo_lists using scripts/repositories.json. Do not edit manually. -->\n"
 )
 
+
+def render_markdown_table(rows: list[list[str]]) -> str:
+    widths = [max(len(row[index]) for row in rows) for index in range(len(rows[0]))]
+
+    def format_row(row: list[str]) -> str:
+        padded_cells = [cell.ljust(widths[index]) for index, cell in enumerate(row)]
+        return f"| {' | '.join(padded_cells)} |"
+
+    divider = "| " + " | ".join("-" * max(width, 3) for width in widths) + " |"
+    body = [format_row(row) for row in rows]
+
+    return "\n".join([body[0], divider, *body[1:]])
+
+
+dashboard_rows = [
+    [
+        "Repository",
+        "Pull requests",
+        "Renovate dashboard",
+        "Latest commit (`main`)",
+        "Latest release (GitHub)",
+        "Latest release (PyPi)",
+    ],
+]
+
+for repo in REPOSITORIES:
+    repo_name = repo["id"]
+    repo_base_url = f"https://github.com/nationalarchives/{repo_name}"
+
+    renovate_dashboard = NA_STRING
+    if "renovate_dashboard_issue_id" in repo:
+        renovate_dashboard = (
+            f"[![Dashboard](https://img.shields.io/badge/-Dashboard-445)]"
+            f"({repo_base_url}/issues/{repo['renovate_dashboard_issue_id']})"
+        )
+
+    latest_release = NA_STRING
+    if "hide_releases" not in repo or not repo["hide_releases"]:
+        latest_release = (
+            f"[![Latest release (GitHub)]"
+            f"(https://img.shields.io/github/v/release/nationalarchives/{repo_name}?label&sort=semver)]"
+            f"({repo_base_url}/releases)<br>"
+            f"[![GitHub Release Date]"
+            f"(https://img.shields.io/github/release-date/nationalarchives/{repo_name}?label&sort=semver)]"
+            f"({repo_base_url}/releases)"
+        )
+
+    latest_pypi_release = NA_STRING
+    if "pypi" in repo:
+        latest_pypi_release = (
+            f"[![Latest release (PyPi)](https://img.shields.io/pypi/v/{repo['pypi']}?label)]"
+            f"(https://pypi.org/project/{repo['pypi']}/)"
+        )
+
+    dashboard_rows.append(
+        [
+            f"[{repo_name}]({repo_base_url})",
+            f"[![Pull requests](https://img.shields.io/github/issues-pr/nationalarchives/{repo_name}?label)]"
+            f"({repo_base_url}/pulls)",
+            renovate_dashboard,
+            f"[![GitHub branch check runs]"
+            f"(https://img.shields.io/github/check-runs/nationalarchives/{repo_name}/main?label)]"
+            f"({repo_base_url}/commits)<br>"
+            f"[![Latest commit to main]"
+            f"(https://img.shields.io/github/last-commit/nationalarchives/{repo_name}/main?label)]"
+            f"({repo_base_url}/commits)",
+            latest_release,
+            latest_pypi_release,
+        ],
+    )
+
+
+readme_rows = [["Repository", "Description"]]
+
+for repo in REPOSITORIES:
+    repo_name = repo["id"]
+    repo_base_url = f"https://github.com/nationalarchives/{repo_name}"
+    repo_description = repo.get("description", "-")
+    readme_rows.append([f"[{repo_name}]({repo_base_url})", repo_description])
+
 print("Building dashboard...")
 
 with Path.open("repo-dashboard.md", "w") as f:
@@ -19,62 +99,8 @@ with Path.open("repo-dashboard.md", "w") as f:
     f.write("\n")
     f.write(GENERATED_NOTE)
     f.write("\n")
-    f.write(
-        "| Repository | Pull requests | Renovate dashboard | Latest commit (`main`) | Latest release (GitHub) | Latest release (PyPi) |\n",
-    )
-    f.write("| --- | --- | --- | --- | --- | --- |\n")
-
-    for repo in REPOSITORIES:
-        repo_name = repo["id"]
-        repo_base_url = f"https://github.com/nationalarchives/{repo_name}"
-        repo_description = repo.get("description", "-")
-
-        f.write("| ")
-        f.write(f"[{repo_name}]({repo_base_url})")
-
-        f.write(" | ")
-        f.write(
-            f"[![Pull requests](https://img.shields.io/github/issues-pr/nationalarchives/{repo_name}?label)]({repo_base_url}/pulls)",
-        )
-
-        f.write(" | ")
-        if "renovate_dashboard_issue_id" in repo:
-            f.write(
-                f"[![Dashboard](https://img.shields.io/badge/-Dashboard-445)]({repo_base_url}/issues/{repo['renovate_dashboard_issue_id']})",
-            )
-        else:
-            f.write(NA_STRING)
-
-        f.write(" | ")
-        f.write(
-            f"[![GitHub branch check runs](https://img.shields.io/github/check-runs/nationalarchives/{repo_name}/main?label)]({repo_base_url}/commits)",
-        )
-        f.write("<br>")
-        f.write(
-            f"[![Latest commit to main](https://img.shields.io/github/last-commit/nationalarchives/{repo_name}/main?label)]({repo_base_url}/commits)",
-        )
-
-        f.write(" | ")
-
-        if "hide_releases" not in repo or not repo["hide_releases"]:
-            f.write(
-                f"[![Latest release (GitHub)](https://img.shields.io/github/v/release/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)<br>",
-            )
-            f.write(
-                f"[![GitHub Release Date](https://img.shields.io/github/release-date/nationalarchives/{repo_name}?label&sort=semver)]({repo_base_url}/releases)",
-            )
-        else:
-            f.write(NA_STRING)
-
-        f.write(" | ")
-        if "pypi" in repo:
-            f.write(
-                f"[![Latest release (PyPi)](https://img.shields.io/pypi/v/{repo['pypi']}?label)](https://pypi.org/project/{repo['pypi']}/)",
-            )
-        else:
-            f.write(NA_STRING)
-
-        f.write(" |\n")
+    f.write(render_markdown_table(dashboard_rows))
+    f.write("\n")
 
 print("Populating repository list in readme...")
 
@@ -84,16 +110,9 @@ with Path.open("README.md") as f:
 pattern = r"""<!-- Begin list of repositories -->.*?<!-- End list of repositories -->"""
 
 replacement = f"""<!-- Begin list of repositories -->
-{GENERATED_NOTE}| Repository | Description |
-| --- | --- |"""
-
-for repo in REPOSITORIES:
-    repo_name = repo["id"]
-    repo_base_url = f"https://github.com/nationalarchives/{repo_name}"
-    repo_description = repo.get("description", "-")
-
-    replacement += f"""
-| [{repo_name}]({repo_base_url}) | {repo_description} |"""
+{GENERATED_NOTE}
+{render_markdown_table(readme_rows)}
+"""
 
 replacement += """
 <!-- End list of repositories -->"""
