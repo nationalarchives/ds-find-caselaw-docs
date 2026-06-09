@@ -1,0 +1,203 @@
+#!/usr/bin/env python
+
+import re
+import sys
+from collections.abc import Mapping, Sequence
+from pathlib import Path
+
+from markdown_table_renderer import render_markdown_table
+
+try:
+    import yaml
+except ImportError as exc:  # pragma: no cover
+    msg = "PyYAML is required to run this script. Install with: pip install pyyaml"
+    raise SystemExit(msg) from exc
+
+
+SCRIPT_DIR = Path(__file__).resolve().parent
+METADATA_PATH = SCRIPT_DIR / "document-metadata.yml"
+DOC_PATH = SCRIPT_DIR.parent / "doc" / "document-metadata.md"
+
+BEGIN_MARKER = "<!-- Begin document metadata table -->"
+END_MARKER = "<!-- End document metadata table -->"
+GENERATED_NOTE = (
+    "<!-- Generated from scripts/build_document_metadata_table using scripts/document-metadata.yml. "
+    "Do not edit manually. -->"
+)
+
+
+def format_header(key: str) -> str:
+    if key == "sources":
+        return "Sourced from"
+    if key == "access":
+        return "Access via"
+    return key.replace("_", " ").replace("-", " ").title()
+
+
+def markdown_escape(value: object) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, bool):
+        return "Yes" if value else "No"
+    if isinstance(value, Sequence) and not isinstance(value, str):
+        rendered_items = [markdown_escape(item) for item in value]
+        return "<br>".join(rendered_items)
+    text = str(value)
+    return text.replace("|", "\\|").replace("\n", "<br>")
+
+
+def render_detail_value(key: str, value: object) -> str:
+    if key != "access":
+        return markdown_escape(value)
+
+    if isinstance(value, Sequence) and not isinstance(value, str):
+        return "<br>".join(f"`{markdown_escape(item)}`" for item in value)
+
+    return f"`{markdown_escape(value)}`"
+
+
+def slugify(value: str) -> str:
+    slug = re.sub(r"[^a-z0-9\s-]", "", value.lower())
+    slug = re.sub(r"\s+", "-", slug).strip("-")
+    return slug or "item"
+
+
+def normalise_rows(raw_data: object) -> list[dict[str, object]]:
+    if raw_data is None:
+        return []
+
+    if isinstance(raw_data, Mapping):
+        rows: list[dict[str, object]] = []
+        for metadata_key, metadata_fields in raw_data.items():
+            fields = {} if metadata_fields is None else metadata_fields
+            if not isinstance(fields, Mapping):
+                msg = f"Expected mapping for metadata field set, got {type(fields).__name__}"
+                raise TypeError(msg)
+
+            row: dict[str, object] = {"_metadata_key": str(metadata_key)}
+            normalised_fields: dict[str, object] = {str(key): value for key, value in fields.items()}
+            row.update(normalised_fields)
+            rows.append(row)
+        return rows
+
+    if isinstance(raw_data, list):
+        rows = []
+        for idx, item in enumerate(raw_data):
+            if not isinstance(item, Mapping):
+                msg = f"Expected mapping at list index {idx}, got {type(item).__name__}"
+                raise TypeError(msg)
+            row: dict[str, object] = {str(key): value for key, value in item.items()}
+            row.setdefault("_metadata_key", f"item-{idx + 1}")
+            rows.append(row)
+        return rows
+
+    msg = f"Top-level YAML value must be a mapping or list, got {type(raw_data).__name__}"
+    raise ValueError(msg)
+
+
+def build_table(rows: list[dict[str, object]]) -> str:
+    if not rows:
+        summary = render_markdown_table(
+            [
+                ["Name", "Level", "Sourced from", "Editable", "Multiple"],
+                ["_No metadata defined yet_", "", "", "", ""],
+            ],
+        )
+        return f"## Summary\n\n{summary}\n\n## Details\n\n_No metadata defined yet_"
+
+    rows = sorted(rows, key=lambda row: str(row.get("name", "")).casefold())
+
+    summary_rows = [["Name", "Level", "Sourced from", "Editable", "Multiple"]]
+    detail_sections: list[str] = []
+
+    for index, row in enumerate(rows, start=1):
+        name = markdown_escape(row.get("name", "")) or f"Unnamed metadata {index}"
+        level = markdown_escape(row.get("level", ""))
+        sources = markdown_escape(row.get("sources", ""))
+        editable = markdown_escape(row.get("editable", ""))
+        multiple = markdown_escape(row.get("multiple", ""))
+        metadata_key = str(row.get("_metadata_key", f"item-{index}"))
+        anchor = f"metadata-{slugify(metadata_key)}"
+        summary_rows.append([f"[{name}](#{anchor})", level, sources, editable, multiple])
+
+        detail_lines = [f'<a id="{anchor}"></a>', "", f"### {name}", ""]
+
+        description = markdown_escape(row.get("description", ""))
+        if description:
+            detail_lines.append(description)
+        else:
+            detail_lines.append("_No description provided._")
+
+        detail_field_keys: list[str] = []
+        if "level" in row:
+            detail_field_keys.append("level")
+        if "sources" in row:
+            detail_field_keys.append("sources")
+        if "editable" in row:
+            detail_field_keys.append("editable")
+        if "multiple" in row:
+            detail_field_keys.append("multiple")
+        detail_field_keys.extend(
+            key
+            for key in row
+            if key not in {"_metadata_key", "name", "description", "level", "sources", "editable", "multiple"}
+        )
+
+        if detail_field_keys:
+            detail_table_rows = [
+                [format_header(key) for key in detail_field_keys],
+                [render_detail_value(key, row.get(key, "")) for key in detail_field_keys],
+            ]
+            detail_lines.extend(["", render_markdown_table(detail_table_rows)])
+
+        detail_sections.append("\n".join(detail_lines))
+
+    summary = render_markdown_table(summary_rows)
+
+    return "\n".join(
+        [
+            "## Summary",
+            "",
+            summary,
+            "",
+            "## Details",
+            "",
+            "\n\n".join(detail_sections),
+        ],
+    )
+
+
+def main() -> int:
+    if not METADATA_PATH.exists():
+        sys.stderr.write(f"Missing metadata file: {METADATA_PATH}\n")
+        return 1
+
+    if not DOC_PATH.exists():
+        sys.stderr.write(f"Missing documentation file: {DOC_PATH}\n")
+        return 1
+
+    rows = normalise_rows(yaml.safe_load(METADATA_PATH.read_text(encoding="utf-8")))
+    generated_block = "\n".join([BEGIN_MARKER, GENERATED_NOTE, "", build_table(rows), "", END_MARKER])
+
+    doc_content = DOC_PATH.read_text(encoding="utf-8")
+
+    block_pattern = re.compile(
+        rf"{re.escape(BEGIN_MARKER)}.*?{re.escape(END_MARKER)}",
+        flags=re.DOTALL,
+    )
+
+    if block_pattern.search(doc_content):
+        updated = block_pattern.sub(generated_block, doc_content)
+    else:
+        sys.stderr.write(
+            f"No document metadata table markers found. Add '{BEGIN_MARKER} ... {END_MARKER}' to the document.\n",
+        )
+        return 1
+
+    DOC_PATH.write_text(updated, encoding="utf-8")
+    sys.stdout.write(f"Updated {DOC_PATH}\n")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
