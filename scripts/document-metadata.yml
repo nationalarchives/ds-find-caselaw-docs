@@ -1,0 +1,166 @@
+name:
+  name: Name
+  description: The title of the document as most commonly used by humans. This _may_ vary from the exact title in the document text, for example by standardising casing.
+  level: Document body
+  sources:
+    - Parser (Document body)
+    - Metadata file
+    - EUI
+    - Stub form
+  editable: true
+  multiple: false
+  access: Document.body.name
+
+cite:
+  name: NCN
+  description: Where present, this document's Neutral Citation Number. This is a special case of identifier, which we actually want to deprecate.
+  level: Document properties, document body
+  sources:
+    - Parser (Document body)
+    - Metadata file
+    - EUI
+    - Stub form
+  editable: true
+  multiple: false
+  access: Document.identifiers.preferred(NeutralCitationNumber)
+
+court:
+  name: Court
+  description: The court which published this document. "Court" here means "any body capable of issuing a legally binding decision".
+  level: Document body
+  sources:
+    - Parser (Document body)
+    - Metadata file
+    - EUI
+    - Stub form
+  editable: true
+  multiple: false
+  access: Document.body.court
+
+jurisdiction:
+  name: Jurisdiction
+  description: The jurisdiction of the court which this decision was made under
+  level: Document body
+  sources:
+    - Parser (Document body)
+  editable: false
+  multiple: false
+  access: Document.body.jurisdiction
+
+categories:
+  name: Categories
+  description: Categories under which this document falls
+  level: Document body
+  sources:
+    - Parser (Document body)
+    - Metadata file
+  editable: false
+  multiple: false
+  access: Document.body.categories
+
+case_number:
+  name: Case number
+  description: The case number for the case this document relates to.
+  level: Document body
+  sources:
+    - Parser (Document body)
+    - Metadata file
+  editable: false
+  multiple: false
+  access: Document.body.case_number
+
+date:
+  name: Judgment date
+  description: The date the document was published, usually the date a decision was handed down.
+  level: Document body
+  sources:
+    - Parser (Document body)
+    - Metadata file
+    - EUI
+    - Stub form
+  editable: true
+  multiple: false
+  access: Document.body.document_date_as_string
+
+parties:
+  name: Parties
+  description: A list of the names of the parties involved in any particular case. This does _not_ include structured data on the nature of the party (eg defendant/appellant).
+  level: Document body
+  sources:
+    - Parser (Document body)
+    - Metadata file
+  editable: false
+  multiple: true
+
+judges:
+  name: Judges
+  description: A list of the names of the judges (or equivalent for the body) involved in any particular case.
+  level: Document body
+  sources:
+    - Parser (Document body)
+    - Metadata file
+    - Stub form
+  editable: false
+  multiple: true
+
+uri:
+  name: URI
+  description: The unique identifier for the document.
+  level: Document object (inherent property)
+  sources:
+    - System
+  editable: false
+  multiple: false
+  access: Document.uri
+
+source_name:
+  name: Source name
+  description: The name of the person who submitted the document.
+  level: Document properties (should be Submission)
+  sources:
+    - Parser (TDR metadata)
+  editable: false
+  multiple: false
+  access: Document.source_name
+
+source_email:
+  name: Source email
+  description: The email address of the person who submitted the document.
+  level: Document properties (should be Submission)
+  sources:
+    - Parser (TDR metadata)
+  editable: false
+  multiple: false
+  access: Document.source_email
+
+consignment_reference:
+  name: TDR reference
+  description: The TDR reference of the submission.
+  level: Document properties (should be Submission)
+  sources:
+    - Parser (TDR metadata)
+  editable: false
+  multiple: false
+  access: Document.consignment_reference
+
+identifiers:
+  name: Identifiers
+  description: Identifiers for a document (NCN, FCLID etc) stored within the structured identifier system.
+  level: Document properties
+  sources:
+    - Ingester
+    - EUI
+  editable: true
+  multiple: true
+  access: Document.identifiers
+
+version_annotation:
+  name: Version annotation
+  description: A (hopefully) structured JSON blob describing how and why a new version of a document came into being.
+  level: Version
+  sources:
+    - Ingester
+    - Enrichment
+  editable: false
+  multiple: false
+  access: Document.annotation

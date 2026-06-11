@@ -4,6 +4,8 @@ import json
 import re
 from pathlib import Path
 
+from markdown_table_renderer import render_markdown_table
+
 _SCRIPT_DIR = Path(__file__).resolve().parent
 _REPOSITORIES_PATH = _SCRIPT_DIR / "repositories.json"
 REPOSITORIES = json.loads(_REPOSITORIES_PATH.read_text(encoding="utf-8"))
@@ -11,19 +13,6 @@ NA_STRING = "![n/a](https://img.shields.io/badge/-n%2Fa-eee)"
 GENERATED_NOTE = (
     "<!-- Generated from scripts/build_repo_lists using scripts/repositories.json. Do not edit manually. -->\n"
 )
-
-
-def render_markdown_table(rows: list[list[str]]) -> str:
-    widths = [max(len(row[index]) for row in rows) for index in range(len(rows[0]))]
-
-    def format_row(row: list[str]) -> str:
-        padded_cells = [cell.ljust(widths[index]) for index, cell in enumerate(row)]
-        return f"| {' | '.join(padded_cells)} |"
-
-    divider = "| " + " | ".join("-" * max(width, 3) for width in widths) + " |"
-    body = [format_row(row) for row in rows]
-
-    return "\n".join([body[0], divider, *body[1:]])
 
 
 dashboard_rows = [
