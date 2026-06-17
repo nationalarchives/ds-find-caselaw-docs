@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: "National Archives Find Case Law: Public API"
-  version: 0.5.1
+  version: 0.5.2
   description: |-
     Our API provides access to judgments and other documents held by The National Archives and published via the Find Case Law service.
 
@@ -169,6 +169,8 @@ paths:
         * `<tna:identifier>`: One element per [identifier](#document-identifiers) known to relate to this document.
         * `<tna:contenthash>`: A hash of the text in the document. See [Content Hash](#content-hash) for more.
         * `<tna:assets_base>`: The location of any images in the XML (e.g. `image1.png`) can be prefixed with this to download those images. Please do not hotlink: the URL here is not guaranteed to be stable.
+
+        nb: The Atom feed will only include documents in Find Case Law which have a full-text representation of the document available as XML. Documents which are only available as a PDF file will not be included.
 
       operationId: atomFeed
       parameters:
