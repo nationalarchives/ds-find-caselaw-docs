@@ -2,18 +2,17 @@
 
 1. update [court_names.yaml](https://github.com/nationalarchives/ds-caselaw-utils/blob/main/src/ds_caselaw_utils/data/court_names.yaml) (utils)
 
-2. update [neutral_citation_regex.yaml](https://github.com/nationalarchives/ds-caselaw-utils/blob/main/src/ds_caselaw_utils/data/neutral_citation_regex.yaml) (utils)
+2. In the PUI create a jinja template in the [templates/content/courts](https://github.com/nationalarchives/ds-caselaw-public-ui/tree/main/ds_judgements_public_ui/templates/content/courts) folder with the name of the `param` of the new court.
 
-3. add a test to [test_neutral.py]'s `good_neutral_urls` (https://github.com/nationalarchives/ds-caselaw-utils/blob/main/src/ds_caselaw_utils/test_neutral.py) (utils), test with `poetry run pytest`
+#### If there are new neutral citations:
 
-4. add the URL chunks (courts, subcourts) to the [editor ui judgments/converters.py](https://github.com/nationalarchives/ds-caselaw-editor-ui/blob/main/judgments/converters.py)
+3. update [neutral_citation_regex.yaml](https://github.com/nationalarchives/ds-caselaw-utils/blob/main/src/ds_caselaw_utils/data/neutral_citation_regex.yaml) (utils)
 
-5. add the URL chunks (courts, subcourts) to the [public ui judgments/converters.py](https://github.com/nationalarchives/ds-caselaw-public-ui/blob/main/judgments/converters.py)
+4. add a test to [test_neutral.py](https://github.com/nationalarchives/ds-caselaw-utils/blob/main/src/ds_caselaw_utils/tests/test_neutral.py)'s `good_neutral_urls` (utils), test with `poetry run pytest`
 
-6. add the regex to the [Marklogic search helper](https://github.com/nationalarchives/ds-find-caselaw-docs/blob/main/doc/adding-new-courts.md)
+5. add the regex to the [Marklogic search helper](https://github.com/nationalarchives/ds-caselaw-marklogic/blob/main/src/main/ml-modules/root/judgments/search/helper.xqy)
 
-7. deploy all the things (utils, marklogic, editor, public), not forgetting to bump
-   the version of utils in the last two.
+6. deploy all the things (utils, marklogic, ingester, editor, public), not forgetting to bump the version of utils in the last three.
 
 #### if you're adding a new name for an old court
 
