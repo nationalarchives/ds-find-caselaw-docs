@@ -9,6 +9,7 @@ name:
     - Stub form
   editable: true
   multiple: false
+  implemented: true
   access: Document.body.name
 
 cite:
@@ -22,6 +23,7 @@ cite:
     - Stub form
   editable: true
   multiple: false
+  implemented: true
   access: Document.identifiers.preferred(NeutralCitationNumber)
 
 court:
@@ -35,6 +37,7 @@ court:
     - Stub form
   editable: true
   multiple: false
+  implemented: true
   access: Document.body.court
 
 jurisdiction:
@@ -45,6 +48,7 @@ jurisdiction:
     - Parser (Document body)
   editable: false
   multiple: false
+  implemented: true
   access: Document.body.jurisdiction
 
 categories:
@@ -56,6 +60,7 @@ categories:
     - Metadata file
   editable: false
   multiple: false
+  implemented: true
   access: Document.body.categories
 
 case_number:
@@ -67,6 +72,7 @@ case_number:
     - Metadata file
   editable: false
   multiple: false
+  implemented: true
   access: Document.body.case_number
 
 date:
@@ -80,6 +86,7 @@ date:
     - Stub form
   editable: true
   multiple: false
+  implemented: true
   access: Document.body.document_date_as_string
 
 parties:
@@ -91,6 +98,7 @@ parties:
     - Metadata file
   editable: false
   multiple: true
+  implemented: true
 
 judges:
   name: Judges
@@ -102,6 +110,7 @@ judges:
     - Stub form
   editable: false
   multiple: true
+  implemented: true
 
 uri:
   name: URI
@@ -111,6 +120,7 @@ uri:
     - System
   editable: false
   multiple: false
+  implemented: true
   access: Document.uri
 
 source_name:
@@ -121,6 +131,7 @@ source_name:
     - Parser (TDR metadata)
   editable: false
   multiple: false
+  implemented: true
   access: Document.source_name
 
 source_email:
@@ -131,6 +142,7 @@ source_email:
     - Parser (TDR metadata)
   editable: false
   multiple: false
+  implemented: true
   access: Document.source_email
 
 consignment_reference:
@@ -141,6 +153,7 @@ consignment_reference:
     - Parser (TDR metadata)
   editable: false
   multiple: false
+  implemented: true
   access: Document.consignment_reference
 
 identifiers:
@@ -152,6 +165,7 @@ identifiers:
     - EUI
   editable: true
   multiple: true
+  implemented: true
   access: Document.identifiers
 
 version_annotation:
@@ -163,4 +177,89 @@ version_annotation:
     - Enrichment
   editable: false
   multiple: false
+  implemented: true
   access: Document.annotation
+
+document_first_submission_datetime:
+  name: Document first submitted at
+  description: The date and time the first version of this document was submitted through TDR.
+  level: Document properties
+  sources:
+    - Parser (TDR metadata)
+  editable: false
+  multiple: false
+  implemented: false
+
+document_first_submission_after_latest_publication_datetime:
+  name: Document first submitted after latest publication at
+  description: The date and time the first version of this document following the latest publication was submitted through TDR.
+  level: Document properties
+  sources:
+    - Parser (TDR metadata)
+  editable: false
+  multiple: false
+  implemented: false
+
+document_latest_submission_datetime:
+  name: Document most recently submitted at
+  description: The date and time the most recent version of this document was submitted through TDR.
+  level: Document properties
+  sources:
+    - Parser (TDR metadata)
+  editable: false
+  multiple: false
+  implemented: false
+
+document_first_ingestion_datetime:
+  name: Document first ingested at
+  description: The date and time the first version of this document was ingested into FCL.
+  level: Document properties
+  sources:
+    - Parser (TDR metadata)
+  editable: false
+  multiple: false
+  implemented: false
+
+document_first_ingestion_after_latest_publication_datetime:
+  name: Document first ingested after latest publication at
+  description: The date and time the first version of this document following the latest publication was ingested into FCL.
+  level: Document properties
+  sources:
+    - Parser (TDR metadata)
+  editable: false
+  multiple: false
+  implemented: false
+
+document_latest_ingestion_datetime:
+  name: Document most recently ingested at
+  description: The date and time the most recent version of this document was ingested into FCL.
+  level: Document properties
+  sources:
+    - Parser (TDR metadata)
+  editable: false
+  multiple: false
+  implemented: false
+
+document_first_published_datetime:
+  name: Document first published at
+  description: The date and time the document was first published on Find Case Law.
+  level: Document properties
+  sources:
+    - EUI
+    - Ingester
+  editable: false
+  multiple: false
+  implemented: yes
+  access: Document.first_published_datetime
+
+document_latest_published_datetime:
+  name: Document most recently published at
+  description: The date and time the document was most recently published on Find Case Law.
+  level: Document properties
+  sources:
+    - EUI
+    - Ingester
+  editable: false
+  multiple: false
+  implemented: yes
+  access: Document.first_published_datetime
