@@ -4,6 +4,7 @@
     "config:best-practices",
     ":automergeLinters",
     ":automergeMinor",
+    ":automergeDigest",
     ":automergePr",
     ":automergeRequireAllStatusChecks",
     ":automergeTesters",
@@ -27,11 +28,6 @@
     }
   ],
   "packageRules": [
-    {
-      "matchManagers": ["dockerfile"],
-      "matchUpdateTypes": ["digest"],
-      "automerge": true
-    },
     {
       "matchDatasources": ["npm"],
       "minimumReleaseAge": "3 days"
