@@ -46,9 +46,9 @@
       "matchManagers": ["pip_requirements", "dockerfile"],
       "matchPackageNames": [
         "playwright",
-        "pytest-playwright",
         "mcr.microsoft.com/playwright/python"
       ],
+      "minimumGroupSize": 2,
       "minimumReleaseAgeBehaviour": "timestamp-optional",
       "groupName": "Playwright",
       "groupSlug": "playwright-group"
