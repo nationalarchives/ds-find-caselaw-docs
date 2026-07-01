@@ -99,15 +99,15 @@ def build_table(rows: list[dict[str, object]]) -> str:
     if not rows:
         summary = render_markdown_table(
             [
-                ["Name", "Level", "Sourced from", "Editable", "Multiple"],
-                ["_No metadata defined yet_", "", "", "", ""],
+                ["Name", "Level", "Sourced from", "Editable", "Multiple", "Implemented"],
+                ["_No metadata defined yet_", "", "", "", "", ""],
             ],
         )
         return f"## Summary\n\n{summary}\n\n## Details\n\n_No metadata defined yet_"
 
     rows = sorted(rows, key=lambda row: str(row.get("name", "")).casefold())
 
-    summary_rows = [["Name", "Level", "Sourced from", "Editable", "Multiple"]]
+    summary_rows = [["Name", "Level", "Sourced from", "Editable", "Multiple", "Implemented"]]
     detail_sections: list[str] = []
 
     for index, row in enumerate(rows, start=1):
@@ -116,9 +116,10 @@ def build_table(rows: list[dict[str, object]]) -> str:
         sources = markdown_escape(row.get("sources", ""))
         editable = markdown_escape(row.get("editable", ""))
         multiple = markdown_escape(row.get("multiple", ""))
+        implemented = markdown_escape(row.get("implemented", ""))
         metadata_key = str(row.get("_metadata_key", f"item-{index}"))
         anchor = f"metadata-{slugify(metadata_key)}"
-        summary_rows.append([f"[{name}](#{anchor})", level, sources, editable, multiple])
+        summary_rows.append([f"[{name}](#{anchor})", level, sources, editable, multiple, implemented])
 
         detail_lines = [f'<a id="{anchor}"></a>', "", f"### {name}", ""]
 
@@ -137,10 +138,13 @@ def build_table(rows: list[dict[str, object]]) -> str:
             detail_field_keys.append("editable")
         if "multiple" in row:
             detail_field_keys.append("multiple")
+        if "implemented" in row:
+            detail_field_keys.append("implemented")
         detail_field_keys.extend(
             key
             for key in row
-            if key not in {"_metadata_key", "name", "description", "level", "sources", "editable", "multiple"}
+            if key
+            not in {"_metadata_key", "name", "description", "level", "sources", "editable", "multiple", "implemented"}
         )
 
         if detail_field_keys:

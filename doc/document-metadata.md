@@ -7,23 +7,26 @@ This document lists all the types of metadata which can be associated with a doc
 
 ## Summary
 
-| Name                                              | Level                                      | Sourced from                                                | Editable | Multiple |
-| ------------------------------------------------- | ------------------------------------------ | ----------------------------------------------------------- | -------- | -------- |
-| [Case number](#metadata-casenumber)               | Document body                              | Parser (Document body)<br>Metadata file                     | No       | No       |
-| [Categories](#metadata-categories)                | Document body                              | Parser (Document body)<br>Metadata file                     | No       | No       |
-| [Court](#metadata-court)                          | Document body                              | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       |
-| [Identifiers](#metadata-identifiers)              | Document properties                        | Ingester<br>EUI                                             | Yes      | Yes      |
-| [Judges](#metadata-judges)                        | Document body                              | Parser (Document body)<br>Metadata file<br>Stub form        | No       | Yes      |
-| [Judgment date](#metadata-date)                   | Document body                              | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       |
-| [Jurisdiction](#metadata-jurisdiction)            | Document body                              | Parser (Document body)                                      | No       | No       |
-| [Name](#metadata-name)                            | Document body                              | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       |
-| [NCN](#metadata-cite)                             | Document properties, document body         | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       |
-| [Parties](#metadata-parties)                      | Document body                              | Parser (Document body)<br>Metadata file                     | No       | Yes      |
-| [Source email](#metadata-sourceemail)             | Document properties (should be Submission) | Parser (TDR metadata)                                       | No       | No       |
-| [Source name](#metadata-sourcename)               | Document properties (should be Submission) | Parser (TDR metadata)                                       | No       | No       |
-| [TDR reference](#metadata-consignmentreference)   | Document properties (should be Submission) | Parser (TDR metadata)                                       | No       | No       |
-| [URI](#metadata-uri)                              | Document object (inherent property)        | System                                                      | No       | No       |
-| [Version annotation](#metadata-versionannotation) | Version                                    | Ingester<br>Enrichment                                      | No       | No       |
+| Name                                                                              | Level                                      | Sourced from                                                | Editable | Multiple | Implemented |
+| --------------------------------------------------------------------------------- | ------------------------------------------ | ----------------------------------------------------------- | -------- | -------- | ----------- |
+| [Case number](#metadata-casenumber)                                               | Document body                              | Parser (Document body)<br>Metadata file                     | No       | No       | Yes         |
+| [Categories](#metadata-categories)                                                | Document body                              | Parser (Document body)<br>Metadata file                     | No       | No       | Yes         |
+| [Court](#metadata-court)                                                          | Document body                              | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         |
+| [Document first published at](#metadata-documentfirstpublisheddatetime)           | Document properties                        | EUI<br>Ingester                                             | No       | No       | Yes         |
+| [Document first submitted at](#metadata-documentfirstsubmissiondatetime)          | Document properties                        | Parser (TDR metadata)                                       | No       | No       | No          |
+| [Document most recently submitted at](#metadata-documentlatestsubmissiondatetime) | Document properties                        | Parser (TDR metadata)                                       | No       | No       | No          |
+| [Identifiers](#metadata-identifiers)                                              | Document properties                        | Ingester<br>EUI                                             | Yes      | Yes      | Yes         |
+| [Judges](#metadata-judges)                                                        | Document body                              | Parser (Document body)<br>Metadata file<br>Stub form        | No       | Yes      | Yes         |
+| [Judgment date](#metadata-date)                                                   | Document body                              | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         |
+| [Jurisdiction](#metadata-jurisdiction)                                            | Document body                              | Parser (Document body)                                      | No       | No       | Yes         |
+| [Name](#metadata-name)                                                            | Document body                              | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         |
+| [NCN](#metadata-cite)                                                             | Document properties, document body         | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         |
+| [Parties](#metadata-parties)                                                      | Document body                              | Parser (Document body)<br>Metadata file                     | No       | Yes      | Yes         |
+| [Source email](#metadata-sourceemail)                                             | Document properties (should be Submission) | Parser (TDR metadata)                                       | No       | No       | Yes         |
+| [Source name](#metadata-sourcename)                                               | Document properties (should be Submission) | Parser (TDR metadata)                                       | No       | No       | Yes         |
+| [TDR reference](#metadata-consignmentreference)                                   | Document properties (should be Submission) | Parser (TDR metadata)                                       | No       | No       | Yes         |
+| [URI](#metadata-uri)                                                              | Document object (inherent property)        | System                                                      | No       | No       | Yes         |
+| [Version annotation](#metadata-versionannotation)                                 | Version                                    | Ingester<br>Enrichment                                      | No       | No       | Yes         |
 
 ## Details
 
@@ -33,9 +36,9 @@ This document lists all the types of metadata which can be associated with a doc
 
 The case number for the case this document relates to.
 
-| Level         | Sourced from                            | Editable | Multiple | Access via                  |
-| ------------- | --------------------------------------- | -------- | -------- | --------------------------- |
-| Document body | Parser (Document body)<br>Metadata file | No       | No       | `Document.body.case_number` |
+| Level         | Sourced from                            | Editable | Multiple | Implemented | Access via                  |
+| ------------- | --------------------------------------- | -------- | -------- | ----------- | --------------------------- |
+| Document body | Parser (Document body)<br>Metadata file | No       | No       | Yes         | `Document.body.case_number` |
 
 <a id="metadata-categories"></a>
 
@@ -43,9 +46,9 @@ The case number for the case this document relates to.
 
 Categories under which this document falls
 
-| Level         | Sourced from                            | Editable | Multiple | Access via                 |
-| ------------- | --------------------------------------- | -------- | -------- | -------------------------- |
-| Document body | Parser (Document body)<br>Metadata file | No       | No       | `Document.body.categories` |
+| Level         | Sourced from                            | Editable | Multiple | Implemented | Access via                 |
+| ------------- | --------------------------------------- | -------- | -------- | ----------- | -------------------------- |
+| Document body | Parser (Document body)<br>Metadata file | No       | No       | Yes         | `Document.body.categories` |
 
 <a id="metadata-court"></a>
 
@@ -53,9 +56,39 @@ Categories under which this document falls
 
 The court which published this document. "Court" here means "any body capable of issuing a legally binding decision".
 
-| Level         | Sourced from                                                | Editable | Multiple | Access via            |
-| ------------- | ----------------------------------------------------------- | -------- | -------- | --------------------- |
-| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | `Document.body.court` |
+| Level         | Sourced from                                                | Editable | Multiple | Implemented | Access via            |
+| ------------- | ----------------------------------------------------------- | -------- | -------- | ----------- | --------------------- |
+| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         | `Document.body.court` |
+
+<a id="metadata-documentfirstpublisheddatetime"></a>
+
+### Document first published at
+
+The date and time the document was first published on Find Case Law.
+
+| Level               | Sourced from    | Editable | Multiple | Implemented | Access via                          |
+| ------------------- | --------------- | -------- | -------- | ----------- | ----------------------------------- |
+| Document properties | EUI<br>Ingester | No       | No       | Yes         | `Document.first_published_datetime` |
+
+<a id="metadata-documentfirstsubmissiondatetime"></a>
+
+### Document first submitted at
+
+The date and time the first version of this document was submitted through TDR.
+
+| Level               | Sourced from          | Editable | Multiple | Implemented |
+| ------------------- | --------------------- | -------- | -------- | ----------- |
+| Document properties | Parser (TDR metadata) | No       | No       | No          |
+
+<a id="metadata-documentlatestsubmissiondatetime"></a>
+
+### Document most recently submitted at
+
+The date and time the most recent version of this document was submitted through TDR.
+
+| Level               | Sourced from          | Editable | Multiple | Implemented |
+| ------------------- | --------------------- | -------- | -------- | ----------- |
+| Document properties | Parser (TDR metadata) | No       | No       | No          |
 
 <a id="metadata-identifiers"></a>
 
@@ -63,9 +96,9 @@ The court which published this document. "Court" here means "any body capable of
 
 Identifiers for a document (NCN, FCLID etc) stored within the structured identifier system.
 
-| Level               | Sourced from    | Editable | Multiple | Access via             |
-| ------------------- | --------------- | -------- | -------- | ---------------------- |
-| Document properties | Ingester<br>EUI | Yes      | Yes      | `Document.identifiers` |
+| Level               | Sourced from    | Editable | Multiple | Implemented | Access via             |
+| ------------------- | --------------- | -------- | -------- | ----------- | ---------------------- |
+| Document properties | Ingester<br>EUI | Yes      | Yes      | Yes         | `Document.identifiers` |
 
 <a id="metadata-judges"></a>
 
@@ -73,9 +106,9 @@ Identifiers for a document (NCN, FCLID etc) stored within the structured identif
 
 A list of the names of the judges (or equivalent for the body) involved in any particular case.
 
-| Level         | Sourced from                                         | Editable | Multiple |
-| ------------- | ---------------------------------------------------- | -------- | -------- |
-| Document body | Parser (Document body)<br>Metadata file<br>Stub form | No       | Yes      |
+| Level         | Sourced from                                         | Editable | Multiple | Implemented |
+| ------------- | ---------------------------------------------------- | -------- | -------- | ----------- |
+| Document body | Parser (Document body)<br>Metadata file<br>Stub form | No       | Yes      | Yes         |
 
 <a id="metadata-date"></a>
 
@@ -83,9 +116,9 @@ A list of the names of the judges (or equivalent for the body) involved in any p
 
 The date the document was published, usually the date a decision was handed down.
 
-| Level         | Sourced from                                                | Editable | Multiple | Access via                              |
-| ------------- | ----------------------------------------------------------- | -------- | -------- | --------------------------------------- |
-| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | `Document.body.document_date_as_string` |
+| Level         | Sourced from                                                | Editable | Multiple | Implemented | Access via                              |
+| ------------- | ----------------------------------------------------------- | -------- | -------- | ----------- | --------------------------------------- |
+| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         | `Document.body.document_date_as_string` |
 
 <a id="metadata-jurisdiction"></a>
 
@@ -93,9 +126,9 @@ The date the document was published, usually the date a decision was handed down
 
 The jurisdiction of the court which this decision was made under
 
-| Level         | Sourced from           | Editable | Multiple | Access via                   |
-| ------------- | ---------------------- | -------- | -------- | ---------------------------- |
-| Document body | Parser (Document body) | No       | No       | `Document.body.jurisdiction` |
+| Level         | Sourced from           | Editable | Multiple | Implemented | Access via                   |
+| ------------- | ---------------------- | -------- | -------- | ----------- | ---------------------------- |
+| Document body | Parser (Document body) | No       | No       | Yes         | `Document.body.jurisdiction` |
 
 <a id="metadata-name"></a>
 
@@ -103,9 +136,9 @@ The jurisdiction of the court which this decision was made under
 
 The title of the document as most commonly used by humans. This _may_ vary from the exact title in the document text, for example by standardising casing.
 
-| Level         | Sourced from                                                | Editable | Multiple | Access via           |
-| ------------- | ----------------------------------------------------------- | -------- | -------- | -------------------- |
-| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | `Document.body.name` |
+| Level         | Sourced from                                                | Editable | Multiple | Implemented | Access via           |
+| ------------- | ----------------------------------------------------------- | -------- | -------- | ----------- | -------------------- |
+| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         | `Document.body.name` |
 
 <a id="metadata-cite"></a>
 
@@ -113,9 +146,9 @@ The title of the document as most commonly used by humans. This _may_ vary from 
 
 Where present, this document's Neutral Citation Number. This is a special case of identifier, which we actually want to deprecate.
 
-| Level                              | Sourced from                                                | Editable | Multiple | Access via                                              |
-| ---------------------------------- | ----------------------------------------------------------- | -------- | -------- | ------------------------------------------------------- |
-| Document properties, document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | `Document.identifiers.preferred(NeutralCitationNumber)` |
+| Level                              | Sourced from                                                | Editable | Multiple | Implemented | Access via                                              |
+| ---------------------------------- | ----------------------------------------------------------- | -------- | -------- | ----------- | ------------------------------------------------------- |
+| Document properties, document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         | `Document.identifiers.preferred(NeutralCitationNumber)` |
 
 <a id="metadata-parties"></a>
 
@@ -123,9 +156,9 @@ Where present, this document's Neutral Citation Number. This is a special case o
 
 A list of the names of the parties involved in any particular case. This does _not_ include structured data on the nature of the party (eg defendant/appellant).
 
-| Level         | Sourced from                            | Editable | Multiple |
-| ------------- | --------------------------------------- | -------- | -------- |
-| Document body | Parser (Document body)<br>Metadata file | No       | Yes      |
+| Level         | Sourced from                            | Editable | Multiple | Implemented |
+| ------------- | --------------------------------------- | -------- | -------- | ----------- |
+| Document body | Parser (Document body)<br>Metadata file | No       | Yes      | Yes         |
 
 <a id="metadata-sourceemail"></a>
 
@@ -133,9 +166,9 @@ A list of the names of the parties involved in any particular case. This does _n
 
 The email address of the person who submitted the document.
 
-| Level                                      | Sourced from          | Editable | Multiple | Access via              |
-| ------------------------------------------ | --------------------- | -------- | -------- | ----------------------- |
-| Document properties (should be Submission) | Parser (TDR metadata) | No       | No       | `Document.source_email` |
+| Level                                      | Sourced from          | Editable | Multiple | Implemented | Access via              |
+| ------------------------------------------ | --------------------- | -------- | -------- | ----------- | ----------------------- |
+| Document properties (should be Submission) | Parser (TDR metadata) | No       | No       | Yes         | `Document.source_email` |
 
 <a id="metadata-sourcename"></a>
 
@@ -143,9 +176,9 @@ The email address of the person who submitted the document.
 
 The name of the person who submitted the document.
 
-| Level                                      | Sourced from          | Editable | Multiple | Access via             |
-| ------------------------------------------ | --------------------- | -------- | -------- | ---------------------- |
-| Document properties (should be Submission) | Parser (TDR metadata) | No       | No       | `Document.source_name` |
+| Level                                      | Sourced from          | Editable | Multiple | Implemented | Access via             |
+| ------------------------------------------ | --------------------- | -------- | -------- | ----------- | ---------------------- |
+| Document properties (should be Submission) | Parser (TDR metadata) | No       | No       | Yes         | `Document.source_name` |
 
 <a id="metadata-consignmentreference"></a>
 
@@ -153,9 +186,9 @@ The name of the person who submitted the document.
 
 The TDR reference of the submission.
 
-| Level                                      | Sourced from          | Editable | Multiple | Access via                       |
-| ------------------------------------------ | --------------------- | -------- | -------- | -------------------------------- |
-| Document properties (should be Submission) | Parser (TDR metadata) | No       | No       | `Document.consignment_reference` |
+| Level                                      | Sourced from          | Editable | Multiple | Implemented | Access via                       |
+| ------------------------------------------ | --------------------- | -------- | -------- | ----------- | -------------------------------- |
+| Document properties (should be Submission) | Parser (TDR metadata) | No       | No       | Yes         | `Document.consignment_reference` |
 
 <a id="metadata-uri"></a>
 
@@ -163,9 +196,9 @@ The TDR reference of the submission.
 
 The unique identifier for the document.
 
-| Level                               | Sourced from | Editable | Multiple | Access via     |
-| ----------------------------------- | ------------ | -------- | -------- | -------------- |
-| Document object (inherent property) | System       | No       | No       | `Document.uri` |
+| Level                               | Sourced from | Editable | Multiple | Implemented | Access via     |
+| ----------------------------------- | ------------ | -------- | -------- | ----------- | -------------- |
+| Document object (inherent property) | System       | No       | No       | Yes         | `Document.uri` |
 
 <a id="metadata-versionannotation"></a>
 
@@ -173,8 +206,8 @@ The unique identifier for the document.
 
 A (hopefully) structured JSON blob describing how and why a new version of a document came into being.
 
-| Level   | Sourced from           | Editable | Multiple | Access via            |
-| ------- | ---------------------- | -------- | -------- | --------------------- |
-| Version | Ingester<br>Enrichment | No       | No       | `Document.annotation` |
+| Level   | Sourced from           | Editable | Multiple | Implemented | Access via            |
+| ------- | ---------------------- | -------- | -------- | ----------- | --------------------- |
+| Version | Ingester<br>Enrichment | No       | No       | Yes         | `Document.annotation` |
 
 <!-- End document metadata table -->
