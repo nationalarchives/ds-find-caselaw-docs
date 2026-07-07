@@ -47,7 +47,7 @@ By converting identifier values to precompiled URL slugs, we can use [TDE](https
 - Document `d-1f8bcdda-5771-488d-9064-973f9f4b3c36` has an identifier `[2025] UKSC 1`, under the schema `Neutral Citation Number`
 - The `Neutral Citation Number` schema has rules for converting `[2025] UKSC 1` to the slug `uksc/2025/1`, matching the format in [ADR 4](0004-adopt-a-standardised-url-scheme.md). This is saved with the identifier and stored in the SQL lookup table.
 - When a user visits `caselaw.nationalarchives.gov.uk/uksc/2025/1`, we extract the `uksc/2025/1` slug from the URL.
-- Looking up ``uksc/2025/1` in the SQL table gives us document URL `d-1f8bcdda-5771-488d-9064-973f9f4b3c36`, which can be retrieved and returned to the user.
+- Looking up `uksc/2025/1` in the SQL table gives us document URL `d-1f8bcdda-5771-488d-9064-973f9f4b3c36`, which can be retrieved and returned to the user.
 
 #### Identifying identifiers
 
