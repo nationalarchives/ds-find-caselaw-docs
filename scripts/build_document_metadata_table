@@ -31,6 +31,8 @@ def format_header(key: str) -> str:
         return "Sourced from"
     if key == "access":
         return "Access via"
+    if key == "extraction":
+        return "XML extraction via"
     return key.replace("_", " ").replace("-", " ").title()
 
 
@@ -95,6 +97,16 @@ def normalise_rows(raw_data: object) -> list[dict[str, object]]:
     raise ValueError(msg)
 
 
+STANDARD_DETAIL_FIELDS = ("level", "sources", "editable", "multiple", "implemented", "access", "extraction")
+RESERVED_DETAIL_FIELDS = {"_metadata_key", "name", "description", *STANDARD_DETAIL_FIELDS}
+
+
+def detail_field_keys_for_row(row: dict[str, object]) -> list[str]:
+    detail_field_keys = [key for key in STANDARD_DETAIL_FIELDS if key in row]
+    detail_field_keys.extend(key for key in row if key not in RESERVED_DETAIL_FIELDS)
+    return detail_field_keys
+
+
 def build_table(rows: list[dict[str, object]]) -> str:
     if not rows:
         summary = render_markdown_table(
@@ -129,23 +141,7 @@ def build_table(rows: list[dict[str, object]]) -> str:
         else:
             detail_lines.append("_No description provided._")
 
-        detail_field_keys: list[str] = []
-        if "level" in row:
-            detail_field_keys.append("level")
-        if "sources" in row:
-            detail_field_keys.append("sources")
-        if "editable" in row:
-            detail_field_keys.append("editable")
-        if "multiple" in row:
-            detail_field_keys.append("multiple")
-        if "implemented" in row:
-            detail_field_keys.append("implemented")
-        detail_field_keys.extend(
-            key
-            for key in row
-            if key
-            not in {"_metadata_key", "name", "description", "level", "sources", "editable", "multiple", "implemented"}
-        )
+        detail_field_keys = detail_field_keys_for_row(row)
 
         if detail_field_keys:
             detail_table_rows = [

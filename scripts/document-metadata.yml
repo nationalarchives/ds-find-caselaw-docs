@@ -10,7 +10,8 @@ name:
   editable: true
   multiple: false
   implemented: true
-  access: Document.body.name
+  access: Document.metadata["name"].value
+  extraction: Document.body.name
 
 cite:
   name: NCN
@@ -38,7 +39,8 @@ court:
   editable: true
   multiple: false
   implemented: true
-  access: Document.body.court
+  access: Document.metadata["court"].value
+  extraction: Document.body.court
 
 jurisdiction:
   name: Jurisdiction
@@ -49,7 +51,8 @@ jurisdiction:
   editable: false
   multiple: false
   implemented: true
-  access: Document.body.jurisdiction
+  access: Document.metadata["jurisdiction"].value
+  extraction: Document.body.jurisdiction
 
 categories:
   name: Categories
@@ -59,9 +62,10 @@ categories:
     - Parser (Document body)
     - Metadata file
   editable: false
-  multiple: false
+  multiple: true
   implemented: true
-  access: Document.body.categories
+  access: Document.metadata["categories"].values
+  extraction: Document.body.categories
 
 case_number:
   name: Case number
@@ -73,7 +77,8 @@ case_number:
   editable: false
   multiple: false
   implemented: true
-  access: Document.body.case_number
+  access: Document.metadata["case_number"].value
+  extraction: Document.body.case_number
 
 date:
   name: Judgment date
@@ -87,7 +92,11 @@ date:
   editable: true
   multiple: false
   implemented: true
-  access: Document.body.document_date_as_string
+  access:
+    - Document.metadata["date"].value
+    - Document.metadata["date"].as_string
+  extraction:
+    - Document.body.document_date_as_date
 
 parties:
   name: Parties
@@ -249,7 +258,7 @@ document_first_published_datetime:
     - Ingester
   editable: false
   multiple: false
-  implemented: yes
+  implemented: true
   access: Document.first_published_datetime
 
 document_latest_published_datetime:
@@ -261,5 +270,4 @@ document_latest_published_datetime:
     - Ingester
   editable: false
   multiple: false
-  implemented: yes
-  access: Document.first_published_datetime
+  implemented: false
