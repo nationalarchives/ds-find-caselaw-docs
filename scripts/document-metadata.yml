@@ -10,7 +10,7 @@ name:
   editable: true
   multiple: false
   implemented: true
-  access: Document.metadata["name"].value
+  access: Document.metadata.name.value
   extraction: Document.body.name
 
 cite:
@@ -39,7 +39,7 @@ court:
   editable: true
   multiple: false
   implemented: true
-  access: Document.metadata["court"].value
+  access: Document.metadata.court.value
   extraction: Document.body.court
 
 jurisdiction:
@@ -51,7 +51,7 @@ jurisdiction:
   editable: false
   multiple: false
   implemented: true
-  access: Document.metadata["jurisdiction"].value
+  access: Document.metadata.jurisdiction.value
   extraction: Document.body.jurisdiction
 
 categories:
@@ -64,7 +64,7 @@ categories:
   editable: false
   multiple: true
   implemented: true
-  access: Document.metadata["categories"].values
+  access: Document.metadata.categories.values
   extraction: Document.body.categories
 
 case_number:
@@ -77,7 +77,7 @@ case_number:
   editable: false
   multiple: false
   implemented: true
-  access: Document.metadata["case_number"].value
+  access: Document.metadata.case_number.value
   extraction: Document.body.case_number
 
 date:
@@ -93,8 +93,8 @@ date:
   multiple: false
   implemented: true
   access:
-    - Document.metadata["date"].value
-    - Document.metadata["date"].as_string
+    - Document.metadata.date.value
+    - Document.metadata.date.as_string
   extraction:
     - Document.body.document_date_as_date
 
