@@ -43,9 +43,9 @@ For document body metadata that is exposed through the API client, use `Document
 
 The case number for the case this document relates to.
 
-| Level         | Sourced from                            | Editable | Multiple | Implemented | Access via                               | XML extraction via        |
-| ------------- | --------------------------------------- | -------- | -------- | ----------- | ---------------------------------------- | ------------------------- |
-| Document body | Parser (Document body)<br>Metadata file | No       | No       | Yes         | `Document.metadata["case_number"].value` | Document.body.case_number |
+| Level         | Sourced from                            | Editable | Multiple | Implemented | Access via                               | XML extraction via          |
+| ------------- | --------------------------------------- | -------- | -------- | ----------- | ---------------------------------------- | --------------------------- |
+| Document body | Parser (Document body)<br>Metadata file | No       | No       | Yes         | `Document.metadata["case_number"].value` | `Document.body.case_number` |
 
 <a id="metadata-categories"></a>
 
@@ -53,9 +53,9 @@ The case number for the case this document relates to.
 
 Categories under which this document falls
 
-| Level         | Sourced from                            | Editable | Multiple | Implemented | Access via                               | XML extraction via       |
-| ------------- | --------------------------------------- | -------- | -------- | ----------- | ---------------------------------------- | ------------------------ |
-| Document body | Parser (Document body)<br>Metadata file | No       | Yes      | Yes         | `Document.metadata["categories"].values` | Document.body.categories |
+| Level         | Sourced from                            | Editable | Multiple | Implemented | Access via                               | XML extraction via         |
+| ------------- | --------------------------------------- | -------- | -------- | ----------- | ---------------------------------------- | -------------------------- |
+| Document body | Parser (Document body)<br>Metadata file | No       | Yes      | Yes         | `Document.metadata["categories"].values` | `Document.body.categories` |
 
 <a id="metadata-court"></a>
 
@@ -63,9 +63,9 @@ Categories under which this document falls
 
 The court which published this document. "Court" here means "any body capable of issuing a legally binding decision".
 
-| Level         | Sourced from                                                | Editable | Multiple | Implemented | Access via                         | XML extraction via  |
-| ------------- | ----------------------------------------------------------- | -------- | -------- | ----------- | ---------------------------------- | ------------------- |
-| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         | `Document.metadata["court"].value` | Document.body.court |
+| Level         | Sourced from                                                | Editable | Multiple | Implemented | Access via                         | XML extraction via    |
+| ------------- | ----------------------------------------------------------- | -------- | -------- | ----------- | ---------------------------------- | --------------------- |
+| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         | `Document.metadata["court"].value` | `Document.body.court` |
 
 <a id="metadata-documentfirstingestionafterlatestpublicationdatetime"></a>
 
@@ -173,9 +173,9 @@ A list of the names of the judges (or equivalent for the body) involved in any p
 
 The date the document was published, usually the date a decision was handed down.
 
-| Level         | Sourced from                                                | Editable | Multiple | Implemented | Access via                                                                 | XML extraction via                  |
-| ------------- | ----------------------------------------------------------- | -------- | -------- | ----------- | -------------------------------------------------------------------------- | ----------------------------------- |
-| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         | `Document.metadata["date"].value`<br>`Document.metadata["date"].as_string` | Document.body.document_date_as_date |
+| Level         | Sourced from                                                | Editable | Multiple | Implemented | Access via                                                                 | XML extraction via                    |
+| ------------- | ----------------------------------------------------------- | -------- | -------- | ----------- | -------------------------------------------------------------------------- | ------------------------------------- |
+| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         | `Document.metadata["date"].value`<br>`Document.metadata["date"].as_string` | `Document.body.document_date_as_date` |
 
 <a id="metadata-jurisdiction"></a>
 
@@ -183,9 +183,9 @@ The date the document was published, usually the date a decision was handed down
 
 The jurisdiction of the court which this decision was made under
 
-| Level         | Sourced from           | Editable | Multiple | Implemented | Access via                                | XML extraction via         |
-| ------------- | ---------------------- | -------- | -------- | ----------- | ----------------------------------------- | -------------------------- |
-| Document body | Parser (Document body) | No       | No       | Yes         | `Document.metadata["jurisdiction"].value` | Document.body.jurisdiction |
+| Level         | Sourced from           | Editable | Multiple | Implemented | Access via                                | XML extraction via           |
+| ------------- | ---------------------- | -------- | -------- | ----------- | ----------------------------------------- | ---------------------------- |
+| Document body | Parser (Document body) | No       | No       | Yes         | `Document.metadata["jurisdiction"].value` | `Document.body.jurisdiction` |
 
 <a id="metadata-name"></a>
 
@@ -193,9 +193,9 @@ The jurisdiction of the court which this decision was made under
 
 The title of the document as most commonly used by humans. This _may_ vary from the exact title in the document text, for example by standardising casing.
 
-| Level         | Sourced from                                                | Editable | Multiple | Implemented | Access via                        | XML extraction via |
-| ------------- | ----------------------------------------------------------- | -------- | -------- | ----------- | --------------------------------- | ------------------ |
-| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         | `Document.metadata["name"].value` | Document.body.name |
+| Level         | Sourced from                                                | Editable | Multiple | Implemented | Access via                        | XML extraction via   |
+| ------------- | ----------------------------------------------------------- | -------- | -------- | ----------- | --------------------------------- | -------------------- |
+| Document body | Parser (Document body)<br>Metadata file<br>EUI<br>Stub form | Yes      | No       | Yes         | `Document.metadata["name"].value` | `Document.body.name` |
 
 <a id="metadata-cite"></a>
 
