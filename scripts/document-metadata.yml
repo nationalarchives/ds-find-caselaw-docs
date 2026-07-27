@@ -56,7 +56,11 @@ jurisdiction:
 
 categories:
   name: Categories
-  description: Categories under which this document falls
+  description: >-
+    Categories under which this document falls. Metadata claims use the name
+    `categories` (legacy `category` claims are still resolved by the API client).
+    The deprecated Python facade key `Document.metadata["category"]` aliases to
+    `Document.metadata["categories"]`.
   level: Document body
   sources:
     - Parser (Document body)

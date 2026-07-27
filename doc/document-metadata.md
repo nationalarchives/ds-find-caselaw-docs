@@ -51,7 +51,7 @@ The case number for the case this document relates to.
 
 ### Categories
 
-Categories under which this document falls
+Categories under which this document falls. Metadata claims use the name `categories` (legacy `category` claims are still resolved by the API client). The deprecated Python facade key `Document.metadata["category"]` aliases to `Document.metadata["categories"]`.
 
 | Level         | Sourced from                            | Editable | Multiple | Implemented | Access via                               | XML extraction via         |
 | ------------- | --------------------------------------- | -------- | -------- | ----------- | ---------------------------------------- | -------------------------- |
