@@ -270,4 +270,5 @@ document_latest_published_datetime:
     - Ingester
   editable: false
   multiple: false
-  implemented: false
+  implemented: true
+  access: Document.latest_published_datetime
