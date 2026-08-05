@@ -1,6 +1,6 @@
 # Traffic Spike and Bot Investigation (WAF Logs Insights)
 
-Use this runbook when traffic volume spikes unexpectedly and you need to quickly determine whether the cause is legitimate demand, bot activity, or malicious probing.
+Use this runbook when request volume to WAF-protected resources increases beyond expected baseline (for example sudden or sustained 5-minute bursts, often with elevated latency or errors) and you need to quickly determine whether the cause is legitimate demand, bot activity, or malicious probing.
 
 These queries are designed to help you:
 
@@ -14,9 +14,9 @@ These queries are designed to help you:
 
 This public runbook assumes:
 
-- WAF logging is enabled and accessible to the responder.
-- You are running queries against the correct environment-specific WAF log group.
-- Environment-specific values (for example thresholds, rule IDs, and log destination names) are maintained separately in internal operational documentation.
+- The traffic spike affects resources protected by AWS WAF (that is, requests are evaluated by a Web ACL).
+- Environment and service ownership are known so the correct Web ACL can be identified.
+- Required environment-specific values (for example thresholds and rule IDs) are maintained separately in internal operational documentation.
 
 ## Important Limitation
 
@@ -24,9 +24,18 @@ WAF logging was not enabled during the July 2026 incident. These queries only wo
 
 ## Prerequisites
 
-- WAF logging must be enabled.
-- Logs must be sent to your configured WAF log destination.
+- The impacted resource is associated with the relevant Web ACL.
+- WAF logging is enabled for that Web ACL and accessible to responders.
+- For this runbook, logs must be sent to CloudWatch Logs so they can be queried in Logs Insights.
+- Enable logging using your team's normal change path (for example infrastructure as code or console), then verify delivery before starting investigation queries.
 - Open CloudWatch Logs Insights and select the relevant WAF log group before running queries.
+
+Reference documentation:
+
+- AWS WAF: https://docs.aws.amazon.com/waf/latest/developerguide/waf-chapter.html
+- AWS WAF logging configuration: https://docs.aws.amazon.com/waf/latest/developerguide/logging.html
+- Enable or disable AWS WAF logging: https://docs.aws.amazon.com/waf/latest/developerguide/logging-management-configure.html
+- Web ACL association with resources: https://docs.aws.amazon.com/waf/latest/developerguide/web-acl-associating-aws-resource.html
 
 ## Preflight
 
