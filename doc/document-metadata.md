@@ -20,7 +20,7 @@ For document body metadata that is exposed through the API client, use `Document
 | [Document first submitted after latest publication at](#metadata-documentfirstsubmissionafterlatestpublicationdatetime) | Document properties                        | Parser (TDR metadata)                                       | No       | No       | No          |
 | [Document first submitted at](#metadata-documentfirstsubmissiondatetime)                                                | Document properties                        | Parser (TDR metadata)                                       | No       | No       | No          |
 | [Document most recently ingested at](#metadata-documentlatestingestiondatetime)                                         | Document properties                        | Parser (TDR metadata)                                       | No       | No       | No          |
-| [Document most recently published at](#metadata-documentlatestpublisheddatetime)                                        | Document properties                        | EUI<br>Ingester                                             | No       | No       | No          |
+| [Document most recently published at](#metadata-documentlatestpublisheddatetime)                                        | Document properties                        | EUI<br>Ingester                                             | No       | No       | Yes         |
 | [Document most recently submitted at](#metadata-documentlatestsubmissiondatetime)                                       | Document properties                        | Parser (TDR metadata)                                       | No       | No       | No          |
 | [Identifiers](#metadata-identifiers)                                                                                    | Document properties                        | Ingester<br>EUI                                             | Yes      | Yes      | Yes         |
 | [Judges](#metadata-judges)                                                                                              | Document body                              | Parser (Document body)<br>Metadata file<br>Stub form        | No       | Yes      | Yes         |
@@ -133,9 +133,9 @@ The date and time the most recent version of this document was ingested into FCL
 
 The date and time the document was most recently published on Find Case Law.
 
-| Level               | Sourced from    | Editable | Multiple | Implemented |
-| ------------------- | --------------- | -------- | -------- | ----------- |
-| Document properties | EUI<br>Ingester | No       | No       | No          |
+| Level               | Sourced from    | Editable | Multiple | Implemented | Access via                           |
+| ------------------- | --------------- | -------- | -------- | ----------- | ------------------------------------ |
+| Document properties | EUI<br>Ingester | No       | No       | Yes         | `Document.latest_published_datetime` |
 
 <a id="metadata-documentlatestsubmissiondatetime"></a>
 
