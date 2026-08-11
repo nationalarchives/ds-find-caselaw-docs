@@ -58,15 +58,19 @@ for repo in REPOSITORIES:
     dashboard_rows.append(
         [
             f"[{repo_name}]({repo_base_url})",
-            f"[![Pull requests](https://img.shields.io/github/issues-pr/nationalarchives/{repo_name}?label)]"
-            f"({repo_base_url}/pulls)",
+            (
+                f"[![Pull requests](https://img.shields.io/github/issues-pr/nationalarchives/{repo_name}?label)]"
+                f"({repo_base_url}/pulls)"
+            ),
             renovate_dashboard,
-            f"[![GitHub branch check runs]"
-            f"(https://img.shields.io/github/check-runs/nationalarchives/{repo_name}/main?label)]"
-            f"({repo_base_url}/commits)<br>"
-            f"[![Latest commit to main]"
-            f"(https://img.shields.io/github/last-commit/nationalarchives/{repo_name}/main?label)]"
-            f"({repo_base_url}/commits)",
+            (
+                f"[![GitHub branch check runs]"
+                f"(https://img.shields.io/github/check-runs/nationalarchives/{repo_name}/main?label)]"
+                f"({repo_base_url}/commits)<br>"
+                f"[![Latest commit to main]"
+                f"(https://img.shields.io/github/last-commit/nationalarchives/{repo_name}/main?label)]"
+                f"({repo_base_url}/commits)"
+            ),
             latest_release,
             latest_pypi_release,
         ],
