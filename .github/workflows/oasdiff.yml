@@ -1,0 +1,58 @@
+name: oasdiff
+
+on:
+  pull_request:
+    branches: ["main"]
+
+permissions:
+  contents: read
+
+jobs:
+  breaking-changes:
+    name: Public API breaking changes
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Fetch base branch
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: git fetch --depth=1 origin "$BASE_REF"
+
+      - name: Check for breaking changes
+        uses: oasdiff/oasdiff-action/breaking@033c15c845bef10f148afb0fa781bf1b2a7fe1bf # v0.1.12
+        with:
+          base: origin/${{ github.base_ref }}:doc/openapi/public_api.yml
+          revision: HEAD:doc/openapi/public_api.yml
+          fail-on: WARN
+          github-token: ${{ github.token }}
+
+  changelog:
+    name: Public API changelog comment
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Fetch base branch
+        env:
+          BASE_REF: ${{ github.base_ref }}
+        run: git fetch --depth=1 origin "$BASE_REF"
+
+      - name: Post changelog comment
+        uses: oasdiff/oasdiff-action/changelog@033c15c845bef10f148afb0fa781bf1b2a7fe1bf # v0.1.12
+        with:
+          base: origin/${{ github.base_ref }}:doc/openapi/public_api.yml
+          revision: HEAD:doc/openapi/public_api.yml
+          github-token: ${{ github.token }}

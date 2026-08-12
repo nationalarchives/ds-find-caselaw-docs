@@ -1,0 +1,3 @@
+# Shared oasdiff config for local CLI and oasdiff-action.
+# Exclude draft operations, matching the former Optic exclude_operations_with_extension.
+filter-extension: x-draft
