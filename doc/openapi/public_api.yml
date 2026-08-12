@@ -1,7 +1,7 @@
 openapi: 3.1.1
 info:
   title: "National Archives Find Case Law: Public API"
-  version: 0.5.2
+  version: 0.6.0
   description: |-
     Our API provides access to judgments and other documents held by The National Archives and published via the Find Case Law service.
 
@@ -170,7 +170,7 @@ paths:
         * `<tna:contenthash>`: A hash of the text in the document. See [Content Hash](#content-hash) for more.
         * `<tna:assets_base>`: The location of any images in the XML (e.g. `image1.png`) can be prefixed with this to download those images. Please do not hotlink: the URL here is not guaranteed to be stable.
 
-        nb: The Atom feed will only include documents in Find Case Law which have a full-text representation of the document available as XML. Documents which are only available as a PDF file will not be included.
+        By default, the Atom feed only includes documents which have a full-text representation available as XML. Documents which are only available as a PDF file are excluded unless you set `minimum_availability` to a lower threshold.
 
       operationId: atomFeed
       parameters:
@@ -259,6 +259,24 @@ paths:
             default: 50
           description: |
             How many results to list per page.
+        - name: minimum_availability
+          required: false
+          in: query
+          schema:
+            type: string
+            enum:
+              - metadata
+              - document
+              - full-text
+            default: full-text
+          description: |
+            The minimum level of content that must be available for a document to be included in the feed.
+
+            - `metadata`: Include all documents, including those for which only metadata is known (ie the document is known to exist) but which there is no representation available.
+            - `document`: Include only documents that have a representation available in some form, which may only be a PDF or image.
+            - `full-text`: Include only documents that have a full-text representation available as HTML or XML.
+
+            Values other than those listed above will result in a `400 Bad Request` response.
       responses:
         "200":
           $ref: "#/components/responses/documentFeed"
