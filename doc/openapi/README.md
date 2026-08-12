@@ -26,16 +26,17 @@ Then, run Redocly against the OpenAPI specs using `npx`:
 npx @redocly/cli build-docs doc/openapi/public_api.yml
 ```
 
-## Linting
+## Validation and breaking changes
 
-We lint our documentation using [Optic](https://github.com/opticdev/optic) to make sure it's consistent and complete.
+Structural OpenAPI validity is checked with [openapi-spec-validator](https://github.com/python-openapi/openapi-spec-validator) via pre-commit.
 
-Optic is run as part of our test suite using pre-commit, but can also be installed and run manually:
+Pull requests that touch the public API are also checked with [oasdiff](https://github.com/oasdiff/oasdiff) via [oasdiff-action](https://github.com/oasdiff/oasdiff-action):
+
+- breaking changes fail the check
+- a changelog of consumer-facing changes is posted as a PR comment
+
+To run the same breaking-change check locally (against `main`):
 
 ```shell
-npm install -g @useoptic/optic
-```
-
-```shell
-optic diff doc/openapi/public_api.yml
+oasdiff breaking origin/main:doc/openapi/public_api.yml doc/openapi/public_api.yml
 ```
