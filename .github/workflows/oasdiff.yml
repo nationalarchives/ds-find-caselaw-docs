@@ -26,7 +26,7 @@ jobs:
         run: git fetch --depth=1 origin "$BASE_REF"
 
       - name: Check for breaking changes
-        uses: oasdiff/oasdiff-action/breaking@b9325c9e0a27ab65b0da3b766522cedec6be81dc # v0.1.18
+        uses: oasdiff/oasdiff-action/breaking@514e22ec2f1d1654fb78ac3bb7dc00d8f3c6c4d9 # v0.1.19
         with:
           base: origin/${{ github.base_ref }}:doc/openapi/public_api.yml
           revision: HEAD:doc/openapi/public_api.yml
@@ -51,7 +51,7 @@ jobs:
         run: git fetch --depth=1 origin "$BASE_REF"
 
       - name: Post changelog comment
-        uses: oasdiff/oasdiff-action/changelog@b9325c9e0a27ab65b0da3b766522cedec6be81dc # v0.1.18
+        uses: oasdiff/oasdiff-action/changelog@514e22ec2f1d1654fb78ac3bb7dc00d8f3c6c4d9 # v0.1.19
         with:
           base: origin/${{ github.base_ref }}:doc/openapi/public_api.yml
           revision: HEAD:doc/openapi/public_api.yml
