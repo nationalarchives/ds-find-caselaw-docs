@@ -13,9 +13,7 @@
     ":pinDependencies"
   ],
   "timezone": "Europe/London",
-  "platformAutomerge": true,
-  "automergeSchedule": ["after 10am every weekday", "before 4pm every weekday"],
-  "minimumReleaseAge": "2 days",
+  "minimumReleaseAge": "7 days",
   "customManagers": [
     {
       "customType": "regex",
